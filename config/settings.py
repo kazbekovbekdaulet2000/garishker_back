@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'dobro',
     'obrazovanie',
     'debug_toolbar',
-    'corsheaders'
+    'corsheaders',
+    'user',
 ]
 
 MIDDLEWARE = [

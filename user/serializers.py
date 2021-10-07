@@ -7,12 +7,11 @@ from rest_framework.response import Response
 from . import models
 
 
-
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Profile
-        fields = ('full_name', 'age', 'gender', 'city')
+        fields = ('full_name', 'age', 'gender', 'city', 'phone')
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -33,7 +32,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                 full_name=profile_data['full_name'],
                 age=profile_data['age'],
                 gender=profile_data['gender'],
-                city=profile_data['city']
+                city=profile_data['city'],
+                phone=profile_data['phone']
             )
             return user
         else:
