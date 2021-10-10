@@ -7,4 +7,5 @@ urlpatterns = [
     path('sections', SectionView.as_view(), name='section_urls'),
     path('reports', ReportView.as_view(), name='report_urls'),
     path('videos', VideoView.as_view(), name='video_urls'),
+    path('search_data', SearchView.as_view(), name='search_urls'),
 ]
