@@ -25,24 +25,38 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.User
-        fields = ('email', 'password', 'terms_ofuser', 'profile')
+        fields = ('email', 'password', 'profile')
         extra_kwargs = {'password': {'write_only': True}}
+
 
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
-        if validated_data['terms_ofuser']==True:
-            user = models.User.objects.create_user(**validated_data)
-            models.Profile.objects.create(
-                user=user,
-                full_name=profile_data['full_name'],
-                age=profile_data['age'],
-                gender=profile_data['gender'],
-                city=profile_data['city'],
-                phone=profile_data['phone']
-            )
-            return user
-        else:
-            return Response('click')
+        user = models.User.objects.create_user(**validated_data)
+        models.Profile.objects.create(
+            user=user,
+            full_name=profile_data['full_name'],
+            age=profile_data['age'],
+            gender=profile_data['gender'],
+            city=profile_data['city'],
+            phone=profile_data['phone']
+        )
+        return user
+    # def create(self, validated_data):
+    #     profile_data = validated_data.pop('profile')
+    #     print(validated_data)
+    #     if validated_data['terms_ofuser']==True:
+    #         user = models.User.objects.create_user(**validated_data)
+    #         models.Profile.objects.create(
+    #             user=user,
+    #             full_name=profile_data['full_name'],
+    #             age=profile_data['age'],
+    #             gender=profile_data['gender'],
+    #             city=profile_data['city'],
+    #             phone=profile_data['phone']
+    #         )
+    #         return user
+    #     else:
+    #         return Response('click')
     
 
 

@@ -5,7 +5,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, terms_ofuser, password=None):
+    def create_user(self, email, password=None):
         
         if not email:
             raise ValueError('User must have email')
@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
         )
-        user.terms_ofuser=terms_ofuser
+        # user.terms_ofuser=terms_ofuser
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -25,6 +25,7 @@ class UserManager(BaseUserManager):
 
         user = self.create_user(email, password)
         user.is_superuser = True
+        user.is_admin = True
         user.is_staff = True
         user.save()
 
@@ -49,33 +50,11 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    
-    @property
-    def is_superuser(self):
-        return self.is_admin
-
-    @property
-    def is_staff(self):
-       return self.is_admin
-
     def has_perm(self, perm, obj=None):
        return self.is_admin
 
     def has_module_perms(self, app_label):
        return self.is_admin
-
-    @is_staff.setter
-    def is_staff(self, value):
-        self._is_staff = value
-
-
-    @property
-    def is_superuser(self):
-        return self.is_admin
-
-
-
-
 
     def __str__(self):
         return self.email

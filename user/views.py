@@ -13,19 +13,21 @@ class UserRegistrationView(CreateAPIView):
 
     def post(self, request):
         payload = request.data
-        if payload['terms_ofuser']=='True':
-            serializer = self.serializer_class(data=payload)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            status_code = status.HTTP_201_CREATED
-            response = {
-                'success': 'True',
-                'status code': status_code,
-                'message': 'User registered  successfully',
-            }
-
-            return Response(response, status=status_code)
-        else:
+        try:
+            if payload['terms_ofuser']=='True':
+                serializer = self.serializer_class(data=payload)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                status_code = status.HTTP_201_CREATED
+                response = {
+                    'success': 'True',
+                    'status code': status_code,
+                    'message': 'User registered  successfully',
+                }
+                return Response(response, status=status_code)
+            else:
+                return Response('Click terms of user')
+        except:
             return Response('Click terms of user')
 
 
