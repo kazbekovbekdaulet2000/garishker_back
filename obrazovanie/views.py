@@ -5,6 +5,9 @@ from rest_framework import status
 from .serializers import *
 from .models import Category
 from django.db.models import Prefetch
+from .utils import *
+from rest_framework import status, generics
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class CategoryView(APIView):
@@ -48,3 +51,10 @@ class VideoView(APIView):
         videos = Video.objects.all().select_related('section').all().select_related('category').all()
         data = VideoSerializer(videos, many=True).data
         return Response({'videos': data}, status=200)
+
+
+class SearchView(generics.ListAPIView):
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = SearchFilter
