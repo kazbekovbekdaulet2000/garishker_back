@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('user.urls')),
     path('dobro/', include('dobro.urls')),
-    path('obrazovanie/', include('obrazovanie.urls')),
+    path('edu/', include('obrazovanie.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
