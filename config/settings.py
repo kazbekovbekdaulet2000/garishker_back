@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'user',
     'debug_toolbar',
     'corsheaders',
-    'user',
     'django_filters'
 ]
 

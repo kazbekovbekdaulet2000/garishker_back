@@ -86,10 +86,8 @@ class UpdateProfileView(UpdateAPIView):
         try:
             user_profile = models.Profile.objects.get(user=request.user)
             serializer = serializers.UserSerializer(instance=user_profile, data=payload)
-            print(serializer)
             if serializer.is_valid():
                 serializer.save()
-                print('savenul')
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',

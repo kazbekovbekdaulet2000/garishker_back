@@ -8,6 +8,11 @@ from . import models
 
 
 class UserSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(max_length=250, required=False)
+    age = serializers.CharField(required=False)
+    gender = serializers.CharField(max_length=1, required=False)
+    city = serializers.CharField(max_length=120, required=False)
+    phone = serializers.CharField(max_length=11, required=False)
 
     class Meta:
         model = models.Profile

@@ -1,28 +1,3 @@
-# from django.db import models
-# from django.contrib.auth.models import User
-
-# class UserProfile(models.Model):
-#     REQUIRED_FIELDS = ('user', 'terms_ofuser',)
-#     USERNAME_FIELD = 'email'
-#     GENDER_MALE = 0
-#     GENDER_FEMALE = 1
-#     GENDER_CHOICES = [(GENDER_MALE, 'Male'), (GENDER_FEMALE, 'Female')]
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     terms_ofuser = models.BooleanField(default=False)
-#     images = models.FileField(upload_to='profile', blank=True, default='garysh.jpg', verbose_name=" ")
-#     city = models.CharField(max_length=120, null=True, blank=True)
-#     phone = models.CharField(max_length=120, null=True, blank=True)
-#     age = models.IntegerField(null=True, blank=True)
-#     gender = models.IntegerField(choices=GENDER_CHOICES)
-
-#     def __str__(self):
-#         return f'{self.user.username} Profile'
-
-
-#     def save(self, *args, **kwargs):
-#         super().save(*args, **kwargs)
-
-
 import uuid
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
