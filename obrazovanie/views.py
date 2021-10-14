@@ -8,6 +8,9 @@ from django.db.models import Prefetch
 from .utils import *
 from rest_framework import status, generics
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import permissions
 
 
 class CategoryView(APIView):
@@ -58,3 +61,47 @@ class SearchView(generics.ListAPIView):
     serializer_class = ReportSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = SearchFilter
+
+class LikeView(APIView):
+    lookup_url_kwarg = 'id'
+    def get(self, request):
+        id = request.GET.get(self.lookup_url_kwarg)
+        post = Report.objects.get(id=id)
+        post.likes.add(request.user)
+        return Response({'result':'The post was successfully liked!'})
+class UnlikeView(APIView):
+    lookup_url_kwarg = 'id'
+    def get(self, request):
+        id = request.GET.get(self.lookup_url_kwarg)
+        post = Report.objects.get(id=id)
+        post.likes.remove(request.user)
+        return Response({'result':'Like has been successfully removed from the post!'})
+
+class CommentCreate(APIView):
+    def post(self, request, format=None):
+        user = User.objects.filter(email=request.user)
+        payload = request.data
+        payload['owner'] = user[0].id
+        serializer = CreateCommentSerializer(data=payload)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CommentDelete(APIView):
+    def delete(self, request):
+        try:
+            payload = request.data
+            comment = Comment.objects.get(id = payload['id'])
+            comment.delete()
+            return Response("Comment deleted successfully.")
+        except:
+            return Response("There is no comment with this id.")
+
+class CommentList(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

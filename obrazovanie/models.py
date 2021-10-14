@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+from user.models import User
 
 # Категории
 class Category(models.Model):
@@ -31,9 +31,10 @@ class Report(models.Model):
     title = models.CharField(_('Название'), max_length=500)
     body = models.TextField(_('Текст'))
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.DO_NOTHING, related_name='report_category')
-    # author = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='report_author')
+    # author = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='report_author', null=True)
     image = models.FileField(_('Обложка'), upload_to='report-image')
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='blog_posts')
 
     def __str__(self):
         return self.title
@@ -41,6 +42,22 @@ class Report(models.Model):
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
+
+
+class Comment(models.Model):
+    body = models.TextField(blank=False)
+    owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, null=True)
+    report = models.ForeignKey(Report, related_name='comments', on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return '%s - %s' % (self.report.title, self.owner.email)
+
+    class Meta:
+        ordering = ['date_added']
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
 
 
 # Видеролики
