@@ -100,16 +100,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'garyshker',
-#         'USER': 'postgres',
-#         'PASSWORD': '213396BAUYr.',
-#         'HOST': 'localhost',
-#         'POST': '5432',
-#     }
-# }
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [

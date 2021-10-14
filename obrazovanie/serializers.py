@@ -5,7 +5,7 @@ from user.models import Profile, User
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['name']
 
 
 class SectionSerializer(serializers.ModelSerializer):
@@ -14,12 +14,24 @@ class SectionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ReportSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
+class ReportCreateSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.email')
     
     class Meta:
         model = Report
-        fields = ['title', 'body', 'image', 'created_at', 'category']
+        fields = ['id', 'title', 'image', 'created_at', 'category', 'author']
+
+
+class ReportDetailSerializer(ReportCreateSerializer):
+    class Meta(ReportCreateSerializer.Meta):
+        fields = ReportCreateSerializer.Meta.fields + ['body']
+
+
+class ReportListSerializer(ReportCreateSerializer):
+    category = CategorySerializer()
+
+    class Meta(ReportCreateSerializer.Meta):
+        fields = ReportCreateSerializer.Meta.fields + ['category']
 
 
 class VideoSerializer(serializers.ModelSerializer):
@@ -32,7 +44,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
 
 class CategoryRelatedDataSerializer(serializers.ModelSerializer):
-    report_category = ReportSerializer(many=True)
+    report_category = ReportListSerializer(many=True)
     video_category = VideoSerializer(many=True)
 
     class Meta:
