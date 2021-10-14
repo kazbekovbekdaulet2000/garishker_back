@@ -8,6 +8,9 @@ from django.db.models import Prefetch
 from .utils import *
 from rest_framework import status, generics
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions
+from .permissions import IsOwnerOrReadOnly
 
 
 class CategoryView(APIView):
@@ -39,11 +42,24 @@ class SectionView(APIView):
         return Response({"sections": data}, status=200)
 
 
-class ReportView(APIView):
-    def get(self, request):
-        reports = Report.objects.all().select_related('category')
-        data = ReportSerializer(reports, many=True).data
-        return Response({"reports": data}, status=200)
+class ReportCreate(generics.ListCreateAPIView):
+    queryset = Report.objects.all().select_related('category')
+    serializer_class = ReportCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class ReportView(generics.ListCreateAPIView):
+    queryset = Report.objects.all().select_related('category')
+    serializer_class = ReportListSerializer
+
+
+class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Report.objects.all()
+    serializer_class = ReportDetailSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
 
 
 class VideoView(APIView):
@@ -55,6 +71,29 @@ class VideoView(APIView):
 
 class SearchView(generics.ListAPIView):
     queryset = Report.objects.all()
-    serializer_class = ReportSerializer
+    serializer_class = ReportListSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = SearchFilter
+
+
+class ReportFavourites(APIView):
+    def post(self, request):
+        report = get_object_or_404(Report, id=request.data.get('id'))
+        if request.user not in report.favourite.all():
+            report.favourite.add(request.user)
+            return Response({'detail': 'Added to favourites'}, status=status.HTTP_200_OK)
+        return Response({'detail': 'You already added to favourites'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        report = get_object_or_404(Report, id=request.data.get('id'))
+        if request.user in report.favourite.all():
+            report.favourite.remove(request.user)
+            return Response({'detail': 'Removed from favourites'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': 'You already removed from favourites'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListOfFavourites(APIView):
+    def get(self, request):
+        reports = Report.objects.filter(favourite=request.user)
+        data = ReportListSerializer(reports, many=True).data
+        return Response({"reports": data}, status=200)
