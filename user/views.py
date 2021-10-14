@@ -13,7 +13,7 @@ class UserRegistrationView(CreateAPIView):
 
     def post(self, request):
         payload = request.data
-        try:
+        if 'terms_ofuser' in payload.keys():
             if payload['terms_ofuser']=='True':
                 serializer = self.serializer_class(data=payload)
                 serializer.is_valid(raise_exception=True)
@@ -27,7 +27,7 @@ class UserRegistrationView(CreateAPIView):
                 return Response(response, status=status_code)
             else:
                 return Response('Click terms of user')
-        except:
+        else:
             return Response('Click terms of user')
 
 

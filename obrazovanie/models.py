@@ -1,11 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
 from django.conf import settings
-
-
+from user.models import User
 
 # Категории
 class Category(models.Model):
@@ -41,6 +37,7 @@ class Report(models.Model):
     favourite = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='report_favourite', blank=True)
     moderated = models.BooleanField(default=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    likes = models.ManyToManyField(User, related_name='blog_posts')
 
     def __str__(self):
         return self.title
@@ -48,6 +45,22 @@ class Report(models.Model):
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
+
+
+class Comment(models.Model):
+    body = models.TextField(blank=False)
+    owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, null=True)
+    report = models.ForeignKey(Report, related_name='comments', on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return '%s - %s' % (self.report.title, self.owner.email)
+
+    class Meta:
+        ordering = ['date_added']
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
 
 
 # Видеролики
