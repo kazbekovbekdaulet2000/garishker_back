@@ -72,4 +72,4 @@ class Profile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     images = models.FileField(upload_to='profile', blank=True, default='garysh.jpg', verbose_name=" ")
     city = models.CharField(max_length=120, null=True, blank=False)
-    phone = models.CharField(max_length=11, unique=True, null=True, blank=False)
+    phone = models.CharField(max_length=11, null=True, blank=False)
