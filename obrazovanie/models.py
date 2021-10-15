@@ -51,6 +51,7 @@ class Comment(models.Model):
     body = models.TextField(blank=False)
     owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, null=True)
     report = models.ForeignKey(Report, related_name='comments', on_delete=models.CASCADE)
+    reply = models.ForeignKey('self', related_name='reply_comment', on_delete=models.DO_NOTHING, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
 

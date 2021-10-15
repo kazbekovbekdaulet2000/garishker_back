@@ -84,16 +84,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
+    
 
     class Meta:
         model = Comment
-        fields = ['id', 'body', 'owner', 'report']
+        fields = ['id', 'body', 'owner', 'reply', 'report']
 
 class CreateCommentSerializer(serializers.ModelSerializer):
-
+    
     class Meta:
         model = Comment
-        fields = ['id', 'body', 'owner', 'report']
+        fields = ['id', 'body', 'owner', 'reply', 'report']
 
 class DeleteCommentSerializer(serializers.ModelSerializer):
 
