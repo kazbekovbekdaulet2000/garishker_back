@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from user.models import User
 
 # Категории
@@ -28,12 +29,14 @@ class Section(models.Model):
 
 # Статьи
 class Report(models.Model):
-    title = models.CharField(_('Название'), max_length=500)
-    body = models.TextField(_('Текст'))
-    category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.DO_NOTHING, related_name='report_category')
-    # author = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='report_author', null=True)
-    image = models.FileField(_('Обложка'), upload_to='report-image')
-    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(_('Название'), max_length=500, blank=True)
+    body = models.TextField(_('Текст'), blank=True)
+    category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.DO_NOTHING, related_name='report_category', blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, related_name='report_author', blank=True)
+    image = models.FileField(_('Обложка'), upload_to='report-image', blank=True)
+    favourite = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='report_favourite', blank=True)
+    moderated = models.BooleanField(default=False, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
     likes = models.ManyToManyField(User, related_name='blog_posts')
 
     def __str__(self):
@@ -68,6 +71,8 @@ class Video(models.Model):
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.DO_NOTHING, related_name='video_category')
     section = models.ForeignKey(Section, verbose_name="Раздел", on_delete=models.DO_NOTHING, related_name='video_section')
     video = models.FileField(_('Видео'), upload_to='video-image')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, related_name='video_author')
+    favourite = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='video_favourite', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
