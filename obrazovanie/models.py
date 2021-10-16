@@ -38,6 +38,7 @@ class Report(models.Model):
     moderated = models.BooleanField(default=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     likes = models.ManyToManyField(User, related_name='blog_posts', blank=True)
+    read_time = models.IntegerField(null=True)
 
     def __str__(self):
         return self.title
