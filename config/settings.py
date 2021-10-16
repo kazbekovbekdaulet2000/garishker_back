@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'user',
     'debug_toolbar',
     'corsheaders',
-    'django_filters'
+    'django_filters',
+    'support'
 ]
 
 MIDDLEWARE = [
@@ -89,28 +90,28 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': "garyshone",
-#         'USER': "harden",
-#         'PASSWORD': "adminadmin",
-#         'HOST': "localhost",
-#         'PORT': 5432,
-#     }
-# }
-
-
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': "garyshker",
-            'USER': "postgres",
-            'PASSWORD': "12345",
-            'HOST': "localhost",
-            'PORT': 5433,
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': "garyshone",
+        'USER': "harden",
+        'PASSWORD': "adminadmin",
+        'HOST': "localhost",
+        'PORT': 5432,
     }
+}
+#
+#
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': "garyshker",
+#             'USER': "postgres",
+#             'PASSWORD': "12345",
+#             'HOST': "localhost",
+#             'PORT': 5433,
+#         }
+#     }
 
 # DATABASES = {
 #     'default': {
