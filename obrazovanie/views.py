@@ -57,6 +57,17 @@ class ReportView(generics.ListCreateAPIView):
     serializer_class = ReportListSerializer
 
 
+class ReportRelated(APIView):
+    lookup_url_kwarg = 'id'
+
+    def get(self, request):
+        report = get_object_or_404(Report, id=request.GET.get(self.lookup_url_kwarg))
+        queryset = Report.objects.filter(moderated=True).filter(category=report.category).select_related('category').exclude(id=request.GET.get(self.lookup_url_kwarg))
+
+        data = ReportListSerializer(queryset, many=True).data
+        return Response(data, status=200)
+
+
 class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportDetailSerializer
