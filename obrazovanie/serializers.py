@@ -2,7 +2,9 @@ from rest_framework import serializers
 from .models import *
 from user.models import Profile, User
 
+
 class CategorySerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Category
         fields = ['name']
@@ -40,7 +42,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Video
-        fields = ['title', 'body', 'section', 'video', 'created_at', 'category']
+        fields = ['title', 'body', 'image', 'section', 'video', 'created_at', 'category']
 
 
 class CategoryRelatedDataSerializer(serializers.ModelSerializer):

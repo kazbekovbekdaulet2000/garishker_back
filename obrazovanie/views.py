@@ -53,7 +53,7 @@ class ReportCreate(generics.ListCreateAPIView):
 
 
 class ReportView(generics.ListCreateAPIView):
-    queryset = Report.objects.all().select_related('category')
+    queryset = Report.objects.filter(moderated=True).select_related('category')
     serializer_class = ReportListSerializer
 
 
@@ -99,20 +99,27 @@ class ListOfFavourites(APIView):
         reports = Report.objects.filter(favourite=request.user)
         data = ReportListSerializer(reports, many=True).data
         return Response({"reports": data}, status=200)
+
+
 class LikeView(APIView):
     lookup_url_kwarg = 'id'
+
     def get(self, request):
         id = request.GET.get(self.lookup_url_kwarg)
         post = Report.objects.get(id=id)
         post.likes.add(request.user)
         return Response({'result':'The post was successfully liked!'})
+
+
 class UnlikeView(APIView):
     lookup_url_kwarg = 'id'
+
     def get(self, request):
         id = request.GET.get(self.lookup_url_kwarg)
         post = Report.objects.get(id=id)
         post.likes.remove(request.user)
         return Response({'result':'Like has been successfully removed from the post!'})
+
 
 class CommentCreate(APIView):
     def post(self, request, format=None):
@@ -125,6 +132,7 @@ class CommentCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CommentDelete(APIView):
     def delete(self, request):
         try:
@@ -134,6 +142,7 @@ class CommentDelete(APIView):
             return Response("Comment deleted successfully.")
         except:
             return Response("There is no comment with this id.")
+
 
 class CommentList(generics.ListCreateAPIView):
     queryset = Comment.objects.all()

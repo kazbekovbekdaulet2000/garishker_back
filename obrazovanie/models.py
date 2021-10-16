@@ -48,10 +48,10 @@ class Report(models.Model):
 
 
 class Comment(models.Model):
-    body = models.TextField(blank=False)
-    owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, null=True)
-    report = models.ForeignKey(Report, related_name='comments', on_delete=models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True)
+    body = models.TextField(blank=True)
+    owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, blank=True, null=True)
+    report = models.ForeignKey(Report, related_name='comments', blank=True, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True, blank=True)
 
 
     def __str__(self):
@@ -67,9 +67,10 @@ class Comment(models.Model):
 class Video(models.Model):
     title = models.CharField(_('Название'), max_length=500)
     body = models.TextField(_('Текст'))
+    image = models.FileField(_('Обложка'), upload_to='video-image', blank=True)
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.DO_NOTHING, related_name='video_category')
     section = models.ForeignKey(Section, verbose_name="Раздел", on_delete=models.DO_NOTHING, related_name='video_section')
-    video = models.FileField(_('Видео'), upload_to='video-image')
+    video = models.FileField(_('Видео'), upload_to='video-video')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, related_name='video_author')
     favourite = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='video_favourite', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
