@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'dobro',
     'obrazovanie',
     'user',
+    'support',
     'debug_toolbar',
     'corsheaders',
     'django_filters',
