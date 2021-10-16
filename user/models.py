@@ -63,13 +63,13 @@ class User(AbstractBaseUser):
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    full_name = models.CharField(max_length=250, null=True)
-    age = models.PositiveIntegerField(null=True, blank=False)
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-    )
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    full_name = models.CharField(max_length=250, null=True, blank=True)
+    birth_date = models.DateField(max_length=8, null=True, blank=True)
+    # GENDER_CHOICES = (
+    #     ('M', 'Male'),
+    #     ('F', 'Female'),
+    # )
+    # gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     images = models.FileField(upload_to='profile', blank=True, default='garysh.jpg', verbose_name=" ")
-    city = models.CharField(max_length=120, null=True, blank=False)
-    phone = models.CharField(max_length=11, null=True, blank=False)
+    country = models.CharField(max_length=120, null=True, blank=True)
+    city = models.CharField(max_length=120, null=True, blank=True)

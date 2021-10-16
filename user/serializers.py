@@ -8,15 +8,10 @@ from . import models
 
 
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(max_length=250, required=False)
-    age = serializers.CharField(required=False)
-    gender = serializers.CharField(max_length=1, required=False)
-    city = serializers.CharField(max_length=120, required=False)
-    phone = serializers.CharField(max_length=11, required=False)
 
     class Meta:
         model = models.Profile
-        fields = ('full_name', 'age', 'gender', 'city', 'phone')
+        fields = ('full_name', 'birth_date', 'country', 'city')
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -35,10 +30,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         models.Profile.objects.create(
             user=user,
             full_name=profile_data['full_name'],
-            age=profile_data['age'],
-            gender=profile_data['gender'],
-            city=profile_data['city'],
-            phone=profile_data['phone']
+            birth_date=profile_data['birth_date'],
+            country=profile_data['country'],
+            city=profile_data['city']
         )
         return user
     # def create(self, validated_data):

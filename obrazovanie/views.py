@@ -13,9 +13,12 @@ from .permissions import IsOwnerOrReadOnly
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 
 
 class CategoryView(APIView):
+    permission_classes = (AllowAny,)
     def get(self, request):
         categories = Category.objects.all()
         data = CategorySerializer(categories, many=True).data
@@ -23,6 +26,7 @@ class CategoryView(APIView):
     
 
 class DataByCategoryView(APIView):
+    permission_classes = (AllowAny,)
     lookup_url_kwarg = 'id'
 
     def get(self, request):
@@ -38,6 +42,7 @@ class DataByCategoryView(APIView):
         
 
 class SectionView(APIView):
+    permission_classes = (AllowAny,)
     def get(self, request):
         sections = Section.objects.all()
         data = SectionSerializer(sections, many=True).data
@@ -53,11 +58,13 @@ class ReportCreate(generics.ListCreateAPIView):
 
 
 class ReportView(generics.ListCreateAPIView):
+    permission_classes = (AllowAny,)
     queryset = Report.objects.filter(moderated=True).select_related('category')
     serializer_class = ReportListSerializer
 
 
 class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (AllowAny,)
     queryset = Report.objects.all()
     serializer_class = ReportDetailSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -65,6 +72,7 @@ class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class VideoView(APIView):
+    permission_classes = (AllowAny,)
     def get(self, request):
         videos = Video.objects.all().select_related('section').all().select_related('category').all()
         data = VideoSerializer(videos, many=True).data
@@ -72,6 +80,7 @@ class VideoView(APIView):
 
 
 class SearchView(generics.ListAPIView):
+    permission_classes = (AllowAny,)
     queryset = Report.objects.all()
     serializer_class = ReportListSerializer
     filter_backends = [DjangoFilterBackend]

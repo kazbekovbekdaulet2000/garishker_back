@@ -62,12 +62,10 @@ class UserProfileView(RetrieveAPIView):
                 'message': 'User profile fetched successfully',
                 'data': [{
                     'email': user_profile.user.email,
-                    # 'id': user_profile.user.id,
                     'full_name': user_profile.full_name,
-                    'city': user_profile.city,
-                    'phone_number': user_profile.phone,
-                    'age': user_profile.age,
-                    'gender': user_profile.gender,
+                    'birth_date': user_profile.birth_date,
+                    'country': user_profile.country,
+                    'city': user_profile.city
                     }]
                 }
 
@@ -98,10 +96,9 @@ class UpdateProfileView(UpdateAPIView):
                 'data': [{
                     'email': user_profile.user.email,
                     'full_name': user_profile.full_name,
-                    'city': user_profile.city,
-                    'phone_number': user_profile.phone,
-                    'age': user_profile.age,
-                    'gender': user_profile.gender,
+                    'birth_date': user_profile.birth_date,
+                    'country': user_profile.country,
+                    'city': user_profile.city
                     }]
                 }
 
