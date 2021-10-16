@@ -127,7 +127,9 @@ class CommentCreate(APIView):
         payload = request.data
         payload['owner'] = user[0].id
         serializer = CreateCommentSerializer(data=payload)
+        print(serializer)
         if serializer.is_valid():
+            print(serializer.validated_data)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

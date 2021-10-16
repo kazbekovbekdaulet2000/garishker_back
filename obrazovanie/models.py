@@ -48,10 +48,12 @@ class Report(models.Model):
 
 
 class Comment(models.Model):
-    body = models.TextField(blank=True)
-    owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, blank=True, null=True)
-    report = models.ForeignKey(Report, related_name='comments', blank=True, on_delete=models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True, blank=True)
+
+    body = models.TextField(blank=False)
+    owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE, null=True)
+    report = models.ForeignKey(Report, related_name='comments', on_delete=models.CASCADE)
+    reply = models.ForeignKey('self', related_name='reply_comment', on_delete=models.DO_NOTHING, null=True, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
 
 
     def __str__(self):
