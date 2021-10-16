@@ -1,3 +1,22 @@
 from django.shortcuts import render
+from rest_framework.views import *
+from .serializers import *
+from rest_framework.response import *
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
-# Create your views here.
+
+
+
+class QuestionView(APIView):
+    permission_classes = (AllowAny,)
+    def get(self, request):
+        questions = Question.objects.all()
+        data = QuestionSerializer(questions, many=True).data
+        return Response({"questions": data}, status=200)
+
+class ContactUs(APIView):
+    permission_classes = (AllowAny,)
+    def get(self, request):
+        contact_us = ContactUs.objects.all()
+        data = ContactUsSerializer(contact_us, many=True).data
+        return Response({"support": data}, status=200)

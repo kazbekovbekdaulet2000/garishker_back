@@ -37,7 +37,7 @@ class Report(models.Model):
     favourite = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='report_favourite', blank=True)
     moderated = models.BooleanField(default=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
-    likes = models.ManyToManyField(User, related_name='blog_posts')
+    likes = models.ManyToManyField(User, related_name='blog_posts', blank=True)
 
     def __str__(self):
         return self.title
