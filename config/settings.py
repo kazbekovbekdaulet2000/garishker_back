@@ -93,37 +93,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "garyshone",
+        'NAME': "garyshker",
         'USER': "harden",
         'PASSWORD': "adminadmin",
         'HOST': "localhost",
         'PORT': 5432,
     }
 }
-#
-#
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': "garyshker",
-#             'USER': "postgres",
-#             'PASSWORD': "12345",
-#             'HOST': "localhost",
-#             'PORT': 5433,
-#         }
-#     }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'garyshker',
-#         'USER': 'postgres',
-#         'PASSWORD': '213396BAUYr.',
-#         'HOST': 'localhost',
-#         'POST': '5432',
-#     }
-# }
-
 
 
 REST_FRAMEWORK = {
