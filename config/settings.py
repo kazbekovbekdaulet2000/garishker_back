@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'support',
     'debug_toolbar',
     'corsheaders',
-    'django_filters'
+    'django_filters',
+    'support'
 ]
 
 MIDDLEWARE = [
@@ -100,18 +101,6 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'garyshker',
-#         'USER': 'postgres',
-#         'PASSWORD': '213396BAUYr.',
-#         'HOST': 'localhost',
-#         'POST': '5432',
-#     }
-# }
-
 
 
 REST_FRAMEWORK = {
