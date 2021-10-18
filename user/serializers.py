@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Profile
-        fields = ('full_name', 'birth_date', 'country', 'city')
+        fields = ('full_name', 'birth_date', 'city')
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -31,7 +31,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             user=user,
             full_name=profile_data['full_name'],
             birth_date=profile_data['birth_date'],
-            country=profile_data['country'],
             city=profile_data['city']
         )
         return user
