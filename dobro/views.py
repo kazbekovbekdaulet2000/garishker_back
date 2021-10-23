@@ -16,6 +16,6 @@ class Projects(APIView):
 
 class ProjectDetail(APIView):
     def get(self, request, id):
-        project = get_object_or_404(Dobro, id=id)
+        project = Dobro.objects.get(id=id)
         data = DobroDetailSerializer(project).data
         return Response(data, status=200)

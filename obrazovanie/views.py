@@ -16,7 +16,6 @@ from rest_framework import permissions
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
-
 class CategoryView(APIView):
     permission_classes = (AllowAny,)
     def get(self, request):
@@ -64,6 +63,7 @@ class ReportView(generics.ListCreateAPIView):
 
 
 class ReportRelated(APIView):
+    permission_classes = (AllowAny,)
     lookup_url_kwarg = 'id'
 
     def get(self, request):
@@ -92,7 +92,7 @@ class VideoView(APIView):
 
 class SearchView(generics.ListAPIView):
     permission_classes = (AllowAny,)
-    queryset = Report.objects.all()
+    queryset = Report.objects.filter(moderated=True)
     serializer_class = ReportListSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = SearchFilter
@@ -116,7 +116,7 @@ class ReportFavourites(APIView):
 
 class ListOfFavourites(APIView):
     def get(self, request):
-        reports = Report.objects.filter(favourite=request.user)
+        reports = Report.objects.filter(favourite=request.user).filter(moderated=True)
         data = ReportListSerializer(reports, many=True).data
         return Response({"reports": data}, status=200)
 
