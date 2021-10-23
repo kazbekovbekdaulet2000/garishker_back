@@ -64,7 +64,6 @@ class UserProfileView(RetrieveAPIView):
                     'email': user_profile.user.email,
                     'full_name': user_profile.full_name,
                     'birth_date': user_profile.birth_date,
-                    'country': user_profile.country,
                     'city': user_profile.city
                     }]
                 }
@@ -97,7 +96,6 @@ class UpdateProfileView(UpdateAPIView):
                     'email': user_profile.user.email,
                     'full_name': user_profile.full_name,
                     'birth_date': user_profile.birth_date,
-                    'country': user_profile.country,
                     'city': user_profile.city
                     }]
                 }

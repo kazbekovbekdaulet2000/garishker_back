@@ -18,10 +18,16 @@ class SectionSerializer(serializers.ModelSerializer):
 
 class ReportCreateSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.email')
-    
+    count = serializers.SerializerMethodField()
+
+
+    def get_count(self, obj):
+        return len((list(obj.likes.all())))
+
+
     class Meta:
         model = Report
-        fields = ['id', 'title', 'image', 'created_at', 'category', 'author']
+        fields = ['id', 'title', 'image', 'created_at', 'category', 'author', 'count']
 
 
 class ReportDetailSerializer(ReportCreateSerializer):

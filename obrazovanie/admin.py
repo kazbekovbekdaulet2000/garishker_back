@@ -10,3 +10,4 @@ admin.site.register(Section, SectionAdmin)
 admin.site.register(Report)
 admin.site.register(Comment)
 admin.site.register(Video)
+
