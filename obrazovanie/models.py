@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -18,6 +19,8 @@ class Category(models.Model):
 # Разделы
 class Section(models.Model):
     name = models.CharField(_('Название'), max_length=120)
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    updated_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
@@ -38,6 +41,7 @@ class Report(models.Model):
     moderated = models.BooleanField(default=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     likes = models.ManyToManyField(User, related_name='blog_posts', blank=True)
+    read_time = models.IntegerField(null=True)
 
     def __str__(self):
         return self.title

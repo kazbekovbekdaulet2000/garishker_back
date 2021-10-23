@@ -2,8 +2,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-
-
 class ContactUs(models.Model):
     name = models.CharField(_('Имя'), max_length=500, blank=True)
     email = models.CharField(_('Почта'), max_length=500, blank=True)
@@ -27,4 +25,3 @@ class Question(models.Model):
     class Meta:
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
-
