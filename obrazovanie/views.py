@@ -116,7 +116,7 @@ class ReportFavourites(APIView):
 
 class ListOfFavourites(APIView):
     def get(self, request):
-        reports = Report.objects.filter(favourite=request.user)
+        reports = Report.objects.filter(favourite=request.user).filter(moderated=True)
         data = ReportListSerializer(reports, many=True).data
         return Response({"reports": data}, status=200)
 
