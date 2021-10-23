@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['195.210.47.160', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +72,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'Garyshker-back/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,11 +94,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "datadb",
-        'USER': "dbuser",
-        'PASSWORD': "password",
+        'NAME': "Garyshker",
+        'USER': "postgres",
+        'PASSWORD': "12345",
         'HOST': "localhost",
-        'PORT': 5432,
+        'PORT': 5433,
     }
 }
 
