@@ -26,6 +26,7 @@ urlpatterns = [
     path('auth/', include('user.urls')),
     path('dobro/', include('dobro.urls')),
     path('edu/', include('obrazovanie.urls')),
+    path('support/', include('support.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

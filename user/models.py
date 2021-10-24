@@ -71,5 +71,4 @@ class Profile(models.Model):
     # )
     # gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     images = models.FileField(upload_to='profile', blank=True, default='garysh.jpg', verbose_name=" ")
-    country = models.CharField(max_length=120, null=True, blank=True)
-    city = models.CharField(max_length=120, null=True, blank=True)
+    city = models.CharField(max_length=255, null=True, blank=True)
