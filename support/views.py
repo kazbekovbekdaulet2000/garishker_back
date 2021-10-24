@@ -24,7 +24,7 @@ class CreateContactUs(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ContactUs(APIView):
+class ContactUss(APIView):
     permission_classes = (AllowAny,)
     def get(self, request):
         contact_us = ContactUs.objects.all()

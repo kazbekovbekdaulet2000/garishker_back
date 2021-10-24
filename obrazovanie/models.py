@@ -19,8 +19,6 @@ class Category(models.Model):
 # Разделы
 class Section(models.Model):
     name = models.CharField(_('Название'), max_length=120)
-    created_date = models.DateTimeField(auto_now_add=True, null=True)
-    updated_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
