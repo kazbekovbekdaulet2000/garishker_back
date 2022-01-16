@@ -23,7 +23,7 @@ class ReportCommentSerializer(serializers.ModelSerializer):
 class ReportCommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['body', 'reply']
+        fields = ['body', 'reply', 'report']
 
 
 class VideoCommentSerializer(serializers.ModelSerializer):
@@ -38,4 +38,4 @@ class VideoCommentSerializer(serializers.ModelSerializer):
 class VideoCommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoComment
-        fields = ['body', 'reply']
+        fields = ['body', 'reply', 'video']
