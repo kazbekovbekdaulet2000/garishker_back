@@ -1,74 +1,66 @@
-import uuid
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import (
+    AbstractBaseUser, BaseUserManager, PermissionsMixin)
+from config.custom_model import AbstractModel
 
 
-class UserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
 
-    def create_user(self, email, password=None):
-        
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(email, password, **extra_fields)
+
+    def create_staff(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_superuser', False)
+        return self.create_user(email, password, **extra_fields)
+
+    def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError('User must have email')
+            raise ValueError("Нужен email")
+        if not password:
+            raise ValueError("Нужен пароль")
 
-        user = self.model(
-            email=self.normalize_email(email),
-        )
-        # user.terms_ofuser=terms_ofuser
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+        email = self.normalize_email(email)
+        user = self.model(email=email,
+                          **extra_fields)
 
-    def create_superuser(self, email, password):
+        if password is not None:
+            user.set_password(password)
+        else:
+            user.set_password('hello')
 
-        if password is None:
-            raise TypeError('Superuser user must have password')
-
-        user = self.create_user(email, password)
-        user.is_superuser = True
-        user.is_admin = True
-        user.is_staff = True
         user.save()
-
         return user
 
 
-class User(AbstractBaseUser):
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
-        unique=True
-        )
+        verbose_name='email address', max_length=255, unique=True, db_index=True)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
+    birth_date = models.DateField(max_length=8, null=True, blank=True)
+    image = models.ImageField(
+        null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name=" ")
+    city = models.CharField(max_length=255, null=True, blank=True)
+
+    last_login = models.DateTimeField(auto_now_add=True, null=True)
     terms_ofuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+
+    objects = CustomUserManager()
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
 
-    objects = UserManager()
-
-    def has_perm(self, perm, obj=None):
-       return self.is_admin
-
-    def has_module_perms(self, app_label):
-       return self.is_admin
+    REQUIRED_FIELDS = ['full_name', 'birth_date', 'city']
 
     def __str__(self):
         return self.email
 
-
-class Profile(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    full_name = models.CharField(max_length=250, null=True, blank=True)
-    birth_date = models.DateField(max_length=8, null=True, blank=True)
-    # GENDER_CHOICES = (
-    #     ('M', 'Male'),
-    #     ('F', 'Female'),
-    # )
-    # gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    images = models.FileField(upload_to='profile', blank=True, default='garysh.jpg', verbose_name=" ")
-    city = models.CharField(max_length=255, null=True, blank=True)
+    def get_full_name(self):
+        return ' '.join(self.name, self.surname)

@@ -14,8 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
-from django.conf.urls import include
+from django.urls import path
+from django.urls import include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
@@ -29,10 +29,10 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Garyshker API",
         default_version='v1',
-        description="Welcome to the world of Jaseci",
-        terms_of_service="https://www.jaseci.org",
-        contact=openapi.Contact(email="jason@jaseci.org"),
-        license=openapi.License(name="Awesome IP"),
+        description="desc",
+        # terms_of_service="",
+        contact=openapi.Contact(email="kazbekov.bekdaulet2000@gmail.com"),
+        # license=openapi.License(name="Test License"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
@@ -40,22 +40,19 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    re_path(r'^doc(?P<format>\.json|\.yaml)$',
-            schema_view.without_ui(cache_timeout=0), name='schema-json'),  #<-- Here
-    path('doc/', schema_view.with_ui('swagger', cache_timeout=0),
-         name='schema-swagger-ui'),  #<-- Here
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
-         name='schema-redoc'),  #<-- Here
-    path('admin/', admin.site.urls),
-    path('auth/', include('user.urls')),
-    path('dobro/', include('dobro.urls')),
-    path('edu/', include('obrazovanie.urls')),
-    path('support/', include('support.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-                      path('__debug__/', include(debug_toolbar.urls)),
-                  ] + urlpatterns
+    re_path('admin/', admin.site.urls),
+    re_path('auth/', include('user.urls')),
+    re_path('dobro/', include('dobro.urls')),
+    re_path('edu/', include('obrazovanie.urls')),
+    re_path('support/', include('support.urls')),
 
+    # ckeditor
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+
+    # Swagger
+    re_path('docs/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path('docs/swagger/api.json/', schema_view.without_ui(cache_timeout=0), name='schema-swagger-ui'),
+    re_path('docs/swagger/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

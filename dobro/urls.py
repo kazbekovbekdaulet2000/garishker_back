@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import *
+
+from dobro.views import ProjectList, ProjectDetail
 
 urlpatterns = [
-    path('projects', Projects.as_view(), name='projects_urls'),
-    path('project_detail/<int:id>', ProjectDetail.as_view(), name='project_detail_urls'),
+    path('projects/', ProjectList.as_view(), name='projects_urls'),
+    path('projects/<id>', ProjectDetail.as_view(), name='project_detail_urls'),
 ]

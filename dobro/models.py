@@ -1,7 +1,8 @@
 from django.db import models
+from config.custom_model import AbstractModel
 
 
-class Dobro(models.Model):
+class Dobro(AbstractModel):
     title = models.CharField(max_length=250, blank=True)
     small_description = models.TextField(blank=True)
     description = models.TextField(blank=True)

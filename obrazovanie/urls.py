@@ -1,21 +1,49 @@
 from django.urls import path
-from .views import *
+from .views.reports_view import (
+    ReportLike,
+    ReportLiked,
+    ReportList,
+    ReportDetail,
+    ReportBookmarked,
+    ReportCommentList,
+    ReportSave
+)
+from .views.categories_view import (
+    CategoryList
+)
+
+from .views.videos_view import (
+    VideoBookmarked,
+    VideoCommentList,
+    VideoDetail,
+    VideoLike,
+    VideoLiked,
+    VideoList,
+    VideoSave
+)
 
 urlpatterns = [
-    path('categories', CategoryView.as_view(), name='category_urls'),
-    path('category', DataByCategoryView.as_view(), name='category_detail_urls'),
-    path('sections', SectionView.as_view(), name='section_urls'),
-    path('reports', ReportView.as_view(), name='report_urls'),
-    path('report_create', ReportCreate.as_view(), name='report_create_urls'),
-    path('report_detail/<int:pk>', ReportDetail.as_view(), name='report_detail_urls'),
-    path('related_reports', ReportRelated.as_view(), name='related_reports_urls'),
-    path('videos', VideoView.as_view(), name='video_urls'),
-    path('search_data', SearchView.as_view(), name='search_urls'),
-    path('report_favourites', ReportFavourites.as_view(), name='report_favourites_urls'),
-    path('list_of_favourites', ListOfFavourites.as_view(), name='list_of_favourites_urls'),
-    path('like/', LikeView.as_view(), name='like_post'),
-    path('unlike/', UnlikeView.as_view(), name='unlike_post'),
-    path('comment/', CommentCreate.as_view(), name='comment_create'),
-    path('delete/', CommentDelete.as_view(), name='comment_delete'),
-    path('comments/', CommentList.as_view(), name='comments'),
+    path('categories/', CategoryList.as_view()),
+
+    path('reports/', ReportList.as_view()),
+    path('reports/<int:id>/', ReportDetail.as_view()),
+    path('reports/<int:id>/comments/', ReportCommentList.as_view()),
+    path('reports/<int:id>/like/', ReportLike.as_view()),
+    path('reports/<int:id>/save/', ReportSave.as_view()),
+    path('reports/bookmarked/', ReportBookmarked.as_view()),
+    path('reports/liked/', ReportLiked.as_view()),
+
+    path('videos/', VideoList.as_view()),
+    path('videos/<int:id>/', VideoDetail.as_view()),
+    path('videos/bookmarked/', VideoBookmarked.as_view()),
+    path('videos/liked/', VideoLiked.as_view()),
+    path('videos/<int:id>/comments/', VideoCommentList.as_view()),
+    path('videos/<int:id>/like/', VideoLike.as_view()),
+    path('videos/<int:id>/save/', VideoSave.as_view()),
+
+    # path('search/', SearchView.as_view()),
+   
+    # path('like/', LikeView.as_view(), name='like_post'),
+    # path('/comments/<id>/', CommentDelete.as_view(), name='comment_delete'),
+    # path('comments/', CommentList.as_view(), name='comments'), # comment create сюда же на пост поставить
 ]

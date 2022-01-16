@@ -1,111 +1,35 @@
+from rest_framework import generics
+from rest_framework import permissions
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from user.serializers import (
+    UserInfoSerializer, UserSerializer, UserUpdateSerializer)
+from django.contrib.auth import get_user_model
 
-from . import serializers
-from . import models
-
-class UserRegistrationView(CreateAPIView):
-    serializer_class = serializers.UserRegistrationSerializer
-    permission_classes = (AllowAny,)
-
-    def post(self, request):
-        payload = request.data
-        if 'terms_ofuser' in payload.keys():
-            if payload['terms_ofuser']=='True':
-                serializer = self.serializer_class(data=payload)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                status_code = status.HTTP_201_CREATED
-                response = {
-                    'success': 'True',
-                    'status code': status_code,
-                    'message': 'User registered  successfully',
-                }
-                return Response(response, status=status_code)
-            else:
-                return Response('Click terms of user')
-        else:
-            return Response('Click terms of user')
+User = get_user_model()
 
 
-class UserLoginView(RetrieveAPIView):
+class UserView(generics.RetrieveUpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
 
-    permission_classes = (AllowAny,)
-    serializer_class = serializers.UserLoginSerializer
+    def get_serializer_class(self):
+        if not self.request.method == "GET":
+            return UserUpdateSerializer
+        return UserInfoSerializer
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+    def get_object(self):
+        obj = self.request.user
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class UserCreateView(generics.CreateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny, ]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        response = {
-            'success' : 'True',
-            'status code' : status.HTTP_200_OK,
-            'message': 'User logged in  successfully',
-            'token' : serializer.data['token'],
-            }
-        status_code = status.HTTP_200_OK
-
-        return Response(response, status=status_code)
-
-
-class UserProfileView(RetrieveAPIView):
-
-    def get(self, request):
-        try:
-            user_profile = models.Profile.objects.get(user=request.user)
-            status_code = status.HTTP_200_OK
-            response = {
-                'success': 'true',
-                'status code': status_code,
-                'message': 'User profile fetched successfully',
-                'data': [{
-                    'email': user_profile.user.email,
-                    'full_name': user_profile.full_name,
-                    'birth_date': user_profile.birth_date,
-                    'city': user_profile.city
-                    }]
-                }
-
-        except Exception as e:
-            status_code = status.HTTP_400_BAD_REQUEST
-            response = {
-                'success': 'false',
-                'status code': status.HTTP_400_BAD_REQUEST,
-                'message': 'User does not exists',
-                'error': str(e)
-                }
-        return Response(response, status=status_code)
-
-
-class UpdateProfileView(UpdateAPIView):
-    def post(self, request):
-        payload = request.data
-        try:
-            user_profile = models.Profile.objects.get(user=request.user)
-            serializer = serializers.UserSerializer(instance=user_profile, data=payload)
-            if serializer.is_valid():
-                serializer.save()
-            status_code = status.HTTP_200_OK
-            response = {
-                'success': 'true',
-                'status code': status_code,
-                'message': 'User profile fetched successfully',
-                'data': [{
-                    'email': user_profile.user.email,
-                    'full_name': user_profile.full_name,
-                    'birth_date': user_profile.birth_date,
-                    'city': user_profile.city
-                    }]
-                }
-
-        except Exception as e:
-            status_code = status.HTTP_400_BAD_REQUEST
-            response = {
-                'success': 'false',
-                'status code': status.HTTP_400_BAD_REQUEST,
-                'message': 'User does not exists',
-                'error': str(e)
-                }
-        return Response(response, status=status_code)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(status=status.HTTP_201_CREATED, headers=headers)

@@ -5,7 +5,7 @@ from .models import *
 class DobroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dobro
-        fields = ['title', 'small_description', 'is_completed', 'collected', 'necessary', 'image']
+        fields = ['id', 'title', 'small_description', 'is_completed', 'collected', 'necessary', 'image']
 
 
 class DobroDetailSerializer(DobroSerializer):

@@ -1,85 +1,48 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import update_last_login
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework_jwt.settings import api_settings
-from rest_framework.response import Response
-
-from . import models
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    re_password = serializers.CharField(
+        style={'input_type': 'password'}, write_only=True)
 
     class Meta:
-        model = models.Profile
-        fields = ('full_name', 'birth_date', 'city')
-
-
-class UserRegistrationSerializer(serializers.ModelSerializer):
-
-    profile = UserSerializer(required=False)
-
-    class Meta:
-        model = models.User
-        fields = ('email', 'password', 'profile')
-        extra_kwargs = {'password': {'write_only': True}}
-
-
-    def create(self, validated_data):
-        profile_data = validated_data.pop('profile')
-        user = models.User.objects.create_user(**validated_data)
-        models.Profile.objects.create(
-            user=user,
-            full_name=profile_data['full_name'],
-            birth_date=profile_data['birth_date'],
-            city=profile_data['city']
-        )
-        return user
-    # def create(self, validated_data):
-    #     profile_data = validated_data.pop('profile')
-    #     print(validated_data)
-    #     if validated_data['terms_ofuser']==True:
-    #         user = models.User.objects.create_user(**validated_data)
-    #         models.Profile.objects.create(
-    #             user=user,
-    #             full_name=profile_data['full_name'],
-    #             age=profile_data['age'],
-    #             gender=profile_data['gender'],
-    #             city=profile_data['city'],
-    #             phone=profile_data['phone']
-    #         )
-    #         return user
-    #     else:
-    #         return Response('click')
-    
-
-
-
-JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
-JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
-
-class UserLoginSerializer(serializers.Serializer):
-
-    email = serializers.CharField(max_length=255)
-    password = serializers.CharField(max_length=128, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
-
-    def validate(self, data):
-        email = data.get("email", None)
-        password = data.get("password", None)
-        user = authenticate(email=email, password=password)
-        if user is None:
-            raise serializers.ValidationError(
-                'A user with this email and password is not found.'
-            )
-        try:
-            payload = JWT_PAYLOAD_HANDLER(user)
-            jwt_token = JWT_ENCODE_HANDLER(payload)
-            update_last_login(None, user)
-        except models.User.DoesNotExist:
-            raise serializers.ValidationError(
-                'User with given email and password does not exists'
-            )
-        return {
-            'email':user.email,
-            'token': jwt_token
+        model = User
+        fields = ['email', 'full_name', 'birth_date',
+                  'city', 'password', 're_password']
+        extra_fields = {
+            'password': {'write_only': True}
         }
+
+    def validate(self, attrs):
+        print(attrs)
+        password = attrs['password']
+        re_password = attrs['re_password']
+
+        if password != re_password:
+            raise serializers.ValidationError(
+                {'password': 'Password must match'})
+
+        return attrs
+
+    def save(self):
+        del self.validated_data['re_password']
+        account = User(
+            **self.validated_data
+        )
+        password = self.validated_data['password']
+        account.set_password(password)
+        account.save()
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'image', 'full_name', 'birth_date', 'city']
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['full_name', 'image', 'birth_date', 'city']
