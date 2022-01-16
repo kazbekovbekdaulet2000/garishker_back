@@ -6,8 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from config.custom_model import AbstractModel
 from user.models import User
-from ckeditor.fields import RichTextField
-
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Категории
 class Category(AbstractModel):
@@ -24,7 +23,7 @@ class Category(AbstractModel):
 # Статьи
 class Report(AbstractModel):
     title = models.CharField(_('Название'), max_length=500, blank=True)
-    body = RichTextField()
+    body = RichTextUploadingField()
     category = models.ForeignKey(Category, verbose_name="Категория",
                                  on_delete=models.DO_NOTHING, related_name='report_category', blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
@@ -79,7 +78,7 @@ class Comment(AbstractModel):
 # Видеролики
 class Video(AbstractModel):
     title = models.CharField(_('Название'), max_length=500)
-    body = RichTextField()
+    body = RichTextUploadingField()
     image = models.FileField(_('Обложка'), upload_to='video-image', blank=True)
     category = models.ForeignKey(Category, verbose_name="Категория",
                                  on_delete=models.DO_NOTHING, related_name='video_category')
