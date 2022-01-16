@@ -26,6 +26,12 @@ class VideoDetail(generics.RetrieveAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoDetailSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.increase_views()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
 
 class VideoCommentList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

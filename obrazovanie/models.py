@@ -36,9 +36,14 @@ class Report(AbstractModel):
     moderated = models.BooleanField(default=False, blank=True)
     likes = models.ManyToManyField(
         User, related_name='report_likes', blank=True)
+    views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
+
+    def increase_views(self):
+        self.views += 1
+        self.save()
 
     def get_reading_time(self):
         soup = BeautifulSoup(self.body, 'html.parser')
@@ -85,9 +90,14 @@ class Video(AbstractModel):
         settings.AUTH_USER_MODEL, related_name='video_saves', blank=True)
     likes = models.ManyToManyField(
         User, related_name='video_likes', blank=True)
+    views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
+
+    def increase_views(self):
+        self.views += 1
+        self.save()
 
     class Meta:
         verbose_name = 'Видеролик'

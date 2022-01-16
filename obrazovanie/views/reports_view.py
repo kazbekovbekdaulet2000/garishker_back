@@ -28,7 +28,11 @@ class ReportDetail(generics.RetrieveAPIView):
     serializer_class = ReportDetailSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-# TODO
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.increase_views()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class ReportCommentList(generics.ListCreateAPIView):
