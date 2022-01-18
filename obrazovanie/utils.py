@@ -1,3 +1,4 @@
+from unicodedata import category
 import django_filters
 from django_filters import rest_framework as filters
 from .models import *
@@ -5,10 +6,10 @@ from .models import *
 
 class ReportSearchFilter(filters.FilterSet):
     title = django_filters.CharFilter(lookup_expr='icontains')
-    
+
     class Meta:
         model = Report
-        fields = ['title']
+        fields = ['title', 'category']
 
     
 class VideoSearchFilter(filters.FilterSet):
@@ -16,4 +17,4 @@ class VideoSearchFilter(filters.FilterSet):
     
     class Meta:
         model = Video
-        fields = ['title']
+        fields = ['title', 'category']

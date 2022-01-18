@@ -1,11 +1,12 @@
 from django.db import models
 from config.custom_model import AbstractModel
-
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class Dobro(AbstractModel):
     title = models.CharField(max_length=250, blank=True)
     small_description = models.TextField(blank=True)
     description = models.TextField(blank=True)
+    body = RichTextUploadingField()
     image = models.FileField(upload_to='dobro-image', blank=True)
     video = models.FileField(upload_to='dobro-video', blank=True)
     reports = models.FileField(upload_to='dobro-files', blank=True)

@@ -1,32 +1,18 @@
-from django.shortcuts import render
-from rest_framework.views import *
-from .serializers import *
-from rest_framework.response import *
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import permissions
+from rest_framework import generics
+from support.models import ContactUs, Question
+from support.serializers import ContactUsSerializer, QuestionSerializer
 
 
+class QuestionListView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = QuestionSerializer
+    queryset = Question.objects.all()
+    pagination_class = None
 
 
-class QuestionView(APIView):
-    permission_classes = (AllowAny,)
-    def get(self, request):
-        questions = Question.objects.all()
-        data = QuestionSerializer(questions, many=True).data
-        return Response({"questions": data}, status=200)
-
-class CreateContactUs(APIView):
-    permission_classes = (AllowAny,)
-    def post(self, request):
-        payload = request.data
-        serializer = ContactUsSerializer(data=payload)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class ContactUss(APIView):
-    permission_classes = (AllowAny,)
-    def get(self, request):
-        contact_us = ContactUs.objects.all()
-        data = ContactUsSerializer(contact_us, many=True).data
-        return Response({"support": data}, status=200)
+class ContactListView(generics.ListCreateAPIView):
+    permission_class = [permissions.AllowAny, ]
+    serializer_class = ContactUsSerializer
+    queryset = ContactUs.objects.all()
+    pagination_class = None

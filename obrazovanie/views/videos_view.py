@@ -17,7 +17,6 @@ class VideoList(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = VideoSearchFilter
-    filterset_fields = ['category']
 
 
 class VideoDetail(generics.RetrieveAPIView):

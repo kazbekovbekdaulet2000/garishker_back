@@ -8,6 +8,7 @@ class ProjectList(generics.ListAPIView):
     queryset = Dobro.objects.all()
     serializer_class = DobroSerializer
     permission_classes = [permissions.AllowAny,]
+    pagination_class = None
 
 
 class ProjectDetail(generics.RetrieveAPIView):

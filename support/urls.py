@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import *
+
+from support.views import ContactListView, QuestionListView
 
 urlpatterns = [
-    path('contact_us', ContactUss.as_view(), name='contact_us_urls'),
-    path('questions', QuestionView.as_view(), name='questions_urls'),
-    path('create_support', CreateContactUs.as_view(), name='create_support')
-
+    path('questions', QuestionListView.as_view(), name='questions_urls'),
+    path('', ContactListView.as_view(), name='create_support')
 ]

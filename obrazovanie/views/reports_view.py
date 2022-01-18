@@ -19,7 +19,6 @@ class ReportList(generics.ListAPIView):
     permission_classes = [permissions.AllowAny, ]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ReportSearchFilter
-    filterset_fields = ['category']
 
 
 class ReportDetail(generics.RetrieveAPIView):
