@@ -45,7 +45,7 @@ class ReportCommentList(generics.ListCreateAPIView):
     def get_queryset(self):
         if not self.request:
             return Comment.objects.none()
-        return Comment.objects.filter(report=self.kwargs['id'], reply__isnull=True)
+        return Comment.objects.filter(report=self.kwargs['id'], reply__isnull=True).order_by('-created_at')
 
 
 class ReportBookmarked(generics.ListAPIView):

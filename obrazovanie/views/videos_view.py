@@ -41,7 +41,7 @@ class VideoCommentList(generics.ListCreateAPIView):
         return VideoCommentSerializer
 
     def get_queryset(self):
-        return VideoComment.objects.filter(video=self.kwargs['id'], reply__isnull=True)
+        return VideoComment.objects.filter(video=self.kwargs['id'], reply__isnull=True).order_by('-created_at')
 
 
 class VideoBookmarked(generics.ListAPIView):
