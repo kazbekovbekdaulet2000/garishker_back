@@ -28,6 +28,9 @@ class ReportCommentCreateSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['body', 'reply', 'report']
 
+    def create(self, validated_data):
+        validated_data['owner'] = self.context['request'].user
+        return super().create(validated_data)
 
 class VideoCommentSerializer(serializers.ModelSerializer):
     replies = RecursiveSerializer(
@@ -44,3 +47,7 @@ class VideoCommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoComment
         fields = ['body', 'reply', 'video']
+
+    def create(self, validated_data):
+        validated_data['owner'] = self.context['request'].user
+        return super().create(validated_data)
