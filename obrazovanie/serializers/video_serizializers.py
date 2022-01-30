@@ -9,6 +9,9 @@ class BaseVideoSerializer(serializers.ModelSerializer):
         source="likes.count", read_only=True)
     liked = serializers.SerializerMethodField(read_only=True)
 
+    comments_count = serializers.IntegerField(
+        source="video_comments.count", read_only=True)
+
     bookmarks_count = serializers.IntegerField(
         source="saves.count", read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
@@ -26,7 +29,7 @@ class BaseVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ['id', 'category', 'likes_count', 'liked', 'bookmarks_count',
-                  'bookmarked', 'title', 'created_at', 'image', 'views']
+                  'bookmarked', 'title', 'created_at', 'image', 'views', 'comments_count']
 
 
 class VideoDetailSerializer(BaseVideoSerializer):

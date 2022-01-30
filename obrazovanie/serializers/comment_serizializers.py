@@ -26,7 +26,7 @@ class ReportCommentSerializer(serializers.ModelSerializer):
 class ReportCommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['body', 'reply', 'report']
+        fields = ['id', 'body', 'reply', 'report']
 
     def create(self, validated_data):
         validated_data['owner'] = self.context['request'].user
@@ -46,7 +46,7 @@ class VideoCommentSerializer(serializers.ModelSerializer):
 class VideoCommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoComment
-        fields = ['body', 'reply', 'video']
+        fields = ['id', 'body', 'reply', 'video']
 
     def create(self, validated_data):
         validated_data['owner'] = self.context['request'].user
