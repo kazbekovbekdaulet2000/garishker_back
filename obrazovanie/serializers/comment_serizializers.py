@@ -1,5 +1,3 @@
-
-from attr import fields
 from rest_framework import serializers
 from obrazovanie.models import Comment, VideoComment
 from user.serializers import UserInfoSerializer
@@ -31,6 +29,7 @@ class ReportCommentCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['owner'] = self.context['request'].user
         return super().create(validated_data)
+
 
 class VideoCommentSerializer(serializers.ModelSerializer):
     replies = RecursiveSerializer(
