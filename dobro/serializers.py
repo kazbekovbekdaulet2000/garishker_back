@@ -12,4 +12,4 @@ class DobroSerializer(serializers.ModelSerializer):
 class DobroDetailSerializer(DobroSerializer):
     class Meta(DobroSerializer.Meta):
         fields = DobroSerializer.Meta.fields + \
-            ['description', 'video', 'reports']
+            ['description', 'video', 'reports', 'body']
