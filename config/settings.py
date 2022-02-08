@@ -226,15 +226,13 @@ CACHES = {
     }
 }
 
-EMAIL_HOST_PASSWORD = 'ochqtywchbecjsea'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'garysh.app.dev@gmail.com'
-EMAIL_HOST_PASSWORD = 'ochqtywchbecjsea'
+EMAIL_HOST_PASSWORD = os.path.join('MAIL_PASS', '')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'garysh.app.dev@gmail.com'
+DEFAULT_FROM_EMAIL = os.path.join('MAIL_ADDRESS', '')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -282,7 +280,7 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
 
 # Yandex Storage
-DEFAULT_FILE_STORAGE = 'config.yandex_storage.ClientDocsStorage'
+# DEFAULT_FILE_STORAGE = 'config.yandex_storage.ClientDocsStorage'
 YANDEX_CLIENT_DOCS_BUCKET_NAME = 'client-docs'
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", '')
 AWS_SECRET_ACCESS_KEY = os.environ.get(
