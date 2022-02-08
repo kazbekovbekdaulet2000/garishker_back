@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from config.custom_model import AbstractModel
+from .tasks import send_gmail
 
 
 class CustomUserManager(BaseUserManager):
@@ -29,22 +30,17 @@ class CustomUserManager(BaseUserManager):
         user = self.model(email=email,
                           **extra_fields)
 
-        if password is not None:
-            user.set_password(password)
-        else:
-            user.set_password('hello')
+        user.set_password(password)
 
         user.save()
         return user
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
-    email = models.EmailField(
-        verbose_name='email address', max_length=255, unique=True, db_index=True)
+    email = models.EmailField(verbose_name='email address', max_length=255, unique=True, db_index=True)
     full_name = models.CharField(max_length=255, null=True, blank=True)
     birth_date = models.DateField(max_length=8, null=True, blank=True)
-    image = models.ImageField(
-        null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name=" ")
+    image = models.ImageField(null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name=" ")
     city = models.CharField(max_length=255, null=True, blank=True)
 
     last_login = models.DateTimeField(auto_now_add=True, null=True)
@@ -64,3 +60,8 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
 
     def get_full_name(self):
         return ' '.join(self.name, self.surname)
+
+    def save(self, *args, **kwargs):
+        print(self.email)
+        # send_gmail.delay(self.email)
+        return super().save(*args, **kwargs)

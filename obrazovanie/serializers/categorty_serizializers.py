@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from obrazovanie.models import Category
+from obrazovanie.models.category import Category
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

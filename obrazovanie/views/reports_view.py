@@ -1,11 +1,11 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from obrazovanie.models import Report, Comment
+from obrazovanie.models.report import Report
+from obrazovanie.models.report_comment import Comment
 from obrazovanie.serializers.comment_serizializers import ReportCommentCreateSerializer, ReportCommentSerializer
 from obrazovanie.serializers.report_serizializers import BaseReportSerializer, ReportDetailSerializer
 

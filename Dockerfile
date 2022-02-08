@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update \
-    && apt-get install -y postgresql postgresql-contrib gcc python3-dev musl-dev
+    && apt-get install -y postgresql postgresql-contrib gcc python3-dev musl-dev ffmpeg
 
 RUN pip install --upgrade pip
 RUN mkdir /app

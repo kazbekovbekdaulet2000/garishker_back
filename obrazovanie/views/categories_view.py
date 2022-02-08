@@ -1,6 +1,6 @@
 from rest_framework import generics
 from rest_framework import permissions
-from obrazovanie.models import Category
+from obrazovanie.models.category import Category
 from obrazovanie.serializers.categorty_serizializers import CategorySerializer
 
 

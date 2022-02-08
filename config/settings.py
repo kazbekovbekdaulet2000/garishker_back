@@ -51,7 +51,10 @@ INSTALLED_APPS = [
 
     # ckeditor для создание статьей с наполнением
     "ckeditor",
-    "ckeditor_uploader"
+    "ckeditor_uploader",
+
+    # yandex storage
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -109,6 +112,7 @@ DATABASES = {
         'PORT': os.environ.get('POSTGRES_PORT', 5432),
     }
 }
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -204,13 +208,33 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-# SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+FFMPEG_PRE_DIR = "media/"
 
-#     'AUTH_HEADER_TYPES': ('Bearer',),
-# }
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379")
+CELERY_RESULT_BACKEND = os.environ.get(
+    "CELERY_BROKER", "redis://redis:6379")
 
+CACHE_TTL = 240
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "example"
+    }
+}
+
+EMAIL_HOST_PASSWORD = 'ochqtywchbecjsea'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'garysh.app.dev@gmail.com'
+EMAIL_HOST_PASSWORD = 'ochqtywchbecjsea'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'garysh.app.dev@gmail.com'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -256,5 +280,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
+
+# Yandex Storage
+DEFAULT_FILE_STORAGE = 'config.yandex_storage.ClientDocsStorage'
+YANDEX_CLIENT_DOCS_BUCKET_NAME = 'client-docs'
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", '')
+AWS_SECRET_ACCESS_KEY = os.environ.get(
+    "AWS_SECRET_ACCESS_KEY", '')
+AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME", '')
+
 
 AUTH_USER_MODEL = 'user.User'

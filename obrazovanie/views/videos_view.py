@@ -1,7 +1,8 @@
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import status
-from obrazovanie.models import Video, VideoComment
+from obrazovanie.models.video import Video
+from obrazovanie.models.video_comment import VideoComment
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from obrazovanie.serializers.comment_serizializers import VideoCommentCreateSerializer, VideoCommentSerializer

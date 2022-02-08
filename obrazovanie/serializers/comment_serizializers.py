@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from obrazovanie.models import Comment, VideoComment
+from obrazovanie.models.report_comment import Comment
+from obrazovanie.models.video_comment import VideoComment
 from user.serializers import UserInfoSerializer
 
 

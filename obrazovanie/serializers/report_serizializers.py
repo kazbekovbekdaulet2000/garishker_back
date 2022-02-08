@@ -1,7 +1,5 @@
-from unicodedata import category
-from attr import fields
 from rest_framework import serializers
-from obrazovanie.models import Report
+from obrazovanie.models.report import Report
 from user.serializers import UserInfoSerializer
 
 
