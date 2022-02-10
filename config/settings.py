@@ -105,11 +105,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB', 'garyshker_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'k_bekdaulet'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'Kazbekovv15122000'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-        'PORT': os.environ.get('POSTGRES_PORT', 5432),
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 
@@ -228,11 +228,11 @@ CACHES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'garysh.app.dev@gmail.com'
-EMAIL_HOST_PASSWORD = os.path.join('MAIL_PASS', '')
+EMAIL_HOST_USER = os.environ.get('os.environ.get')
+EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.path.join('MAIL_ADDRESS', '')
+DEFAULT_FROM_EMAIL = os.environ.get('MAIL_ADDRESS')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -280,13 +280,10 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
 
 # Yandex Storage
-# DEFAULT_FILE_STORAGE = 'config.yandex_storage.ClientDocsStorage'
 YANDEX_CLIENT_DOCS_BUCKET_NAME = 'client-docs'
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", '')
-AWS_SECRET_ACCESS_KEY = os.environ.get(
-    "AWS_SECRET_ACCESS_KEY", '')
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
-AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME", '')
-
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
 
 AUTH_USER_MODEL = 'user.User'

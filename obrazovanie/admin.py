@@ -33,12 +33,6 @@ class ReportAdmin(admin.ModelAdmin):
     exclude = ('likes', 'saves')
     readonly_fields = ('views',)
 
-    # def save_model(self, request, obj, form, change):
-    #     if not obj.author:
-    #         obj.author = request.user
-    #     obj.last_modified_by = request.user
-    #     obj.save()
-
 
 class VideoAdmin(admin.ModelAdmin):
     def likes_count(self, obj):
@@ -48,7 +42,8 @@ class VideoAdmin(admin.ModelAdmin):
     ordering = ['title', 'updated_at']
     actions = [convert_video]
     exclude = ('likes', 'saves')
-    readonly_fields = ('views', 'video_quality')
+    readonly_fields = ('views', 'video_quality',
+                       'original_quality', 'convert_status')
 
     # def save_model(self, request, obj, form, change):
     #     if not obj.author:

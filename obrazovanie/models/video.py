@@ -17,11 +17,11 @@ VIDEO_CONVERSION_STATUS_CHOICES = (
 
 
 class VideoQuality(AbstractModel):
-    path = models.CharField(max_length=5000)
-    quality = models.PositiveIntegerField(null=True)
-    width = models.PositiveIntegerField(null=True)
-    height = models.PositiveIntegerField(null=True)
-    
+    path = models.CharField(_('Путь'), max_length=5000)
+    quality = models.PositiveIntegerField(_('Качество'), null=True)
+    width = models.PositiveIntegerField(_('Ширина'), null=True)
+    height = models.PositiveIntegerField(_('Высота'), null=True)
+
     def __str__(self):
         return self.path
 
@@ -34,6 +34,7 @@ class Video(AbstractModel):
                                  on_delete=models.DO_NOTHING, related_name='video_category')
     video = models.FileField(
         _('Видео'), upload_to='video-video', storage=ClientDocsStorage)
+    original_quality = models.PositiveBigIntegerField(_('Качество'), null=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, related_name='video_author')
     saves = models.ManyToManyField(
@@ -42,17 +43,22 @@ class Video(AbstractModel):
         User, related_name='video_likes', blank=True)
     views = models.PositiveIntegerField(default=0)
     convert_status = models.CharField(
+        _('Статус конвертации'),
         max_length=255,
         choices=VIDEO_CONVERSION_STATUS_CHOICES,
         default='pending')
     video_quality = models.ManyToManyField(
-        VideoQuality, related_name='video_qualities', null=True)
+        VideoQuality, related_name='video_qualities')
 
     def __str__(self):
         return self.title
 
     def increase_views(self):
         self.views += 1
+        self.save()
+
+    def set_quality(self, quality):
+        self.original_quality = quality
         self.save()
 
     class Meta:
