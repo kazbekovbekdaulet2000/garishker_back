@@ -1,9 +1,8 @@
 from django.contrib import admin
 from obrazovanie.models.category import Category
+from obrazovanie.models.comment import Comment
 from obrazovanie.models.report import Report
-from obrazovanie.models.report_comment import Comment
 from obrazovanie.models.video import Video
-from obrazovanie.models.video_comment import VideoComment
 from obrazovanie.tasks import video_resize_yandex_storage
 
 
@@ -18,7 +17,6 @@ def make_published(modeladmin, request, queryset):
 
 @admin.action(description='Конвертировать видео')
 def convert_video(modeladmin, request, queryset):
-    print(queryset)
     for query in queryset:
         video_resize_yandex_storage.delay(query.id, query.video.name)
 
@@ -53,12 +51,12 @@ class VideoAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['body', 'report', 'owner', 'created_at']
-    ordering = ['body', 'report', 'created_at', 'owner']
+    list_display = ['body', 'owner', 'created_at', 'content_type', 'object_id']
+    ordering = ['body', 'created_at', 'owner']
+    readonly_fields = ('content_type', 'object_id', 'owner', 'likes', 'reply')
 
 
 admin.site.register(Category)
 admin.site.register(Report, ReportAdmin)
-admin.site.register(Comment, CommentAdmin)
-admin.site.register(VideoComment)
 admin.site.register(Video, VideoAdmin)
+admin.site.register(Comment, CommentAdmin)

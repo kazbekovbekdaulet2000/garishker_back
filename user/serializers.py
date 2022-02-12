@@ -9,14 +9,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'full_name', 'birth_date',
-                  'city', 'password', 're_password']
+        fields = ['email', 'name', 'surname', 'birth_date', 'description',
+                  'city', 'user_type', 'password', 're_password']
         extra_fields = {
             'password': {'write_only': True}
         }
 
     def validate(self, attrs):
-        print(attrs)
         password = attrs['password']
         re_password = attrs['re_password']
 
@@ -39,10 +38,12 @@ class UserSerializer(serializers.ModelSerializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'image', 'full_name', 'birth_date', 'city']
+        fields = ['id', 'email', 'image', 'name',
+                  'surname', 'birth_date', 'city']
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['full_name', 'image', 'birth_date', 'city']
+        fields = ['name', 'surname', 'description',
+                  'image', 'birth_date', 'city', 'user_type']

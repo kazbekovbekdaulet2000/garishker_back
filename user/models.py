@@ -1,8 +1,15 @@
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from config.custom_model import AbstractModel
 from .tasks import send_gmail
+
+USER_TYPE = (
+    (0, _('Люди')),
+    (1, _('Саморазвитие')),
+    (2, _('Честность')),
+)
 
 
 class CustomUserManager(BaseUserManager):
@@ -37,11 +44,19 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
-    email = models.EmailField(verbose_name='email address', max_length=255, unique=True, db_index=True)
-    full_name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(
+        verbose_name='email address', max_length=255, unique=True, db_index=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    surname = models.CharField(max_length=255, null=True, blank=True)
     birth_date = models.DateField(max_length=8, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name=" ")
+
+    image = models.ImageField(
+        null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name=" ")
     city = models.CharField(max_length=255, null=True, blank=True)
+
+    description = models.TextField(null=True)
+
+    user_type = models.PositiveIntegerField(choices=USER_TYPE, default=0)
 
     last_login = models.DateTimeField(auto_now_add=True, null=True)
     terms_ofuser = models.BooleanField(default=False)
@@ -53,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
 
     USERNAME_FIELD = 'email'
 
-    REQUIRED_FIELDS = ['full_name', 'birth_date', 'city']
+    REQUIRED_FIELDS = ['name', 'surname', 'birth_date', 'city', 'user_type']
 
     def __str__(self):
         return self.email
@@ -62,6 +77,4 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         return ' '.join(self.name, self.surname)
 
     def save(self, *args, **kwargs):
-        print(self.email)
-        # send_gmail.delay(self.email)
         return super().save(*args, **kwargs)

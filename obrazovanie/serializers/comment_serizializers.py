@@ -1,7 +1,8 @@
+from urllib.request import Request
 from rest_framework import serializers
-from obrazovanie.models.report_comment import Comment
-from obrazovanie.models.video_comment import VideoComment
+from obrazovanie.models.comment import Comment
 from user.serializers import UserInfoSerializer
+from django.contrib.contenttypes.models import ContentType
 
 
 class RecursiveSerializer(serializers.Serializer):
@@ -11,43 +12,33 @@ class RecursiveSerializer(serializers.Serializer):
         return serializer.data
 
 
-class ReportCommentSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     replies = RecursiveSerializer(
         source="reply_comment", many=True, read_only=True)
 
     owner = UserInfoSerializer(required=False)
+
+    likes_count = serializers.IntegerField(
+        source="likes.count", read_only=True)
+    liked = serializers.SerializerMethodField(read_only=True)
+
+    def get_liked(self, obj):
+        user = self.context['request'].user
+        return user in obj.likes.all()
 
     class Meta:
         model = Comment
         fields = "__all__"
 
 
-class ReportCommentCreateSerializer(serializers.ModelSerializer):
+class CommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id', 'body', 'reply', 'report']
+        fields = ['id', 'body', 'reply']
 
     def create(self, validated_data):
-        validated_data['owner'] = self.context['request'].user
-        return super().create(validated_data)
-
-
-class VideoCommentSerializer(serializers.ModelSerializer):
-    replies = RecursiveSerializer(
-        source="reply_comment", many=True, read_only=True)
-
-    owner = UserInfoSerializer(required=False)
-
-    class Meta:
-        model = VideoComment
-        fields = "__all__"
-
-
-class VideoCommentCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = VideoComment
-        fields = ['id', 'body', 'reply', 'video']
-
-    def create(self, validated_data):
+        validated_data['content_type'] = ContentType.objects.get_for_model(
+            self.context['model'])
+        validated_data['object_id'] = self.context['object_id']
         validated_data['owner'] = self.context['request'].user
         return super().create(validated_data)
