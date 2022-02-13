@@ -99,7 +99,7 @@ class Converter:
 
     def convert_video(self, w, h):
         res2 = subprocess.Popen(
-            f'ffmpeg -i {self.directory}/media/{self.videoname}.{self.extension} -vf scale=-1:{h} -c:v libx264 -crf 18 -preset veryfast -c:a copy {self.directory}/media/{self.videoname}_{h}p.{self.extension}', shell=True)
+            f'ffmpeg -i {self.directory}/media/{self.videoname}.{self.extension} -vf scale=-2:{h} -c:v libx264 -crf 18 -preset veryfast -c:a copy {self.directory}/media/{self.videoname}_{h}p.{self.extension}', shell=True)
         res2.wait()
 
         self.s3.upload_file(

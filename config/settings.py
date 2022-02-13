@@ -24,10 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get(
     'SECRET_KEY', 'lowgk0g+qfhl722k&0ie-7upcc#4y$0$z!w)$!q@30vixx8v@!')
 # SECRET_KEY = 'lowgk0g+qfhl722k&0ie-7upcc#4y$0$z!w)$!q@30vixx8v@!'
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = int(os.environ.get('DEBUG', default=1))
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(' ')
-# ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -71,7 +70,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
@@ -223,7 +221,8 @@ CACHE_TTL = 240
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/0",
+        "LOCATION": os.environ.get(
+            "CELERY_BROKER_LOCATIONS", "redis://localhost:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
@@ -233,11 +232,11 @@ CACHES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ.get('MAIL_ADDRESS', 'garysh.app.dev@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASS', 'ochqtywchbecjsea')
+EMAIL_HOST_USER = os.environ.get('MAIL_ADDRESS')
+EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ.get('MAIL_ADDRESS', 'garysh.app.dev@gmail.com')
+DEFAULT_FROM_EMAIL = os.environ.get('MAIL_ADDRESS')
 
 AUTH_PASSWORD_VALIDATORS = [
     {

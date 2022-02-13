@@ -44,4 +44,4 @@ class VideoDetailSerializer(BaseVideoSerializer):
     class Meta(BaseVideoSerializer.Meta):
         model = Video
         fields = BaseVideoSerializer.Meta.fields + \
-            ['author', 'body', 'video', 'video_quality']
+            ['author', 'body', 'video', 'video_quality', 'original_quality']
