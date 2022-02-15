@@ -1,16 +1,18 @@
 from rest_framework import generics
 from rest_framework import permissions
-from rest_framework import status
-from obrazovanie.models.comment import Comment
 from obrazovanie.models.video import Video
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from obrazovanie.serializers.comment_serizializers import CommentCreateSerializer, CommentSerializer
 from obrazovanie.serializers.video_serizializers import (
     BaseVideoSerializer, VideoDetailSerializer)
 from obrazovanie.utils import VideoSearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from django.contrib.contenttypes.models import ContentType
+from rest_framework import pagination
+
+
+class CustomPagination(pagination.PageNumberPagination):
+    page_size = 4
+    page_size_query_param = 'page_size'
+    max_page_size = 50
 
 
 class VideoList(generics.ListAPIView):
@@ -19,6 +21,7 @@ class VideoList(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = VideoSearchFilter
+    pagination_class = CustomPagination
 
 
 class VideoDetail(generics.RetrieveAPIView):

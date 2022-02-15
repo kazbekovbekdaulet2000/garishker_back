@@ -47,7 +47,6 @@ class Converter:
         self.id = id
         self.path = path
         self.filename = path.split('/')[-1]
-        print(self.filename)
         self.extension = self.filename.split('.')[-1]
         self.videoname = '.'.join(self.filename.split('.')[:-1])
         self.directory = os.getcwd()
