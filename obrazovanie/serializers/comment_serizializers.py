@@ -28,7 +28,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = "__all__"
+        exclude=['likes', 'content_type', 'object_id']
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):

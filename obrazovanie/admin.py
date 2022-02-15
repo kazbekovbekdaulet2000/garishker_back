@@ -18,7 +18,7 @@ def make_published(modeladmin, request, queryset):
 @admin.action(description='Конвертировать видео')
 def convert_video(modeladmin, request, queryset):
     for query in queryset:
-        video_resize_yandex_storage.delay(query.id, query.video.name)
+        video_resize_yandex_storage.delay(query.id, query.video_name)
 
 
 class ReportAdmin(admin.ModelAdmin):
@@ -41,7 +41,7 @@ class VideoAdmin(admin.ModelAdmin):
     actions = [convert_video]
     exclude = ('likes', 'saves')
     readonly_fields = ('views', 'video_quality',
-                       'original_quality', 'convert_status')
+                       'original_quality', 'convert_status', 'video')
 
     # def save_model(self, request, obj, form, change):
     #     if not obj.author:

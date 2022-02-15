@@ -33,7 +33,9 @@ class Video(AbstractModel):
     category = models.ForeignKey(Category, verbose_name="Категория",
                                  on_delete=models.DO_NOTHING, related_name='video_category')
     video = models.FileField(
-        _('Видео'), upload_to='video-video', storage=ClientDocsStorage)
+        _('Видео'), upload_to='video-video', storage=ClientDocsStorage, null=True)
+    video_name = models.CharField(
+        _('Название видео с расширением)'), max_length=6250, default="")
     original_quality = models.PositiveBigIntegerField(_('Качество'), null=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, related_name='video_author')

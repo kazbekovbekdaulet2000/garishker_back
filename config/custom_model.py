@@ -6,3 +6,7 @@ class AbstractModel(models.Model):
     
     class Meta:
         abstract = True
+
+# from django.core.mail import get_connection, send_mail
+
+# 

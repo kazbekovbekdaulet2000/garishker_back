@@ -1,6 +1,9 @@
 from rest_framework import serializers
+from obrazovanie.models.comment import Comment
 from obrazovanie.models.video import Video, VideoQuality
 from user.serializers import UserInfoSerializer
+from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 
 
 class BaseVideoSerializer(serializers.ModelSerializer):
@@ -8,14 +11,18 @@ class BaseVideoSerializer(serializers.ModelSerializer):
         source="likes.count", read_only=True)
     liked = serializers.SerializerMethodField(read_only=True)
 
-    comments_count = serializers.IntegerField(
-        source="video_comments.count", read_only=True)
+    comments_count = serializers.SerializerMethodField(read_only=True)
 
     bookmarks_count = serializers.IntegerField(
         source="saves.count", read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
 
     category = serializers.StringRelatedField()
+
+    def get_comments_count(self, obj):
+        return len(Comment.objects.filter(
+            content_type=ContentType.objects.get_for_model(Video),
+            object_id=obj.id))
 
     def get_liked(self, obj):
         user = self.context['request'].user
@@ -40,6 +47,14 @@ class VideoQualitiesSerializer(serializers.ModelSerializer):
 class VideoDetailSerializer(BaseVideoSerializer):
     author = UserInfoSerializer(required=False)
     video_quality = VideoQualitiesSerializer(many=True, read_only=True)
+
+    video = serializers.SerializerMethodField(read_only=True)
+
+    def get_video(self, obj):
+        if(not obj.video_name):
+            return None
+        print(settings)
+        return f"{settings.AWS_S3_ENDPOINT_URL}/garysh-app/video-video/{obj.video_name}"
 
     class Meta(BaseVideoSerializer.Meta):
         model = Video

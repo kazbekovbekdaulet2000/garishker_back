@@ -7,6 +7,7 @@ from obrazovanie.models.report import Report
 from obrazovanie.models.video import Video, VideoQuality
 import subprocess
 import boto3
+from django.conf import settings
 
 
 class ReportSearchFilter(filters.FilterSet):
@@ -27,16 +28,14 @@ class VideoSearchFilter(filters.FilterSet):
 
 class Converter:
     session = boto3.session.Session(
-        aws_access_key_id=os.environ.get(
-            "AWS_ACCESS_KEY_ID"),
-        aws_secret_access_key=os.environ.get(
-            "AWS_SECRET_ACCESS_KEY"),
-        region_name=os.environ.get("AWS_S3_REGION_NAME")
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME
     )
 
     s3 = session.client(
         service_name='s3',
-        endpoint_url='https://storage.yandexcloud.net'
+        endpoint_url=settings.AWS_S3_ENDPOINT_URL
     )
 
     width = None
@@ -48,6 +47,7 @@ class Converter:
         self.id = id
         self.path = path
         self.filename = path.split('/')[-1]
+        print(self.filename)
         self.extension = self.filename.split('.')[-1]
         self.videoname = '.'.join(self.filename.split('.')[:-1])
         self.directory = os.getcwd()
@@ -57,7 +57,7 @@ class Converter:
         status = self.get_video_orig().convert_status
         if(not (status == 'converted' or status == 'started')):
             self.s3.download_file(Bucket='garysh-app',
-                                  Key=self.path,
+                                  Key=f'video-video/{self.path}',
                                   Filename=f"media/{self.filename}")
             self.get_video_resolution()
             self.post_resized_videos()

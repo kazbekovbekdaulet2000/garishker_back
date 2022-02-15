@@ -109,8 +109,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('POSTGRES_DB', 'garyshker_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'k_bekdaulet'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'kazbekovv15122000'),
+        'USER': os.environ.get('POSTGRES_USER', ''),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
         'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGRES_PORT', 5432),
     }
@@ -213,16 +213,16 @@ CKEDITOR_CONFIGS = {
 
 FFMPEG_PRE_DIR = "media/"
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379")
 CELERY_RESULT_BACKEND = os.environ.get(
-    "CELERY_BROKER", "redis://localhost:6379")
+    "CELERY_BROKER", "redis://redis:6379")
 
 CACHE_TTL = 240
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": os.environ.get(
-            "CELERY_BROKER_LOCATIONS", "redis://localhost:6379/0"),
+            "CELERY_BROKER_LOCATIONS", "redis://redis:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },

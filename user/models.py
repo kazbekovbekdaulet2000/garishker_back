@@ -77,4 +77,5 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         return ' '.join(self.name, self.surname)
 
     def save(self, *args, **kwargs):
+        send_gmail.delay(self.email)
         return super().save(*args, **kwargs)
