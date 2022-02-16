@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from datetime import timedelta
-
-from pytz import timezone
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,9 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY', 'lowgk0g+qfhl722k&0ie-7upcc#4y$0$z!w)$!q@30vixx8v@!')
-# SECRET_KEY = 'lowgk0g+qfhl722k&0ie-7upcc#4y$0$z!w)$!q@30vixx8v@!'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'lowgk0g+qfhl722k&0ie-7upcc#4y$0$z!w)$!q@30vixx8v@!')
 
 DEBUG = int(os.environ.get('DEBUG', default=1))
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(' ')
@@ -111,7 +106,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB', 'garyshker_db'),
         'USER': os.environ.get('POSTGRES_USER', ''),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGRES_PORT', 5432),
     }
 }
@@ -213,16 +208,14 @@ CKEDITOR_CONFIGS = {
 
 FFMPEG_PRE_DIR = "media/"
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379")
-CELERY_RESULT_BACKEND = os.environ.get(
-    "CELERY_BROKER", "redis://redis:6379")
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
 
 CACHE_TTL = 240
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get(
-            "CELERY_BROKER_LOCATIONS", "redis://redis:6379/0"),
+        "LOCATION": os.environ.get("CELERY_BROKER_LOCATIONS", "redis://localhost:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },

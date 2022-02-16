@@ -28,13 +28,15 @@ class CommentList(generics.ListCreateAPIView):
         ).order_by('-created_at')
 
     def get_serializer_context(self):
-        return {
-            'request': self.request,
-            'format': self.format_kwarg,
-            'view': self,
-            'model': self.model,
-            'object_id': self.kwargs.get('id')
-        }
+        if self.request.method == "POST":
+            return {
+                'request': self.request,
+                'format': self.format_kwarg,
+                'view': self,
+                'model': self.model,
+                'object_id': self.kwargs.get('id')
+            }
+        return super().get_serializer_context()
 
 
 class CommentLike(APIView):

@@ -7,6 +7,8 @@ from obrazovanie.serializers.video_serizializers import (
 from obrazovanie.utils import VideoSearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import pagination
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 class CustomPagination(pagination.PageNumberPagination):
@@ -22,6 +24,16 @@ class VideoList(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = VideoSearchFilter
     pagination_class = CustomPagination
+
+
+class RelatedVideoList(generics.ListAPIView):
+    serializer_class = BaseVideoSerializer
+    permission_classes = [permissions.AllowAny, ]
+
+    def get_queryset(self):
+        pk = self.kwargs['id']
+        video = get_object_or_404(Video, id=pk)
+        return Video.objects.filter(~Q(id=pk), category=video.category, moderated=True).order_by('-views')
 
 
 class VideoDetail(generics.RetrieveAPIView):
