@@ -22,14 +22,6 @@ User = get_user_model()
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
-def generateOTP():
-    digits = "0123456789"
-    OTP = ""
-    for i in range(6):
-        OTP += digits[math.floor(random.random() * 10)]
-    return OTP
-
-
 class UserView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
@@ -56,18 +48,31 @@ class UserCreateView(generics.CreateAPIView):
         return Response(status=status.HTTP_201_CREATED, headers=headers)
 
 
+def generateOTP():
+    digits = "0123456789"
+    OTP = ""
+    for i in range(6):
+        OTP += digits[math.floor(random.random() * 10)]
+    return OTP
+
+
+def send_OTP(mail):
+    otp = generateOTP()
+    cache.set(mail, otp, timeout=CACHE_TTL)
+    send_reset_code.delay(mail, otp)
+
+
 class ResetPassword(APIView):
     type = ''
 
     def post(self, request, *args, **kwargs):
         u = get_object_or_404(User, email=request.data['email'])
-        if self.type == "time":
+        if self.type == "force":
+            send_OTP(request.data['email'])
             return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)
         if self.type == "reset":
             if not cache.get(request.data['email']):
-                otp = generateOTP()
-                cache.set(request.data['email'], otp, timeout=CACHE_TTL)
-                send_reset_code.delay(request.data['email'], otp)
+                send_OTP(request.data['email'])
                 return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)
             else:
                 return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)

@@ -12,6 +12,6 @@ urlpatterns = [
     path('refresh/', TokenRefreshView.as_view()),
     path('reset/', ResetPassword.as_view(type="reset")),
     path('reset/confirm/', ResetPassword.as_view(type="confirm")),
-    path('reset/time/', ResetPassword.as_view(type="time")),
+    path('reset/force/', ResetPassword.as_view(type="force")),
     path('profile/', UserView.as_view()),
 ]
