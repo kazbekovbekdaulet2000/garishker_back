@@ -106,7 +106,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB', 'garyshker_db'),
         'USER': os.environ.get('POSTGRES_USER', ''),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
         'PORT': os.environ.get('POSTGRES_PORT', 5432),
     }
 }
@@ -208,14 +208,16 @@ CKEDITOR_CONFIGS = {
 
 FFMPEG_PRE_DIR = "media/"
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379")
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
 
 CACHE_TTL = 240
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get("CELERY_BROKER_LOCATIONS", "redis://localhost:6379/0"),
+        "LOCATION": os.environ.get("CELERY_BROKER_LOCATIONS", "redis://redis:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
@@ -223,13 +225,11 @@ CACHES = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ.get('MAIL_ADDRESS')
-EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASS')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ.get('MAIL_ADDRESS')
+EMAIL_HOST=""
+EMAIL_PORT=25
+EMAIL_HOST_USER=""
+EMAIL_PASSWORD=""
+EMAIL_USE_TLS=True
 
 AUTH_PASSWORD_VALIDATORS = [
     {

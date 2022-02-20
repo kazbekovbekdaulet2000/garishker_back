@@ -1,3 +1,7 @@
+import email
+import math
+import random
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import status
@@ -5,8 +9,25 @@ from rest_framework.response import Response
 from user.serializers import (
     UserInfoSerializer, UserSerializer, UserUpdateSerializer)
 from django.contrib.auth import get_user_model
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from rest_framework.permissions import *
+from rest_framework.views import APIView
+from django.conf import settings
+from django.core.cache import cache
+
+from user.tasks import send_reset_code
 
 User = get_user_model()
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
+
+def generateOTP():
+    digits = "0123456789"
+    OTP = ""
+    for i in range(6):
+        OTP += digits[math.floor(random.random() * 10)]
+    return OTP
 
 
 class UserView(generics.RetrieveUpdateAPIView):
@@ -33,3 +54,27 @@ class UserCreateView(generics.CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ResetPassword(APIView):
+    type = ''
+
+    def post(self, request, *args, **kwargs):
+        u = get_object_or_404(User, email=request.data['email'])
+        if self.type == "reset":
+            if not cache.get(request.data['email']):
+                otp = generateOTP()
+                cache.set(request.data['email'], otp, timeout=CACHE_TTL)
+                send_reset_code.delay(request.data['email'], otp)
+                return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)
+        if self.type == "confirm":
+            if cache.get(request.data['email']) == None:
+                return Response({"message": "Timeout"}, status=status.HTTP_201_CREATED)
+            if cache.get(request.data['email']) == request.data['code']:
+                if (request.data['password'] == request.data['re_password']):
+                    u.set_password(request.data['password'])
+                    u.save()
+                    return Response({"message": "Пароль изменен"}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Код неправильный"}, status=status.HTTP_400_BAD_REQUEST)

@@ -35,7 +35,7 @@ class BaseVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ['id', 'category', 'likes_count', 'liked', 'bookmarks_count',
-                  'bookmarked', 'title', 'created_at', 'image', 'views', 'comments_count']
+                  'bookmarked', 'title', 'created_at', 'image', 'views', 'comments_count', 'body']
 
 
 class VideoQualitiesSerializer(serializers.ModelSerializer):
@@ -59,4 +59,4 @@ class VideoDetailSerializer(BaseVideoSerializer):
     class Meta(BaseVideoSerializer.Meta):
         model = Video
         fields = BaseVideoSerializer.Meta.fields + \
-            ['author', 'body', 'video', 'video_quality', 'original_quality']
+            ['author', 'video', 'video_quality', 'original_quality']

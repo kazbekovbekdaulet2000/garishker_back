@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from config.custom_model import AbstractModel
-from .tasks import send_gmail
+from .tasks import send_gmail, send_gmail_me
 
 USER_TYPE = (
     (0, _('Люди')),
@@ -77,5 +77,4 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         return ' '.join(self.name, self.surname)
 
     def save(self, *args, **kwargs):
-        send_gmail.delay(self.email)
         return super().save(*args, **kwargs)
