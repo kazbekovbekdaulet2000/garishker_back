@@ -44,7 +44,7 @@ class CommentLike(APIView):
     model = None
 
     def post(self, request, *args, **kwargs):
-        item = Comment.objects.get(id=self.kwargs['id'])
+        item = Comment.objects.get(id=self.kwargs['comment_id'])
         if(request.user in item.likes.all()):
             item.likes.remove(request.user)
             return Response({"liked": False}, status=status.HTTP_202_ACCEPTED)
