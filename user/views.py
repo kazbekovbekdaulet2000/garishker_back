@@ -75,13 +75,14 @@ class ResetPassword(APIView):
                 send_OTP(request.data['email'])
                 return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)
             else:
-                return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)
+                return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_200_OK)
         if self.type == "confirm":
             if cache.get(request.data['email']) == None:
-                return Response({"message": "Timeout"}, status=status.HTTP_201_CREATED)
+                return Response({"message": "Timeout"}, status=status.HTTP_408_REQUEST_TIMEOUT)
             if cache.get(request.data['email']) == request.data['code']:
                 if (request.data['password'] == request.data['re_password']):
-                    u.set_password(request.data['password'])
-                    u.save()
+                    user = get_object_or_404(User, email=request.data['email'])
+                    user.set_password(request.data['password'])
+                    user.save()
                     return Response({"message": "Пароль изменен"}, status=status.HTTP_201_CREATED)
             return Response({"message": "Код неправильный"}, status=status.HTTP_400_BAD_REQUEST)
