@@ -17,8 +17,6 @@ services:
       - /bin/sh
       - /app/scripts/entrypoint.sh
     container_name: garyshker_web
-    environment:
-      - localhost
     volumes:
       - .:/app
     ports:
@@ -33,18 +31,20 @@ services:
     command: celery -A config worker --loglevel=INFO --concurrency=2
     volumes:
       - .:/app
+    env_file: .env
     depends_on:
       - web
       - redis
-  celery-beat:
-    build: .
-    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
-    volumes:
-      - .:/app
-    depends_on:
-      - web
-      - redis
-      - celery
+  # celery-beat:
+  #   build: .
+  #   command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+  #   volumes:
+  #     - .:/app
+  #   env_file: .env
+  #   depends_on:
+  #     - web
+  #     - redis
+  #     - celery
   nginx:
     image: nginx:1.15-alpine
     restart: unless-stopped

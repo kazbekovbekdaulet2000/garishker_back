@@ -61,6 +61,8 @@ class ResetPassword(APIView):
 
     def post(self, request, *args, **kwargs):
         u = get_object_or_404(User, email=request.data['email'])
+        if self.type == "time":
+            return Response({"time": cache.ttl(request.data['email'])}, status=status.HTTP_201_CREATED)
         if self.type == "reset":
             if not cache.get(request.data['email']):
                 otp = generateOTP()

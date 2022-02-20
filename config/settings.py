@@ -18,9 +18,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'lowgk0g+qfhl722k&0ie-7upcc#4y$0$z!w)$!q@30vixx8v@!')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = int(os.environ.get('DEBUG', default=1))
+DEBUG = int(os.environ.get('DEBUG'))
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(' ')
 # Application definition
 
@@ -103,11 +103,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB', 'garyshker_db'),
-        'USER': os.environ.get('POSTGRES_USER', ''),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', 5432),
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 
@@ -208,8 +208,8 @@ CKEDITOR_CONFIGS = {
 
 FFMPEG_PRE_DIR = "media/"
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379")
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER")
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 
 
@@ -217,7 +217,7 @@ CACHE_TTL = 240
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get("CELERY_BROKER_LOCATIONS", "redis://redis:6379/0"),
+        "LOCATION": os.environ.get("CELERY_BROKER_LOCATION"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
@@ -225,10 +225,10 @@ CACHES = {
     }
 }
 
-EMAIL_HOST=""
-EMAIL_PORT=25
-EMAIL_HOST_USER=""
-EMAIL_PASSWORD=""
+EMAIL_HOST=os.environ.get("EMAIL_HOST")
+EMAIL_PORT=587
+EMAIL_HOST_USER=os.environ.get("EMAIL_HOST_USER")
+EMAIL_PASSWORD=os.environ.get("EMAIL_PASSWORD")
 EMAIL_USE_TLS=True
 
 AUTH_PASSWORD_VALIDATORS = [
