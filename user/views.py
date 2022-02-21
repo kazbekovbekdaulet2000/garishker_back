@@ -84,5 +84,6 @@ class ResetPassword(APIView):
                     user = get_object_or_404(User, email=request.data['email'])
                     user.set_password(request.data['password'])
                     user.save()
+                    cache.delete(request.data['email'])
                     return Response({"message": "Пароль изменен"}, status=status.HTTP_201_CREATED)
             return Response({"message": "Код неправильный"}, status=status.HTTP_400_BAD_REQUEST)
