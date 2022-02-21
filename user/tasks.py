@@ -22,11 +22,10 @@ def send_gmail(mail):
 
 @shared_task
 def send_reset_code(mail, code):
-    return send_mail(subject='Регистрация',
+    return send_mail(subject='Восстановление пароля',
                      message=code,
                      from_email=settings.EMAIL_HOST_USER,
                      recipient_list=[mail],
-                    #  html_message=f"<h1>{code}</h1>",
                      connection=connection)
 
 
