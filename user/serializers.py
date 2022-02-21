@@ -48,5 +48,6 @@ class UserInfoSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['name', 'surname', 'description',
+        fields = ['id', 'email', 'name', 'surname', 'description',
                   'image', 'birth_date', 'city', 'user_type']
+        read_only_fields = ['id', 'email']

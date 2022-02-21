@@ -3,12 +3,12 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from config.custom_model import AbstractModel
-from .tasks import send_gmail, send_gmail_me
 
 USER_TYPE = (
-    (0, _('Люди')),
-    (1, _('Саморазвитие')),
-    (2, _('Честность')),
+    (0, _('Школьник')),
+    (1, _('Студент')),
+    (2, _('Работаю')),
+    (3, _('Другое')),
 )
 
 
@@ -54,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name=" ")
     city = models.CharField(max_length=255, null=True, blank=True)
 
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
 
     user_type = models.PositiveIntegerField(choices=USER_TYPE, default=0)
 
