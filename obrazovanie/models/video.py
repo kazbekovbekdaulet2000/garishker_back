@@ -30,6 +30,7 @@ class Video(AbstractModel):
     title = models.CharField(_('Название'), max_length=500)
     body = RichTextUploadingField()
     image = models.FileField(_('Обложка'), upload_to='video-image', blank=True)
+    image_2 = models.FileField(_('Обложка вторая'), upload_to='video-image', blank=True)
     category = models.ForeignKey(Category, verbose_name="Категория",
                                  on_delete=models.DO_NOTHING, related_name='video_category')
     video = models.FileField(
