@@ -65,5 +65,6 @@ class Video(AbstractModel):
         self.save()
 
     class Meta:
+        ordering = ['-created_at', '-views']
         verbose_name = 'Видеролик'
         verbose_name_plural = 'Видеролики'

@@ -42,5 +42,6 @@ class Report(AbstractModel):
         return read_time
 
     class Meta:
+        ordering = ['-created_at', '-views']
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
