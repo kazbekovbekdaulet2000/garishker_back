@@ -17,6 +17,12 @@ class CustomPagination(pagination.PageNumberPagination):
     max_page_size = 50
 
 
+class RelatedVideoPagination(pagination.PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 50
+
+
 class VideoList(generics.ListAPIView):
     queryset = Video.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
@@ -29,6 +35,7 @@ class VideoList(generics.ListAPIView):
 class RelatedVideoList(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     permission_classes = [permissions.AllowAny, ]
+    pagination_class = RelatedVideoPagination
 
     def get_queryset(self):
         pk = self.kwargs['id']

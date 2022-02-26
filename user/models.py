@@ -59,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     user_type = models.PositiveIntegerField(choices=USER_TYPE, default=0)
 
     last_login = models.DateTimeField(auto_now_add=True, null=True)
-    terms_ofuser = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
