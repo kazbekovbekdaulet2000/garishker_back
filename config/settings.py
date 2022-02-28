@@ -206,6 +206,9 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+
 FFMPEG_PRE_DIR = "media/"
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER")
