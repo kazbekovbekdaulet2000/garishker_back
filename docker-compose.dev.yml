@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13.0-alpine
+    environment:
+      - POSTGRES_DB=garyshker_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=garyshker
+    volumes:
+      - data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    command:
+      - /bin/sh
+      - /app/scripts/entrypoint.sh
+    container_name: garyshker_web
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file: .env.dev
+    depends_on:
+      - db
+  redis:
+    image: "redis:alpine"
+  celery:
+    build: .
+    command: celery -A config worker --loglevel=INFO --concurrency=2
+    volumes:
+      - .:/app
+    env_file: .env.dev
+    depends_on:
+      - web
+      - redis
+  # celery-beat:
+  #   build: .
+  #   command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+  #   volumes:
+  #     - .:/app
+  #   env_file: .env.dev
+  #   depends_on:
+  #     - web
+  #     - redis
+  #     - celery
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    volumes:
+      - ./static/:/static/
+      - ./media/:/media/
+      - ./data/nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  
+volumes:
+  data:

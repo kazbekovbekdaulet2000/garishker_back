@@ -25,6 +25,6 @@ class Comment(AbstractModel):
         return self.body
 
     class Meta:
-        ordering = ['created_at']
+        ordering = ['-created_at']
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'

@@ -11,8 +11,12 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Report(AbstractModel):
-    title = models.CharField(_('Название'), max_length=500, blank=True)
+    title = models.CharField(_('Название (рус)'), max_length=500, blank=True)
+    title_kk = models.CharField(_('Название (каз)'), max_length=500, blank=True)
+    preview_text_ru = models.CharField(_('Короткое описание (рус)'), max_length=1500, blank=True)
+    preview_text_kk = models.CharField(_('Короткое описание (каз)'), max_length=1500, blank=True)
     body = RichTextUploadingField()
+    body_kk = RichTextUploadingField(blank=True)
     category = models.ForeignKey(Category, verbose_name="Категория",
                                  on_delete=models.DO_NOTHING, related_name='report_category', blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,

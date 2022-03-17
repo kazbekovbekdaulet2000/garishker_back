@@ -39,8 +39,8 @@ class BaseReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ['id', 'category', 'likes_count', 'liked', 'bookmarks_count',
-                  'bookmarked', 'title', 'created_at', 'image', 'read_time',
-                  'comments_count', 'views']
+                  'bookmarked', 'title', 'title_kk', 'created_at', 'image', 'read_time',
+                  'comments_count', 'views', 'preview_text_ru', 'preview_text_kk']
 
 
 class ReportDetailSerializer(BaseReportSerializer):
@@ -48,4 +48,5 @@ class ReportDetailSerializer(BaseReportSerializer):
 
     class Meta(BaseReportSerializer.Meta):
         model = Report
-        fields = BaseReportSerializer.Meta.fields + ['author', 'body', ]
+        fields = BaseReportSerializer.Meta.fields + \
+            ['author', 'body', 'body_kk']

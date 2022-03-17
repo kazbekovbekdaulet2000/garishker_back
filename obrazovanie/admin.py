@@ -18,7 +18,8 @@ def make_published(modeladmin, request, queryset):
 @admin.action(description='Конвертировать видео')
 def convert_video(modeladmin, request, queryset):
     for query in queryset:
-        video_resize_yandex_storage.delay(query.id, query.video_name)
+        if(not (query.youtube == None or query.youtube == '')):
+            video_resize_yandex_storage.delay(query.id, query.video_name)
 
 
 class ReportAdmin(admin.ModelAdmin):
@@ -52,8 +53,10 @@ class VideoAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['body', 'owner', 'created_at', 'content_type', 'object_id']
-    ordering = ['body', 'created_at', 'owner']
+    ordering = ['-created_at', '-owner']
     readonly_fields = ('content_type', 'object_id', 'owner', 'likes', 'reply')
+    search_fields = ['body']
+    list_filter = ['content_type', ]
 
 
 admin.site.register(Category)

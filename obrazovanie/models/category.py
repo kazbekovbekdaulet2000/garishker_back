@@ -5,7 +5,8 @@ from config.custom_model import AbstractModel
 
 
 class Category(AbstractModel):
-    name = models.CharField(_('Название'), max_length=120)
+    name = models.CharField(_('Название (рус)'), max_length=120)
+    name_kk = models.CharField(_('Название (каз)'), max_length=120, default="", blank=True)
 
     def __str__(self):
         return self.name
