@@ -214,8 +214,8 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+# if not DEBUG:
+#     SECURE_SSL_REDIRECT = True
 
 FFMPEG_PRE_DIR = "media/"
 
