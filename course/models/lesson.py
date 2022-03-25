@@ -3,7 +3,9 @@ from django.utils.translation import gettext_lazy as _
 from config.custom_model import AbstractModel
 from course.models.lector import Lector
 from course.models.course import Course
-
+from course.models.module import LessonModule
+from django.db.models.signals import post_save
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Lesson(AbstractModel):
     name_kk = models.CharField(_('Название (каз)'), max_length=255, null=False)
@@ -11,14 +13,30 @@ class Lesson(AbstractModel):
     description_kk = models.TextField(_('Описание (рус)'), blank=True)
     description_ru = models.TextField(_('Описание (рус)'), blank=True)
     duriation = models.DurationField(_("Длительность"), blank=True, null=False)
-    lector = models.ForeignKey(Lector,
-                               on_delete=models.DO_NOTHING, null=False)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
-
+    lector = models.ForeignKey(Lector, on_delete=models.DO_NOTHING, related_name='lesson_lector', null=False)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_lesson', null=True)
+    video = models.CharField(_('Название видео с расширением)'), max_length=6250, default="", blank=True)
+    modules = models.ManyToManyField(LessonModule, verbose_name='Модули', blank=True)
+    views = models.PositiveIntegerField(default=0)
+    order = models.PositiveIntegerField(default=0)
+    score = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(20), MinValueValidator(0)])
+    
     def __str__(self):
         return self.name_ru
 
+    def increase_views(self):
+        self.views += 1
+        self.save()
+        
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Урок'
         verbose_name_plural = 'Уроки'
+
+def update_course(sender, instance, created, **kwargs):
+    course = instance.course
+    course.lesson_count = Lesson.objects.filter(course=course).count()
+    course.lectors.add(instance.lector)
+    course.save()
+
+post_save.connect(update_course, sender=Lesson)

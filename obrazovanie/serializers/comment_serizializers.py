@@ -1,4 +1,3 @@
-from urllib.request import Request
 from rest_framework import serializers
 from obrazovanie.models.comment import Comment
 from user.serializers import UserInfoSerializer

@@ -27,7 +27,7 @@ class ReportAdmin(admin.ModelAdmin):
         return obj.likes.count()
 
     list_display = ['title', 'moderated', 'created_at']
-    ordering = ['title', 'created_at', 'updated_at']
+    ordering = ['-created_at', '-updated_at']
     actions = [make_published]
     exclude = ('likes', 'saves')
     readonly_fields = ('views',)
@@ -38,7 +38,7 @@ class VideoAdmin(admin.ModelAdmin):
         return obj.likes.count()
 
     list_display = ['title', 'created_at', 'convert_status']
-    ordering = ['title', 'updated_at']
+    ordering = ['-created_at']
     actions = [convert_video]
     exclude = ('likes', 'saves')
     readonly_fields = ('views', 'video_quality',

@@ -42,7 +42,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'image', 'name',
-                  'surname', 'birth_date', 'city', 'description', 'verified']
+                  'surname', 'birth_date', 'city', 'description', 'verified', 'is_superuser']
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):

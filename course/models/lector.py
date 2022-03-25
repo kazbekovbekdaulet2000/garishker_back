@@ -16,6 +16,9 @@ class Lector(AbstractModel):
     def __str__(self):
         return f"{self.name} {self.surname}"
 
+    def get_fullname(self):
+        return f"{self.name} {self.surname}"
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Лектор'

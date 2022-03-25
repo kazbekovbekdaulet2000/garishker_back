@@ -34,23 +34,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
 
     # apps
-    'dobro',
+    # 'dobro',
     'obrazovanie',
     'user',
     'support',
     'course',
+    'quiz',
     'organizations',
     'rating',
-
+    
+    # cors
     'corsheaders',
 
     # swagger
     'drf_yasg',
 
-    # rest filter
+    # rest
+    'rest_framework',
     'django_filters',
 
     # ckeditor для создание статьей с наполнением
@@ -82,8 +84,13 @@ INTERNAL_IPS = [
     # ...
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:4200',
+    'http://localhost',
+    'https://shapka.pro',
+    'https://garyshker.com'
+)
 
-CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [

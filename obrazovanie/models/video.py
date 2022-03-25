@@ -1,4 +1,5 @@
 
+from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -49,7 +50,7 @@ class Video(AbstractModel):
         User, related_name='video_likes', blank=True)
     views = models.PositiveIntegerField(default=0)
     subs_kk = models.FileField(
-        _('Субтитры (каз)'), upload_to='video-subs-kk', blank=True)
+        _('Субтитры (каз)'), storage=ClientDocsStorage, upload_to='subtitles', blank=True)
     convert_status = models.CharField(
         _('Статус конвертации'),
         max_length=255,
@@ -68,6 +69,12 @@ class Video(AbstractModel):
     def set_quality(self, quality):
         self.original_quality = quality
         self.save()
+    
+    def save(self, **kwargs) -> None:
+        if(self.youtube):
+            self.convert_status = 'converted'
+            self.video_name = ''
+        return super().save(**kwargs)
 
     class Meta:
         ordering = ['-created_at', '-views']

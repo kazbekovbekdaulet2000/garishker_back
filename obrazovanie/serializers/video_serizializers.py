@@ -53,7 +53,6 @@ class VideoDetailSerializer(BaseVideoSerializer):
     def get_video(self, obj):
         if(not obj.video_name):
             return None
-        print(settings)
         return f"{settings.AWS_S3_ENDPOINT_URL}/garysh-app/video-video/{obj.video_name}"
 
     class Meta(BaseVideoSerializer.Meta):

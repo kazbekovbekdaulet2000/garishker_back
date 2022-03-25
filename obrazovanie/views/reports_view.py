@@ -1,18 +1,12 @@
-from unicodedata import category
 from rest_framework import generics
 from rest_framework import permissions
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from obrazovanie.models.comment import Comment
 
 from obrazovanie.models.report import Report
-from obrazovanie.serializers.comment_serizializers import CommentCreateSerializer, CommentSerializer
 from obrazovanie.serializers.report_serizializers import BaseReportSerializer, ReportDetailSerializer
 
 from obrazovanie.utils import ReportSearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
