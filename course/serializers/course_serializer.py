@@ -39,7 +39,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class CourseDetailSerializer(CourseSerializer):
     ratings_count = serializers.SerializerMethodField(read_only=True)
 
-    def get_ratings_count(self, obj):
+    def get_ratings_count(self, obj) -> int:
         return len(Rating.objects.filter(
             content_type=ContentType.objects.get_for_model(Course),
             object_id=obj.id))

@@ -14,6 +14,6 @@ class Answer(AbstractModel):
         return f"{self.question.title}_{self.order}"
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['order']
         verbose_name = 'Ответ'
         verbose_name_plural = 'Ответы'

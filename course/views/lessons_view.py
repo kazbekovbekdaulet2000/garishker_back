@@ -8,13 +8,12 @@ from course.serializers.lesson_serializer import LessonDetailSerializer, LessonS
 
 
 class LessonList(generics.ListAPIView):
-    lookup_url_kwarg = 'id'
     serializer_class = LessonSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     filter_backends = [DjangoFilterBackend]
 
     def get_queryset(self):
-        return Lesson.objects.filter(course__id=self.kwargs[self.lookup_url_kwarg]).order_by('order')
+        return Lesson.objects.filter(course__id=self.kwargs['id']).order_by('order')
 
 class LessonDetail(generics.RetrieveAPIView):
     lookup_field = 'id'

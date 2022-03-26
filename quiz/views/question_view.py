@@ -1,21 +1,12 @@
 from rest_framework import generics
 from rest_framework import permissions
-from quiz.models.test import Test
-from quiz.serializers.question_serizializer import TestSerializer
-from django.http import Http404
+from quiz.models.question import Question
+from quiz.serializers.question_serizializer import TestQuestionSerializer
 
-class TestDetail(generics.RetrieveAPIView):
+
+class TestQuestion(generics.RetrieveAPIView):
     lookup_field = 'id'
-    serializer_class = TestSerializer
+    lookup_url_kwarg = 'question_id'
+    serializer_class = TestQuestionSerializer
+    queryset = Question.objects.filter(is_active=True)
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def get_queryset(self):
-        return Test.objects.filter(lesson__id=self.kwargs['lesson_id'])
-
-    def get_object(self):
-        obj = self.get_queryset().last()
-        if(obj):
-            self.check_object_permissions(self.request, obj)
-            return obj
-        else:
-            raise Http404

@@ -14,7 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 class LessonSerializer(serializers.ModelSerializer):
     finished = serializers.SerializerMethodField(default=False)
 
-    def get_finished(self, obj):
+    def get_finished(self, obj) -> bool:
         return Participant.objects.filter(
             user=self.context['request'].user,
             content_type=ContentType.objects.get_for_model(Lesson),

@@ -20,7 +20,7 @@ class BaseReportSerializer(serializers.ModelSerializer):
 
     category = serializers.StringRelatedField()
 
-    def get_comments_count(self, obj):
+    def get_comments_count(self, obj) -> int:
         return len(Comment.objects.filter(
             content_type=ContentType.objects.get_for_model(Report),
             object_id=obj.id))
