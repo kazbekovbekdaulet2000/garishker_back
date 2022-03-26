@@ -9,3 +9,4 @@ env.bak/
 venv.bak/
 static/
 media/
+**/__pycache__/
