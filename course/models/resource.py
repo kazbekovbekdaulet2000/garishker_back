@@ -19,7 +19,7 @@ class Resource(AbstractModel):
     description_ru = models.TextField(_('Описание (рус)'), blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True)
-    lesson_module = models.ForeignKey(LessonModule, on_delete=models.CASCADE, null=True)
+    lesson_module = models.ForeignKey(LessonModule, on_delete=models.CASCADE, null=True, blank=True)
     file = models.FileField(_('Файл'), upload_to=course_dir, blank=True, storage=ClientDocsStorage)
     link = models.CharField(_('Ссылка'), blank=True, max_length=5000, null=True)
 
