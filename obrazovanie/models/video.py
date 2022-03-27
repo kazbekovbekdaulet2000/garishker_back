@@ -1,5 +1,4 @@
 
-from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -56,6 +55,7 @@ class Video(AbstractModel):
         max_length=255,
         choices=VIDEO_CONVERSION_STATUS_CHOICES,
         default='pending')
+    duriation = models.DurationField(_("Длительность"), blank=True, null=False, default="00:00")
     video_quality = models.ManyToManyField(
         VideoQuality, related_name='video_qualities')
 
