@@ -1,21 +1,37 @@
 from rest_framework import generics
 from rest_framework import permissions
 from quiz.models.test import Test
-from quiz.serializers.question_serizializer import TestSerializer
-from django.http import Http404
+from quiz.models.test_result import TestResult
+from quiz.serializers.test_result_serializer import TestResultSerializer
+from quiz.serializers.test_serizializer import TestSerializer
 
-class TestDetail(generics.ListAPIView):
+# TODO permissions
+class TestDetail(generics.RetrieveAPIView):
+    lookup_field = 'id'
+    lookup_url_kwarg = 'test_id'
+    queryset = Test.objects.all()
     serializer_class = TestSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    pagination_class=None
+
+
+# TODO permissions
+class TestResultDetail(generics.RetrieveAPIView):
+    lookup_field = 'test__id'
+    lookup_url_kwarg = 'test_id'
+    serializer_class = TestResultSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return Test.objects.filter(lesson__id=self.kwargs['lesson_id'])
+        print(TestResult.objects.filter(user=self.request.user))
+        return TestResult.objects.filter(user=self.request.user)
 
-    def get_object(self):
-        obj = self.get_queryset().last()
-        if(obj):
-            self.check_object_permissions(self.request, obj)
-            return obj
-        else:
-            raise Http404
+
+# class TestNewAttempDetail(generics.CreateAPIView):
+#     lookup_field = 'id'
+#     lookup_url_kwarg = 'test_id'
+#     queryset = TestResult.objects.all()
+#     serializer_class = TestNewAttemptSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+#     def get_queryset(self):
+#         return TestResult.objects.filter(user=self.request.user)

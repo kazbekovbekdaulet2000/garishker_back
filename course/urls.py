@@ -24,9 +24,6 @@ urlpatterns = [
     path('<int:id>/lessons/<int:lesson_id>/', LessonDetail.as_view()),
     path('<int:id>/lessons/<int:lesson_id>/resources/', ResourceList.as_view()),
     path('<int:id>/lessons/<int:lesson_id>/participate/', CourseParticipation.as_view(lookup_url_kwarg='lesson_id', model=Lesson)),
-    
-    # ----------- Lessons Test ----------- #
-    path('<int:id>/lessons/<int:lesson_id>/test/', include('quiz.urls')),
 
     # ----------- Rating ----------- #
     path('<int:id>/ratings/', RatingList.as_view(model=Course)),

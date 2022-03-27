@@ -1,5 +1,4 @@
 from django.forms import ValidationError
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from course.models.participant import Participant
 from user.serializers import UserInfoSerializer

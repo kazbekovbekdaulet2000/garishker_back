@@ -27,15 +27,14 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
-    organization = OrganizationSerializer(
-        source="course.organization", many=False)
+    organization = OrganizationSerializer(source="course.organization", many=False)
     category = CategorySerializer(source="course.category", many=False)
     lector = LectorSerializer(many=False)
     video = serializers.SerializerMethodField(read_only=True)
     participated = serializers.SerializerMethodField(default=False)
-    # resources = ResourceSerializer(many=True)
+    test_id = serializers.PrimaryKeyRelatedField(source='course_test', many=False, read_only=True)
 
-    def get_participated(self, obj):
+    def get_participated(self, obj) -> bool:
         return Participant.objects.filter(
             content_type=ContentType.objects.get_for_model(Lesson),
             object_id=obj.id).count() > 0
@@ -48,4 +47,5 @@ class LessonDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id', 'name_kk', 'name_ru', 'description_kk', 'description_ru',
-                  'duriation', 'organization', 'category', 'lector', 'video', 'modules', 'participated']
+                  'duriation', 'organization', 'category', 'lector', 'video', 'modules', 
+                  'participated', 'test_id']

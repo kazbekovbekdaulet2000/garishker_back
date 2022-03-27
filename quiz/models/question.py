@@ -12,16 +12,24 @@ TYPE = (
 )
 
 
+class QuestionManager(models.Manager):
+    def max_points(self) -> int:
+        point = 0
+        for question in self.filter(is_active=True):
+            point += question.point
+        return point
+
+
+
 class Question(AbstractModel):
     quiz = models.ForeignKey(Test, related_name='quiz_question', on_delete=models.DO_NOTHING)
     technique = models.IntegerField(choices=TYPE, default=0, verbose_name=_("Тип вопроса"))
     title = models.CharField(max_length=255, verbose_name=_("Название"))
     point = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5),])
     is_active = models.BooleanField(default=False, verbose_name=_("Активный"))
-
-    def __str__(self):
-        return self.title
-
+    
+    objects = QuestionManager()
+    
     def __str__(self):
         return f"test_{self.id}"
 

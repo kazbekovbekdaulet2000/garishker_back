@@ -6,7 +6,7 @@ from course.models.module import LessonModule
 
 
 class Test(AbstractModel):
-    lesson = models.ForeignKey(Lesson, verbose_name=_('Урок'), on_delete=models.DO_NOTHING, blank=True, null=True)
+    lesson = models.OneToOneField(Lesson, verbose_name=_('Урок'), related_name='course_test', on_delete=models.DO_NOTHING, blank=True, null=True)
     lesson_module = models.ForeignKey(LessonModule, verbose_name=_('Модуль'), on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self):

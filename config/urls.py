@@ -43,6 +43,7 @@ urlpatterns = [
     re_path('auth/', include('user.urls')),
     # re_path('dobro/', include('dobro.urls')),
     re_path('courses/', include('course.urls')),
+    re_path('tests/', include('quiz.urls')),
     re_path('edu/', include('obrazovanie.urls')),
     re_path('support/', include('support.urls')),
 
