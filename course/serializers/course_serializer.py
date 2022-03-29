@@ -18,18 +18,25 @@ class CourseSerializer(serializers.ModelSerializer):
     closed_lessons = serializers.SerializerMethodField()
 
     def get_inprogress(self, obj) -> bool:
-        return Participant.objects.filter(
-            content_type=ContentType.objects.get_for_model(Course),
-            object_id=obj.id).count() > 0
+        try:
+            return Participant.objects.filter(
+                user=self.context['request'].user,
+                content_type=ContentType.objects.get_for_model(Course),
+                object_id=obj.id).count() > 0
+        except:
+            return False
 
     def get_closed_lessons(self, obj) -> int:
-        ids = []
-        for lesson in obj.course_lesson.all():
-            ids.append(lesson.id)
-        return Participant.objects.filter(
-            user=self.context['request'].user,
-            content_type=ContentType.objects.get_for_model(Lesson),
-            object_id__in=ids).count()
+        try:
+            ids = []
+            for lesson in obj.course_lesson.all():
+                ids.append(lesson.id)
+            return Participant.objects.filter(
+                user=self.context['request'].user,
+                content_type=ContentType.objects.get_for_model(Lesson),
+                object_id__in=ids).count()
+        except:
+            return 0
 
     class Meta:
         model = Course

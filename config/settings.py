@@ -14,6 +14,8 @@ from datetime import timedelta
 import os
 import environ
 
+from config.logger import CustomisedJSONFormatter
+
 env = environ.Env()
 environ.Env.read_env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -65,9 +67,13 @@ INSTALLED_APPS = [
 
     # crontab
     'django_celery_beat',
+
+    # django prometheus
+    'django_prometheus'
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -77,8 +83,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
-
 
 INTERNAL_IPS = [
     # ...
@@ -113,6 +119,35 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+LOG_LEVEL = env('LOG_LEVEL')
+LOG_PATH = os.path.join(BASE_DIR, 'logs')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        "json": {
+            '()': CustomisedJSONFormatter,
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'course_log_file': {
+            'level': LOG_LEVEL,
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_PATH, 'course.log.json'),
+            'maxBytes': 1024 * 1024 * 15,  # 15MB
+            'backupCount': 10,
+            'formatter': 'json',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'course_log_file'],
+        'level': LOG_LEVEL,
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -127,7 +162,6 @@ DATABASES = {
         'PORT': env('POSTGRES_PORT'),
     }
 }
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -166,12 +200,10 @@ SWAGGER_SETTINGS = {
     }
 }
 
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
-
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -290,6 +322,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+PROMETHEUS_METRICS_EXPORT_PORT_RANGE = range(8001, 8050)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

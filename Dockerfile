@@ -15,6 +15,7 @@ WORKDIR /app
 COPY ./requirements.txt /requirements.txt
 COPY ./scripts /scripts
 COPY ./.env ./.env
+COPY ./.env.dev ./.env.dev
 
 
 RUN pip install -r requirements.txt

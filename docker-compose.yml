@@ -19,11 +19,12 @@ services:
     container_name: garyshker_web
     volumes:
       - .:/app
-    ports:
-      - "8000:8000"
     env_file: .env
     depends_on:
       - db
+    expose:
+      - "8000"
+      - "8001-8050"
   redis:
     image: "redis:alpine"
   celery:
@@ -35,16 +36,23 @@ services:
     depends_on:
       - web
       - redis
-  # celery-beat:
-  #   build: .
-  #   command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
-  #   volumes:
-  #     - .:/app
-  #   env_file: .env
-  #   depends_on:
-  #     - web
-  #     - redis
-  #     - celery
+  celery-beat:
+    build: .
+    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app
+    env_file: .env
+    depends_on:
+      - web
+      - redis
+      - celery
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./data/prometheus/:/etc/prometheus/
+    env_file: .env.dev
+    ports:
+      - "9090:9090"
   nginx:
     image: nginx:1.15-alpine
     restart: unless-stopped
@@ -57,6 +65,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    expose:
+      - "8080"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   certbot:
     image: certbot/certbot
