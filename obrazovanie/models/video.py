@@ -28,7 +28,7 @@ class VideoQuality(AbstractModel):
 
 class Video(AbstractModel):
     title = models.CharField(_('Название'), max_length=500)
-    body = RichTextUploadingField()
+    body_ru = RichTextUploadingField()
     body_kk = RichTextUploadingField(blank=True)
     image = models.FileField(_('Обложка'), upload_to='video-image', blank=True)
     image_2 = models.FileField(

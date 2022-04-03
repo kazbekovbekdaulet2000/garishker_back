@@ -7,7 +7,4 @@ scrape_configs:
   metrics_path: /prometheus/metrics
   static_configs:
   - targets: 
-    - "web:80"
-    # - "web:8002"
-    # - "web:8003"
-    # - "web:8004"
+    - "web:8001"

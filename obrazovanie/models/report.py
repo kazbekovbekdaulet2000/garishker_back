@@ -11,11 +11,11 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Report(AbstractModel):
-    title = models.CharField(_('Название (рус)'), max_length=500, blank=True)
+    title_ru = models.CharField(_('Название (рус)'), max_length=500, blank=True)
     title_kk = models.CharField(_('Название (каз)'), max_length=500, blank=True)
     preview_text_ru = models.TextField(_('Короткое описание (рус)'), max_length=1500, blank=True)
     preview_text_kk = models.TextField(_('Короткое описание (каз)'), max_length=1500, blank=True)
-    body = RichTextUploadingField()
+    body_ru = RichTextUploadingField()
     body_kk = RichTextUploadingField(blank=True)
     category = models.ForeignKey(Category, verbose_name="Категория",
                                  on_delete=models.DO_NOTHING, related_name='report_category', blank=True)
@@ -31,14 +31,14 @@ class Report(AbstractModel):
     views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.title
+        return self.title_ru
 
     def increase_views(self):
         self.views += 1
         self.save()
 
     def get_reading_time(self):
-        soup = BeautifulSoup(self.body, 'html.parser')
+        soup = BeautifulSoup(self.body_ru, 'html.parser')
         text = soup.get_text()
         word_count = len(text.split())
         read_time = word_count / 100

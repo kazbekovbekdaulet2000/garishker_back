@@ -26,7 +26,7 @@ class ReportAdmin(admin.ModelAdmin):
     def likes_count(self, obj):
         return obj.likes.count()
 
-    list_display = ['title', 'moderated', 'created_at']
+    list_display = ['title_ru', 'moderated', 'created_at']
     ordering = ['-created_at', '-updated_at']
     actions = [make_published]
     exclude = ('likes', 'saves')

@@ -94,7 +94,6 @@ INTERNAL_IPS = [
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:4200',
-    'http://localhost',
     'https://shapka.pro',
     'https://garyshker.com'
 )
@@ -322,7 +321,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-PROMETHEUS_METRICS_EXPORT_PORT_RANGE = range(8001, 8050)
+if DEBUG:
+    PROMETHEUS_METRICS_EXPORT_PORT_RANGE = range(8001, 8050)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

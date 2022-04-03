@@ -17,11 +17,13 @@ class ContactUs(AbstractModel):
 
 
 class Question(AbstractModel):
-    question = models.TextField(_('Вопрос'), max_length=65535, null=True, blank=True)
-    answer = models.TextField(_('Ответ'), max_length=65535, null=True, blank=True)
+    question_ru = models.TextField(_('Вопрос (рус)'), max_length=65535, null=True, blank=True)
+    answer_ru = models.TextField(_('Ответ (рус)'), max_length=65535, null=True, blank=True)
+    question_kk = models.TextField(_('Вопрос (каз)'), max_length=65535, null=True, blank=True)
+    answer_kk = models.TextField(_('Ответ (каз)'), max_length=65535, null=True, blank=True)
 
     def __str__(self):
-        return self.question
+        return 'asd'
 
     class Meta:
         verbose_name = 'Вопрос'
