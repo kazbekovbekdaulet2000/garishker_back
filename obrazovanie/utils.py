@@ -23,7 +23,7 @@ class VideoSearchFilter(filters.FilterSet):
 
     class Meta:
         model = Video
-        fields = ['title', 'category']
+        fields = ['title_ru', 'category']
 
 
 class Converter:

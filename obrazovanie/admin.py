@@ -37,7 +37,7 @@ class VideoAdmin(admin.ModelAdmin):
     def likes_count(self, obj):
         return obj.likes.count()
 
-    list_display = ['title', 'created_at', 'convert_status']
+    list_display = ['title_ru', 'created_at', 'convert_status']
     ordering = ['-created_at']
     actions = [convert_video]
     exclude = ('likes', 'saves')

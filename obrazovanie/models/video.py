@@ -27,7 +27,8 @@ class VideoQuality(AbstractModel):
 
 
 class Video(AbstractModel):
-    title = models.CharField(_('Название'), max_length=500)
+    title_ru = models.CharField(_('Название (рус)'), max_length=500, default="", blank=True)
+    title_kk = models.CharField(_('Название (каз)'), max_length=500, default="", blank=True)
     body_ru = RichTextUploadingField()
     body_kk = RichTextUploadingField(blank=True)
     image = models.FileField(_('Обложка'), upload_to='video-image', blank=True)
@@ -60,7 +61,7 @@ class Video(AbstractModel):
         VideoQuality, related_name='video_qualities')
 
     def __str__(self):
-        return self.title
+        return self.title_ru
 
     def increase_views(self):
         self.views += 1
