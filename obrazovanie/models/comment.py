@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from config.custom_model import AbstractModel
 from django.db import models
 from config.custom_model import AbstractModel
 from user.models import User
