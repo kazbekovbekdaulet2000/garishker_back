@@ -1,4 +1,5 @@
 
+from typing import Iterable, Optional
 from bs4 import BeautifulSoup
 import datetime
 from django.db import models
@@ -29,6 +30,7 @@ class Report(AbstractModel):
     likes = models.ManyToManyField(
         User, related_name='report_likes', blank=True)
     views = models.PositiveIntegerField(default=0)
+    read_time = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.title_ru
@@ -44,6 +46,10 @@ class Report(AbstractModel):
         read_time = word_count / 100
         read_time = str(datetime.timedelta(minutes=read_time))
         return read_time
+
+    def save(self) -> None:
+        self.read_time = self.get_reading_time()
+        return super().save()
 
     class Meta:
         ordering = ['-created_at', '-views']

@@ -320,8 +320,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-if DEBUG:
-    PROMETHEUS_METRICS_EXPORT_PORT_RANGE = range(8001, 8050)
+# if DEBUG:
+#     PROMETHEUS_METRICS_EXPORT_PORT_RANGE = range(8001, 8050)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

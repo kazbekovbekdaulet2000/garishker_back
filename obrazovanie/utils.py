@@ -11,19 +11,21 @@ from django.conf import settings
 
 
 class ReportSearchFilter(filters.FilterSet):
-    title = django_filters.CharFilter(lookup_expr='icontains')
-
+    title_ru = django_filters.CharFilter(lookup_expr='icontains')
+    title_kk = django_filters.CharFilter(lookup_expr='icontains')
+    
     class Meta:
         model = Report
-        fields = ['title', 'category']
+        fields = ['title_ru', 'title_kk', 'category']
 
 
 class VideoSearchFilter(filters.FilterSet):
-    title = django_filters.CharFilter(lookup_expr='icontains')
+    title_ru = django_filters.CharFilter(lookup_expr='icontains')
+    title_kk = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Video
-        fields = ['title_ru', 'category']
+        fields = ['title_ru', 'title_kk', 'category']
 
 
 class Converter:

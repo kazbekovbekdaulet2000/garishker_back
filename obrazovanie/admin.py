@@ -30,7 +30,7 @@ class ReportAdmin(admin.ModelAdmin):
     ordering = ['-created_at', '-updated_at']
     actions = [make_published]
     exclude = ('likes', 'saves')
-    readonly_fields = ('views',)
+    readonly_fields = ('views', 'read_time',)
 
 
 class VideoAdmin(admin.ModelAdmin):

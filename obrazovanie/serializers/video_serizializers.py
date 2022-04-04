@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from obrazovanie.models.comment import Comment
 from obrazovanie.models.video import Video, VideoQuality
+from obrazovanie.serializers.categorty_serizializers import CategorySerializer
 from user.serializers import UserInfoSerializer
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -16,8 +17,6 @@ class BaseVideoSerializer(serializers.ModelSerializer):
     bookmarks_count = serializers.IntegerField(
         source="saves.count", read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
-
-    category = serializers.StringRelatedField()
 
     def get_comments_count(self, obj) -> int:
         return len(Comment.objects.filter(
