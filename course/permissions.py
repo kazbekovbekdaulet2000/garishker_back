@@ -14,8 +14,6 @@ class LessonAvailable(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         lessons = obj.course.course_lesson.all().order_by('order')
-        # if request.user.is_superuser:
-        #     return True
         res = True
         for lesson in lessons:
             if(lesson.id == obj.id):

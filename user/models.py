@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from config.custom_model import AbstractModel
+# from django.core.validators import 
+
 
 USER_TYPE = (
     (0, _('Школьник')),

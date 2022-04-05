@@ -35,7 +35,6 @@ class TestQuestion(mixins.CreateModelMixin, mixins.RetrieveModelMixin, generics.
 
     def get_serializer_context(self):
         if self.request.method == "POST":
-            print(self.request)
             return {
                 'request': self.request,
                 'format': self.format_kwarg,

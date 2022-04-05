@@ -13,29 +13,45 @@ from django.contrib.contenttypes.models import ContentType
 
 class LessonSerializer(serializers.ModelSerializer):
     finished = serializers.SerializerMethodField(default=False)
+    attempts = serializers.SerializerMethodField(default=0)
 
     def get_finished(self, obj) -> bool:
+        if(self.context['request'].user.is_anonymous):
+            return False
         return Participant.objects.filter(
             user=self.context['request'].user,
             content_type=ContentType.objects.get_for_model(Lesson),
-            object_id=obj.id).count() > 0
+            object_id=obj.id,
+            success=True).count() > 0
+
+    def get_attempts(self, obj) -> int:
+        if(self.context['request'].user.is_anonymous):
+            return 0
+        return Participant.objects.filter(
+            user=self.context['request'].user,
+            content_type=ContentType.objects.get_for_model(Lesson),
+            object_id=obj.id).count()
 
     class Meta:
         model = Lesson
         fields = ['id', 'name_kk', 'name_ru', 'description_kk',
-                  'description_ru', 'duriation', 'finished']
+                  'description_ru', 'duriation', 'finished', 'attempts']
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
-    organization = OrganizationSerializer(source="course.organization", many=False)
-    category = CategorySerializer(source="course.category", many=False)
+    organization = OrganizationSerializer(
+        source="course.organization", many=False)
+    category = serializers.PrimaryKeyRelatedField(source="course.category", many=False, read_only=True)
     lector = LectorSerializer(many=False)
     video = serializers.SerializerMethodField(read_only=True)
     participated = serializers.SerializerMethodField(default=False)
     test_id = serializers.PrimaryKeyRelatedField(source='course_test', many=False, read_only=True)
 
     def get_participated(self, obj) -> bool:
+        if(self.context['request'].user.is_anonymous):
+            return False
         return Participant.objects.filter(
+            user=self.context['request'].user,
             content_type=ContentType.objects.get_for_model(Lesson),
             object_id=obj.id).count() > 0
 
@@ -47,5 +63,5 @@ class LessonDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id', 'name_kk', 'name_ru', 'description_kk', 'description_ru',
-                  'duriation', 'organization', 'category', 'lector', 'video', 'modules', 
+                  'duriation', 'organization', 'category', 'lector', 'video', 'modules',
                   'participated', 'test_id']

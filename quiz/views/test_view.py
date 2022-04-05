@@ -22,7 +22,6 @@ class TestResultDetail(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        print(TestResult.objects.filter(user=self.request.user))
         return TestResult.objects.filter(user=self.request.user)
 
 

@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
+from course.filters import CourseSearchFilter
 
 from course.models.course import Course
 from course.serializers.course_serializer import CourseDetailSerializer, CourseSerializer
@@ -13,6 +14,7 @@ class CourseList(generics.ListAPIView):
     serializer_class = CourseSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     filter_backends = [DjangoFilterBackend]
+    filterset_class = CourseSearchFilter
 
 
 class CourseDetail(generics.RetrieveAPIView):

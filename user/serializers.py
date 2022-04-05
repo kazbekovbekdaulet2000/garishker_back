@@ -27,6 +27,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         return attrs
 
+    def validate_birth_date(self, attrs):
+        # if(attrs['birth_date'])
+        return attrs
+
     def save(self):
         del self.validated_data['re_password']
         account = User(
