@@ -11,7 +11,7 @@ class LectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lector
-        fields = ['id', 'fullname', 'icon']
+        fields = ['id', 'fullname', 'role_kk', 'role_ru', 'icon']
 
 
 class LectorDetailSerializer(serializers.ModelSerializer):

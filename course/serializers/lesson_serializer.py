@@ -1,12 +1,8 @@
-from importlib import resources
-from xmlrpc.client import boolean
 from django.conf import settings
 from rest_framework import serializers
 from course.models.lesson import Lesson
 from course.models.participant import Participant
-from course.serializers.lector_serializer import LectorSerializer
-from course.serializers.resource_serializer import ResourceSerializer
-from obrazovanie.serializers.categorty_serizializers import CategorySerializer
+from course.serializers.lector_serializer import LectorDetailSerializer, LectorSerializer
 from organizations.serializers.organization_serializer import OrganizationSerializer
 from django.contrib.contenttypes.models import ContentType
 
@@ -14,6 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 class LessonSerializer(serializers.ModelSerializer):
     finished = serializers.SerializerMethodField(default=False)
     attempts = serializers.SerializerMethodField(default=0)
+    lector = LectorSerializer(many=False, read_only=True)
 
     def get_finished(self, obj) -> bool:
         if(self.context['request'].user.is_anonymous):
@@ -35,14 +32,14 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id', 'name_kk', 'name_ru', 'description_kk',
-                  'description_ru', 'duriation', 'finished', 'attempts']
+                  'description_ru', 'duriation', 'finished', 'attempts', 'lector']
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
     organization = OrganizationSerializer(
         source="course.organization", many=False)
     category = serializers.PrimaryKeyRelatedField(source="course.category", many=False, read_only=True)
-    lector = LectorSerializer(many=False)
+    lector = LectorDetailSerializer(many=False)
     video = serializers.SerializerMethodField(read_only=True)
     participated = serializers.SerializerMethodField(default=False)
     test_id = serializers.PrimaryKeyRelatedField(source='course_test', many=False, read_only=True)
