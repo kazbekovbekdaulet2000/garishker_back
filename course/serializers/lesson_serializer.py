@@ -32,7 +32,7 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id', 'name_kk', 'name_ru', 'description_kk',
-                  'description_ru', 'duriation', 'finished', 'attempts', 'lector']
+                  'description_ru', 'duriation', 'finished', 'attempts', 'lector', 'order']
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
@@ -61,4 +61,4 @@ class LessonDetailSerializer(serializers.ModelSerializer):
         model = Lesson
         fields = ['id', 'name_kk', 'name_ru', 'description_kk', 'description_ru',
                   'duriation', 'organization', 'category', 'lector', 'video', 'modules',
-                  'participated', 'test_id']
+                  'participated', 'test_id', 'order']
