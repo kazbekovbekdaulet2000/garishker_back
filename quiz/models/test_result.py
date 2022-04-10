@@ -33,7 +33,6 @@ def update_participant_res(sender, instance, created, **kwargs):
         'object_id': instance.test.lesson.id,
         'content_type': ContentType.objects.get_for_model(Lesson)
     })
-    print(participation.max_points)
     persentage = (instance.points / instance.max_points)
     if(persentage > 0.7):
         instance.success = True

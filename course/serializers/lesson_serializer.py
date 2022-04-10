@@ -27,12 +27,15 @@ class LessonSerializer(serializers.ModelSerializer):
         if(self.context['request'].user.is_anonymous):
             return obj.order == 1
         else:
-            participant = get_object_or_404(Participant, **{
-                'user': self.context['request'].user,
-                'content_type': ContentType.objects.get_for_model(Lesson),
-                'object_id': obj.id
-            })
-            return participant.access
+            participant = Participant.objects.filter(
+                user=self.context['request'].user,
+                content_type=ContentType.objects.get_for_model(Lesson),
+                object_id=obj.id
+            )
+            if(participant.count()>0):
+                return participant.access
+            return obj.order == 1
+            
 
     class Meta:
         model = Lesson
