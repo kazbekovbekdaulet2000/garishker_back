@@ -10,7 +10,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Lesson(AbstractModel):
     name_kk = models.CharField(_('Название (каз)'), max_length=255, null=False)
     name_ru = models.CharField(_('Название (рус)'), max_length=255, null=False)
-    description_kk = models.TextField(_('Описание (рус)'), blank=True)
+    description_kk = models.TextField(_('Описание (каз)'), blank=True)
     description_ru = models.TextField(_('Описание (рус)'), blank=True)
     duriation = models.DurationField(_("Длительность"), blank=True, null=False)
     lector = models.ForeignKey(Lector, on_delete=models.DO_NOTHING, related_name='lesson_lector', null=False)

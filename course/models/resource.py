@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from config.custom_model import AbstractModel
 from config.yandex_storage import ClientDocsStorage
-from course.models.lector import Lector
 from course.models.course import Course
 from course.models.lesson import Lesson
 from course.models.module import LessonModule
@@ -18,7 +17,7 @@ def course_resource(instance, filename):
 class Resource(AbstractModel):
     name_kk = models.CharField(_('Название (каз)'), max_length=255, null=False)
     name_ru = models.CharField(_('Название (рус)'), max_length=255, null=False)
-    description_kk = models.TextField(_('Описание (рус)'), blank=True)
+    description_kk = models.TextField(_('Описание (каз)'), blank=True)
     description_ru = models.TextField(_('Описание (рус)'), blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True)

@@ -1,10 +1,12 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from config.custom_model import AbstractModel
 from quiz.models.answer import Answer
 from user.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.db.models.signals import post_save
 
 
 class Attempt(AbstractModel):

@@ -8,6 +8,6 @@ urlpatterns = [
     path('<int:test_id>/', TestDetail.as_view()),
     path('<int:test_id>/result/', TestResultDetail.as_view()),
     path('<int:test_id>/finish/', TestResultCreate.as_view()),
-    # path('<int:test_id>/new_attempt/', TestNewAttempDetail.as_view()),
+    # path('<int:test_id>/new_attempt/', TestNewAttemp.as_view()),
     path('<int:test_id>/questions/<int:question_id>/', TestQuestion.as_view()),
 ]

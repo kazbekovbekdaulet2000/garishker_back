@@ -50,9 +50,7 @@ class LessonCurrent(generics.RetrieveAPIView):
 
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
-
         ids = queryset.values_list('id', flat=True)
-
         if(len(ids) == 0):
             raise Http404
 
@@ -64,12 +62,11 @@ class LessonCurrent(generics.RetrieveAPIView):
             participations = Participant.objects.filter(
                 user=self.request.user,
                 content_type=ContentType.objects.get_for_model(Lesson),
-                object_id__in=ids)
-            if participations.count() == 0:
-                filter_kwargs = {self.lookup_field: ids[0]}
+                object_id__in=ids).order_by('id')
+
             index = 0
             for participation in participations:
-                if(not participation.success):
+                if(participation.success == False):
                     break
                 else:
                     index += 1

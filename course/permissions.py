@@ -21,5 +21,6 @@ class LessonAvailable(permissions.BasePermission):
             res = Participant.objects.filter(
                 user=request.user,
                 content_type=ContentType.objects.get_for_model(Lesson),
-                object_id=lesson.id).count() > 0
+                object_id=lesson.id,
+                success=True).count() > 0
         return res

@@ -26,15 +26,7 @@ class ParticipationCreateSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data['content_type'] = ContentType.objects.get_for_model(
-            self.context['model'])
+        validated_data['content_type'] = ContentType.objects.get_for_model(self.context['model'])
         validated_data['object_id'] = self.context['object_id']
         validated_data['user'] = self.context['request'].user
-        try:
-            Participant.objects.get(
-                object_id=validated_data['object_id'],
-                content_type=validated_data['content_type'],
-                user=validated_data['user'])
-            return validated_data
-        except:
-            return super().create(validated_data)
+        return super().create(validated_data)

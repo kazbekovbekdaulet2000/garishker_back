@@ -61,8 +61,13 @@ class TestResultCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         self.test = get_object_or_404(Test, id=self.context['test_id'])
+
+        if(self.test.quiz_question.all().count()==0):
+            raise ValidationError('Пока невозможно сдать тест')
+
         if(TestResult.objects.filter(test=self.test, user=self.context['request'].user, attempt_num=1).exists()):
             raise ValidationError('Результаты уже есть')
+        
         for question in self.test.quiz_question.filter(is_active=True):
             attempts = Attempt.objects.filter(
                 user=self.context['request'].user,
@@ -85,3 +90,6 @@ class TestResultCreateSerializer(serializers.ModelSerializer):
         validated_data['test'] = self.test
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
