@@ -33,7 +33,7 @@ class LessonSerializer(serializers.ModelSerializer):
                 object_id=obj.id
             )
             if(participant.count()>0):
-                return participant.access
+                return participant.last().access
             return obj.order == 1
             
 
