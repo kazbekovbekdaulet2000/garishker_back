@@ -29,6 +29,6 @@ class Attempt(AbstractModel):
         return False
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
         verbose_name = 'Ответ'
         verbose_name_plural = 'Ответы'

@@ -22,7 +22,7 @@ class TestQuestionBaseSerializer(serializers.ModelSerializer):
 
 class TestSerializer(serializers.ModelSerializer):
     lesson = serializers.StringRelatedField(read_only=True)
-    question_ids = TestQuestionBaseSerializer(source="quiz_question", many=True, read_only=True)
+    questions = TestQuestionBaseSerializer(source="quiz_question", many=True, read_only=True)
 
     class Meta:
         model = Test
