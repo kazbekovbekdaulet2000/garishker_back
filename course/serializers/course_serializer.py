@@ -32,7 +32,7 @@ class CourseSerializer(serializers.ModelSerializer):
                 user=self.context['request'].user,
                 content_type=ContentType.objects.get_for_model(Lesson),
                 object_id__in=ids,
-                success = True).count()
+                success=True).count()
         except:
             return 0
 
@@ -44,6 +44,40 @@ class CourseSerializer(serializers.ModelSerializer):
 class CourseDetailSerializer(CourseSerializer):
     ratings_count = serializers.SerializerMethodField(read_only=True)
     lectors = LectorDetailSerializer(many=True)
+    finished = serializers.SerializerMethodField(read_only=True)
+    max_points = serializers.SerializerMethodField(read_only=True)
+    points = serializers.SerializerMethodField(read_only=True)
+
+    def get_finished(self, obj) -> bool:
+        if(self.context['request'].user.is_anonymous):
+            return False
+        return Participant.objects.filter(
+            user=self.context['request'].user,
+            content_type=ContentType.objects.get_for_model(Course),
+            object_id=obj.id,
+            success=True).count() > 0
+
+    def get_max_points(self, obj) -> int:
+        if(self.context['request'].user.is_anonymous):
+            return None
+        par = Participant.objects.filter(
+            user=self.context['request'].user,
+            content_type=ContentType.objects.get_for_model(Course),
+            object_id=obj.id,
+            success=True)
+        if(par.count() > 0):
+            return par.last().max_points
+
+    def get_points(self, obj) -> int:
+        if(self.context['request'].user.is_anonymous):
+            return None
+        par = Participant.objects.filter(
+            user=self.context['request'].user,
+            content_type=ContentType.objects.get_for_model(Course),
+            object_id=obj.id,
+            success=True)
+        if(par.count() > 0):
+            return par.last().points
 
     def get_ratings_count(self, obj) -> int:
         return len(Rating.objects.filter(

@@ -19,7 +19,7 @@ class Lesson(AbstractModel):
     modules = models.ManyToManyField(LessonModule, verbose_name='Модули', blank=True)
     views = models.PositiveIntegerField(default=0)
     order = models.PositiveIntegerField(default=0)
-    score = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(20), MinValueValidator(0)])
+    score = models.PositiveIntegerField(default=0)
     
     def __str__(self):
         return self.name_ru

@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from config.custom_model import AbstractModel
 from quiz.models.test import Test
 from django.core.validators import MaxValueValidator
+from django.db.models.signals import post_save
 
 
 TYPE = (
@@ -34,6 +35,18 @@ class Question(AbstractModel):
         return f"test_{self.id}"
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
+
+def change_test_points(sender, instance, created, **kwargs):
+    test = instance.quiz
+    questions = test.quiz_question.filter(is_active=True)
+    points = 0
+    for question in questions:
+        points+=question.point
+    test.max_points=points
+    test.save()
+
+
+post_save.connect(change_test_points, sender=Question)
