@@ -14,7 +14,8 @@ from course.serializers.participant_serializer import ParticipationCreateSeriali
 class CourseParticipation(generics.CreateAPIView):
     lookup_url_kwarg = None
     permission_classes = [permissions.IsAuthenticated, ]
-    filter_backends = [DjangoFilterBackend]
+    # filter_backends = [DjangoFilterBackend]
+    filter_backends = None
     model = None
 
     def get_serializer_class(self):
@@ -27,22 +28,12 @@ class CourseParticipation(generics.CreateAPIView):
             content_type=ContentType.objects.get_for_model(self.model),
             object_id=self.kwargs[self.lookup_url_kwarg])
 
-    def get_serializer_context(self):
-        if self.request.method == "POST":
-            return {
-                'request': self.request,
-                'format': self.format_kwarg,
-                'view': self,
-                'model': self.model,
-                'object_id': self.kwargs[self.lookup_url_kwarg]
-            }
-        return super().get_serializer_context()
-
 
 class UserParticipationList(generics.ListAPIView):
     serializer_class = CourseSerializer
     permission_classes = [permissions.IsAuthenticated, ]
-    filter_backends = [DjangoFilterBackend]
+    # filter_backends = [DjangoFilterBackend]
+    filter_backends = None
     model = None
 
     def get_queryset(self):

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'quiz',
     'organizations',
     'rating',
+    'event',
     
     # cors
     'corsheaders',

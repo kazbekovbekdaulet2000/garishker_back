@@ -28,17 +28,6 @@ class RatingList(generics.ListCreateAPIView):
             object_id=self.kwargs.get('id')
         ).order_by('-created_at')
 
-    def get_serializer_context(self):
-        if self.request.method == "POST":
-            return {
-                'request': self.request,
-                'format': self.format_kwarg,
-                'view': self,
-                'model': self.model,
-                'object_id': self.kwargs.get('id')
-            }
-        return super().get_serializer_context()
-
 
 class RatingDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
@@ -60,17 +49,6 @@ class RatingDetail(generics.RetrieveUpdateDestroyAPIView):
             content_type=ContentType.objects.get_for_model(self.model),
             object_id=self.kwargs.get('id'),
         )
-
-    def get_serializer_context(self):
-        if self.request.method == "POST":
-            return {
-                'request': self.request,
-                'format': self.format_kwarg,
-                'view': self,
-                'model': self.model,
-                'object_id': self.kwargs.get('id')
-            }
-        return super().get_serializer_context()
 
 
 class RatingLike(APIView):

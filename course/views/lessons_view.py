@@ -96,16 +96,19 @@ class LessonCurrent(generics.RetrieveAPIView):
 
 
 class LessonNext(APIView):
-    permission_classes = [permissions.IsAuthenticated, LessonAvailable]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        lessons = Lesson.objects.filter(
-            course__id=self.kwargs['id']).order_by('order')
+        lessons = Lesson.objects.filter(course__id=self.kwargs['id']).order_by('order')
+        
         ids = lessons.values_list('id', flat=True)
+        
         queryset = Participant.objects.filter(
             user=self.request.user,
             content_type=ContentType.objects.get_for_model(Lesson),
-            object_id__in=ids).order_by('id')
+            object_id__in=ids
+        ).order_by('id')
+        
         for participation in queryset:
             if(participation.success == False):
                 participation.success = True

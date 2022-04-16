@@ -59,7 +59,7 @@ class VideoDetail(generics.RetrieveAPIView):
 class VideoBookmarked(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     permission_classes = [permissions.IsAuthenticated, ]
-
+    
     def get_queryset(self):
         return Video.objects.filter(saves__in=[self.request.user])
 

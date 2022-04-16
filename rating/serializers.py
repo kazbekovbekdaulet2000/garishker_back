@@ -27,8 +27,10 @@ class RatingCreateSerializer(serializers.ModelSerializer):
         fields = ['id', 'body', 'rating']
 
     def create(self, validated_data):
-        validated_data['content_type'] = ContentType.objects.get_for_model(
-            self.context['model'])
-        validated_data['object_id'] = self.context['object_id']
-        validated_data['owner'] = self.context['request'].user
+        model = self.context['view'].model
+        object_id = self.context['view'].kwargs.get('id')
+        user = self.context['request'].user
+        validated_data['content_type'] = ContentType.objects.get_for_model(model)
+        validated_data['object_id'] = object_id
+        validated_data['owner'] = user
         return super().create(validated_data)

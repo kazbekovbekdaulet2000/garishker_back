@@ -26,7 +26,8 @@ class TestResultAnswersSerializer(serializers.ModelSerializer):
 
 class TestResultSerializer(serializers.ModelSerializer):
     percentage = serializers.SerializerMethodField(read_only=True)
-    answers = TestResultAnswersSerializer(source = 'test.quiz_question', read_only=True, many=True)
+    answers = TestResultAnswersSerializer(
+        source='test.quiz_question', read_only=True, many=True)
 
     def get_percentage(self, obj) -> str:
         return "%.2f" % (obj.points / obj.max_points * 100) + '%'
@@ -42,9 +43,10 @@ class TestResultSerializer(serializers.ModelSerializer):
 
 class TestResultCreateSerializer(serializers.ModelSerializer):
     test = None
-    all_attempts = []
+    q_ids = []
     percentage = serializers.SerializerMethodField(read_only=True)
-    answers = TestResultAnswersSerializer(source = 'test.quiz_question', read_only=True, many=True)
+    answers = TestResultAnswersSerializer(
+        source='test.quiz_question', read_only=True, many=True)
 
     def get_percentage(self, obj) -> str:
         return "%.2f" % (obj.points / obj.max_points * 100) + '%'
@@ -60,31 +62,49 @@ class TestResultCreateSerializer(serializers.ModelSerializer):
                             'points', 'max_points', 'attempt_num', 'test', 'answers']
 
     def validate(self, attrs):
-        self.test = get_object_or_404(Test, id=self.context['test_id'])
+        self.test = get_object_or_404(
+            Test,
+            id=self.context['view'].kwargs.get('test_id')
+        )
 
-        if(self.test.quiz_question.all().count()==0):
+        if(self.test.quiz_question.all().count() == 0):
             raise ValidationError('Пока невозможно сдать тест')
 
-        if(TestResult.objects.filter(test=self.test, user=self.context['request'].user, attempt_num=1).exists()):
+        if(TestResult.objects.filter(
+            test=self.test,
+            user=self.context['request'].user,
+            attempt_num=self.context['view'].attempt_num
+        ).exists()):
             raise ValidationError('Результаты уже есть')
-        
-        for question in self.test.quiz_question.filter(is_active=True):
-            attempts = Attempt.objects.filter(
-                user=self.context['request'].user,
-                content_type=ContentType.objects.get_for_model(Question),
-                object_id=question.id
-            )
-            if(not attempts.exists()):
-                raise ValidationError('Не все тесты не отвечены')
 
-            self.all_attempts.extend(attempts)
+        self.q_ids = list(self.test.quiz_question.filter(
+            is_active=True).values_list('id', flat=True))
+
+        attempts = Attempt.objects.filter(
+            user=self.context['request'].user,
+            content_type=ContentType.objects.get_for_model(Question),
+            object_id__in=self.q_ids,
+            attempt_num=self.context['view'].attempt_num
+        )
+        if(not len(attempts) == len(self.q_ids)):
+            raise ValidationError('Не все тесты не отвечены')
+
         return attrs
 
     def create(self, validated_data):
         points = 0
-        for attempt in self.all_attempts:
+        
+        attempts = Attempt.objects.filter(
+            user=self.context['request'].user,
+            content_type=ContentType.objects.get_for_model(Question),
+            object_id__in=self.q_ids,
+            attempt_num=self.context['view'].attempt_num
+        )
+
+        for attempt in attempts:
             if(attempt.is_correct):
                 points += attempt.content_object.point
+
         validated_data['max_points'] = self.test.quiz_question.max_points()
         validated_data['points'] = points
         validated_data['test'] = self.test

@@ -10,9 +10,9 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    finished = serializers.SerializerMethodField(default=False)
+    finished = serializers.SerializerMethodField()
     lector = LectorSerializer(many=False, read_only=True)
-    accessible = serializers.SerializerMethodField(default=False)
+    accessible = serializers.SerializerMethodField()
 
     def get_finished(self, obj) -> bool:
         if(self.context['request'].user.is_anonymous):
@@ -23,7 +23,7 @@ class LessonSerializer(serializers.ModelSerializer):
             object_id=obj.id,
             success=True).count() > 0
 
-    def get_accessible(self, obj):
+    def get_accessible(self, obj) -> bool:
         if(self.context['request'].user.is_anonymous):
             return obj.order == 1
         else:
@@ -32,10 +32,9 @@ class LessonSerializer(serializers.ModelSerializer):
                 content_type=ContentType.objects.get_for_model(Lesson),
                 object_id=obj.id
             )
-            if(participant.count()>0):
+            if(participant.count() > 0):
                 return participant.last().access
             return obj.order == 1
-            
 
     class Meta:
         model = Lesson

@@ -16,7 +16,8 @@ class TestQuestionSerializer(serializers.ModelSerializer):
         attempts = Attempt.objects.filter(
             user=self.context['request'].user,
             content_type=ContentType.objects.get_for_model(Question),
-            object_id=obj.id
+            object_id=obj.id,
+            attempt_num = 1
         )
         if(attempts.count() > 0):
             answer = attempts.last().selected_answer
