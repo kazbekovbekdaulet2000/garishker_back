@@ -113,5 +113,5 @@ class LessonNext(APIView):
             if(participation.success == False):
                 participation.success = True
                 participation.save()
-                return Response({"message": "0"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "0"}, status=status.HTTP_202_ACCEPTED)
         return Response({"message": "1"}, status=status.HTTP_400_BAD_REQUEST)
