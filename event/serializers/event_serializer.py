@@ -5,9 +5,11 @@ from event.serializers.city_serializer import CitySerializer
 
 
 class EventSerializer(serializers.ModelSerializer):
-    bookmarks_count = serializers.IntegerField(source="saves.count", read_only=True)
+    bookmarks_count = serializers.IntegerField(
+        source="saves.count", read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
-    participants_count = serializers.IntegerField(source="participants.count", read_only=True)
+    participants_count = serializers.IntegerField(
+        source="participants.count", read_only=True)
     participant = serializers.SerializerMethodField(read_only=True)
     city = CitySerializer(many=False)
 
@@ -23,7 +25,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ['id', 'name_ru', 'name_kk', 'description_ru', 'description_kk',
                   'city', 'address_ru', 'address_kk', 'address_link', 'event_date', 'bookmarks_count',
-                  'bookmarked', 'views', 'max_user_count', 'participants_count', 'participant']
+                  'bookmarked', 'views', 'max_user_count', 'participants_count', 'participant', 'poster', 'canceled']
 
 
 class EventDetailSerializer(EventSerializer):

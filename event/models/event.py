@@ -34,6 +34,8 @@ class Event(AbstractModel):
     address_link = models.CharField(_("Адрес (ссылка)"), max_length=4096)
     event_date = models.DateTimeField(_("Время проведения"), null=False, blank=True)
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='event_participate', blank=True)
+    poster = models.ImageField(upload_to='event-posters', blank=True, null=True)
+    canceled = models.BooleanField(default=False)
     saves = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='event_saves', blank=True)
     views = models.PositiveIntegerField(default=0)
     max_user_count = models.PositiveIntegerField(null=True, blank=True)
