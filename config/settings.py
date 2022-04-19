@@ -95,7 +95,8 @@ INTERNAL_IPS = [
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:4200',
     'https://shapka.pro',
-    'https://garyshker.com'
+    'https://garyshker.com',
+    'https://garyshker-dev.web.app'
 )
 
 ROOT_URLCONF = 'config.urls'
