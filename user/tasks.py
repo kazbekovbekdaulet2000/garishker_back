@@ -2,6 +2,7 @@ from celery import shared_task
 from django.core.mail import send_mail, get_connection, send_mass_mail
 from django.conf import settings
 from bs4 import BeautifulSoup
+from celery.utils.log import get_task_logger
 
 
 connection = get_connection(
@@ -11,6 +12,8 @@ connection = get_connection(
     password=settings.EMAIL_PASSWORD,
     use_tls=settings.EMAIL_USE_TLS
 )
+
+logger = get_task_logger(__name__)
 
 
 @shared_task
@@ -26,31 +29,32 @@ def send_gmail_beat(*args, **kwargs):
 
 @shared_task
 def send_gmail(mail):
-    with open('templates/thank_page.html', 'r', encoding='utf-8') as f:
+    with open(f'{settings.USER_EMAIL_TEMPLATES}thank_page.html', 'r', encoding='utf-8') as f:
         data = f.read()
     soup = BeautifulSoup(data, 'html.parser')
     return send_mail(subject='Регистрация',
                      message='Cпасибо!!!',
                      from_email=settings.EMAIL_HOST_USER,
                      recipient_list=[mail],
-                     html_message=soup,
+                     html_message=str(soup),
                      connection=connection)
 
 
 @shared_task
 def send_reset_code(mail, code):
-    with open('templates/reset_pass.html', 'r', encoding='utf-8') as f:
+    # logger.info(f'{settings.USER_EMAIL_TEMPLATES}reset_pass.html')
+    with open(f'{settings.USER_EMAIL_TEMPLATES}reset_pass.html', 'r', encoding='utf-8') as f:
         data = f.read()
-    
+
     soup = BeautifulSoup(data, 'html.parser')
     code = soup.find("div", {"id": "code"})
-    code.string = code
+    code.string = str(code)
 
     return send_mail(subject='Восстановление пароля',
                      message=code,
                      from_email=settings.EMAIL_HOST_USER,
                      recipient_list=[mail],
-                     html_message=soup,
+                     html_message=str(soup),
                      connection=connection)
 
 
