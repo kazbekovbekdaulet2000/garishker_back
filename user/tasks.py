@@ -42,16 +42,14 @@ def send_gmail(mail):
 
 @shared_task
 def send_reset_code(mail, code):
-    # logger.info(f'{settings.USER_EMAIL_TEMPLATES}reset_pass.html')
     with open(f'{settings.USER_EMAIL_TEMPLATES}reset_pass.html', 'r', encoding='utf-8') as f:
         data = f.read()
-
     soup = BeautifulSoup(data, 'html.parser')
-    code = soup.find("div", {"id": "code"})
-    code.string = str(code)
+    divCode = soup.find("div", {"id": "code"})
+    divCode.string = str(code)
 
     return send_mail(subject='Восстановление пароля',
-                     message=code,
+                     message='Восстановление пароля',
                      from_email=settings.EMAIL_HOST_USER,
                      recipient_list=[mail],
                      html_message=str(soup),
