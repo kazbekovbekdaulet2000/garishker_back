@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-
+from datetime import date
 from user.tasks import send_gmail
 User = get_user_model()
 
@@ -24,11 +24,11 @@ class UserSerializer(serializers.ModelSerializer):
         if password != re_password:
             raise serializers.ValidationError(
                 {'password': 'Password must match'})
-
-        return attrs
-
-    def validate_birth_date(self, attrs):
-        # if(attrs['birth_date'])
+        min_date = date(1945, 1, 1)
+        max_date = date(2017, 1, 1)
+        if(attrs['birth_date'] > min_date and attrs['birth_date'] < max_date):
+            raise serializers.ValidationError(
+                {'birth_date': 'not match'})
         return attrs
 
     def save(self):

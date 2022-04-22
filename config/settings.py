@@ -346,3 +346,7 @@ AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
 AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
 
 AUTH_USER_MODEL = 'user.User'
+
+
+PAYMENT_URL = env("PAYMENT_URL")
+PAYMENT_API_KEY= env("PAYMENT_API_KEY")
