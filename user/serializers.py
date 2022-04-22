@@ -26,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
                 {'password': 'Password must match'})
         min_date = date(1945, 1, 1)
         max_date = date(2017, 1, 1)
-        if(attrs['birth_date'] > min_date and attrs['birth_date'] < max_date):
+        if(attrs['birth_date'] < min_date or attrs['birth_date'] > max_date):
             raise serializers.ValidationError(
                 {'birth_date': 'not match'})
         return attrs
