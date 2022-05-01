@@ -51,17 +51,16 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     name = models.CharField(max_length=255, null=True, blank=True)
     surname = models.CharField(max_length=255, null=True, blank=True)
     birth_date = models.DateField(max_length=8, null=True, blank=True)
-
-    image = models.ImageField(
-        null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name=" ")
+    image = models.ImageField(null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name="Фото")
+    country = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
-
     description = models.TextField(null=True, blank=True)
-
     user_type = models.PositiveIntegerField(choices=USER_TYPE, default=0)
+    edu_place = models.CharField(null=True, max_length=255)
 
     last_login = models.DateTimeField(auto_now_add=True, null=True)
     verified = models.BooleanField(default=False)
+    
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -69,7 +68,6 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-
     REQUIRED_FIELDS = ['name', 'surname', 'birth_date', 'city', 'user_type']
 
     def __str__(self):

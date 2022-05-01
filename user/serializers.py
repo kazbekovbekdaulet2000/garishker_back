@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'name', 'surname', 'birth_date', 'description',
-                  'city', 'user_type', 'password', 're_password']
+                  'country', 'city', 'user_type', 'password', 're_password', 'edu_place']
         extra_fields = {
             'password': {'write_only': True}
         }

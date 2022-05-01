@@ -5,22 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from rest_framework.response import Response
 from rest_framework import status
+from event.models.city import City
 from user.models import User
-
-
-class City(AbstractModel):
-    name_ru = models.CharField(_("Название города (рус)"), max_length=255)
-    name_kk = models.CharField(_("Название города (каз)"), max_length=255)
-    long = models.DecimalField(max_digits=9, decimal_places=6, default=0.0)
-    lat = models.DecimalField(max_digits=9, decimal_places=6, default=0.0   )
-
-    def __str__(self):
-        return self.name_ru
-
-    class Meta:
-        ordering = ['created_at']
-        verbose_name = 'Город'
-        verbose_name_plural = 'Города'
 
 
 class Event(AbstractModel):
@@ -33,7 +19,6 @@ class Event(AbstractModel):
     address_kk = models.CharField(_("Адрес (каз)"), max_length=255)
     address_link = models.CharField(_("Адрес (ссылка)"), max_length=4096)
     event_date = models.DateTimeField(_("Время проведения"), null=False, blank=True)
-    participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='event_participate', blank=True)
     poster = models.ImageField(upload_to='event-posters', blank=True, null=True)
     canceled = models.BooleanField(default=False)
     saves = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='event_saves', blank=True)
@@ -52,15 +37,15 @@ class Event(AbstractModel):
             return Response({"bookmarked": True}, status=status.HTTP_202_ACCEPTED)
     
     def participate(self, user: User):
-        if self.max_user_count > self.participants.all().count():
-            if(user in self.participants.all()):
-                self.participants.remove(user)
-                return Response({"bookmarked": False}, status=status.HTTP_202_ACCEPTED)
-            else:
-                self.participants.add(user)
-                return Response({"bookmarked": True}, status=status.HTTP_202_ACCEPTED)
-        else: 
-            return Response({"status": "no place to serve"}, status=status.HTTP_403_FORBIDDEN)
+        # if self.max_user_count > self.participants.all().count():
+        #     if(user in self.participants.all()):
+        #         self.participants.remove(user)
+        #         return Response({"bookmarked": False}, status=status.HTTP_202_ACCEPTED)
+        #     else:
+        #         self.participants.add(user)
+        #         return Response({"bookmarked": True}, status=status.HTTP_202_ACCEPTED)
+        # else: 
+        return Response({"status": "no place to serve"}, status=status.HTTP_403_FORBIDDEN)
 
     def increase_views(self):
         self.views += 1

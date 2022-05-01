@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'organizations',
     'rating',
     'event',
+    'payment',
     
     # cors
     'corsheaders',

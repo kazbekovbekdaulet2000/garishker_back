@@ -1,5 +1,5 @@
 from django.urls import path
-from event.views import EventParticipate, EventSave, EventsDetail, EventsList
+from event.views.event_views import EventParticipate, EventSave, EventsDetail, EventsList
 
 urlpatterns = [
     path('', EventsList.as_view()),
