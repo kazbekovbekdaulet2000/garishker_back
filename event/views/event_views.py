@@ -55,4 +55,3 @@ class EventParticipate(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = EventRegistration.objects.all()
     serializer_class = EventRegistrationsSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
