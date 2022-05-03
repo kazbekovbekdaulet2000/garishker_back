@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 
 def filter_by_time(queryset, name, value):
     current_date = datetime.today()
-    past_date = current_date - timedelta(days=365*4)
+    past_date = current_date - timedelta(days=1300)
     future_date = current_date + timedelta(years=365)
     if(value == 'past'):
         return queryset.filter(event_date__range=[past_date, current_date])
