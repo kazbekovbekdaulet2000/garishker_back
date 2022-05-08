@@ -4,9 +4,14 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class LikeSerializer(serializers.ModelSerializer):
+    liked = serializers.SerializerMethodField(read_only=True)
+
+    def get_liked(self, obj):
+        return not (obj=={})
+
     class Meta:
         model = Like
-        fields = ('id', 'object_id')
+        fields = ('id', 'object_id', 'liked')
 
     def create(self, validated_data):
         lookup_field = self.context['view'].lookup_field

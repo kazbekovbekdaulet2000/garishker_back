@@ -9,7 +9,8 @@ from reaction.serializers.generic_serializer import ReactionGenericSerializer
 class ReviewSerializer(ReactionGenericSerializer):
     class Meta:
         model = Review
-        fields = ReactionGenericSerializer.Meta.fields + ('rating', 'owner')
+        fields = ReactionGenericSerializer.Meta.fields + \
+            ('rating', 'body', 'owner')
 
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
