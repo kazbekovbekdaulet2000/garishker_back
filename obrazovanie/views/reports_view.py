@@ -47,7 +47,7 @@ class ReportBookmarked(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get_queryset(self):
-        return Report.objects.filter(moderated=True, saves__in=[self.request.user])
+        return Report.objects.list_bookmarked(self.request.user)
 
 
 class ReportLiked(generics.ListAPIView):
@@ -55,4 +55,4 @@ class ReportLiked(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get_queryset(self):
-        return Report.objects.filter(moderated=True, likes__in=[self.request.user])
+        return Report.objects.list_liked(self.request.user)

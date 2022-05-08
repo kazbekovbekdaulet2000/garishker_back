@@ -39,16 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # apps
-    'obrazovanie',
     'user',
+    'reaction',
+    'obrazovanie',
     'support',
     'course',
     'quiz',
     'organizations',
-    'rating',
     'event',
+    'shop',
     'payment',
-    
+
+
     # cors
     'corsheaders',
 
@@ -70,7 +72,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
     # django prometheus
-    'django_prometheus'
+    'django_prometheus',
 ]
 
 MIDDLEWARE = [
@@ -351,4 +353,4 @@ AUTH_USER_MODEL = 'user.User'
 
 
 PAYMENT_URL = env("PAYMENT_URL")
-PAYMENT_API_KEY= env("PAYMENT_API_KEY")
+PAYMENT_API_KEY = env("PAYMENT_API_KEY")

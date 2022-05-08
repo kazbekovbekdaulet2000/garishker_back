@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from obrazovanie.models.comment import Comment
 from obrazovanie.models.report import Report
 from obrazovanie.serializers.categorty_serizializers import CategorySerializer
 from user.serializers import UserInfoSerializer
@@ -7,29 +6,16 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class BaseReportSerializer(serializers.ModelSerializer):
-    likes_count = serializers.IntegerField(
-        source="likes.count", read_only=True)
     liked = serializers.SerializerMethodField(read_only=True)
-
-    comments_count = serializers.SerializerMethodField(read_only=True)
-
-    bookmarks_count = serializers.IntegerField(
-        source="saves.count", read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
-
-
-    def get_comments_count(self, obj) -> int:
-        return len(Comment.objects.filter(
-            content_type=ContentType.objects.get_for_model(Report),
-            object_id=obj.id))
 
     def get_liked(self, obj):
         user = self.context['request'].user
-        return user in obj.likes.all()
+        return Report.objects.liked(user, obj.id)
 
     def get_bookmarked(self, obj):
         user = self.context['request'].user
-        return user in obj.saves.all()
+        return Report.objects.saved(user, obj.id)
 
     class Meta:
         model = Report

@@ -5,7 +5,6 @@ from course.models.participant import Participant
 from course.serializers.lector_serializer import LectorDetailSerializer, LectorSerializer
 from organizations.serializers.organization_serializer import OrganizationSerializer
 from django.contrib.contenttypes.models import ContentType
-from rating.models import Rating
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -80,9 +79,7 @@ class CourseDetailSerializer(CourseSerializer):
             return par.last().points
 
     def get_ratings_count(self, obj) -> int:
-        return len(Rating.objects.filter(
-            content_type=ContentType.objects.get_for_model(Course),
-            object_id=obj.id))
+        return obj.reviews_count
 
     class Meta(CourseSerializer.Meta):
         model = Course

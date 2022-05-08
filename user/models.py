@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from config.custom_model import AbstractModel
-# from django.core.validators import 
+from obrazovanie.models.common_manager import ReactionManager
 
 
 USER_TYPE = (
@@ -14,7 +14,7 @@ USER_TYPE = (
 )
 
 
-class CustomUserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager, ReactionManager):
 
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
@@ -52,8 +52,8 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     surname = models.CharField(max_length=255, null=True, blank=True)
     birth_date = models.DateField(max_length=8, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to='profile', default='garysh.jpg', verbose_name="Фото")
-    country = models.CharField(max_length=255, null=True, blank=True)
-    city = models.CharField(max_length=255, null=True, blank=True)
+    country = models.CharField(max_length=255, null=True, blank=True, default=None)
+    city = models.CharField(max_length=255, null=True, blank=True, default=None)
     description = models.TextField(null=True, blank=True)
     user_type = models.PositiveIntegerField(choices=USER_TYPE, default=0)
     edu_place = models.CharField(null=True, max_length=255)

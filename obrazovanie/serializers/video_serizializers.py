@@ -1,35 +1,21 @@
 from rest_framework import serializers
-from obrazovanie.models.comment import Comment
 from obrazovanie.models.video import Video, VideoQuality
-from obrazovanie.serializers.categorty_serizializers import CategorySerializer
 from user.serializers import UserInfoSerializer
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 
 
 class BaseVideoSerializer(serializers.ModelSerializer):
-    likes_count = serializers.IntegerField(
-        source="likes.count", read_only=True)
     liked = serializers.SerializerMethodField(read_only=True)
-
-    comments_count = serializers.SerializerMethodField(read_only=True)
-
-    bookmarks_count = serializers.IntegerField(
-        source="saves.count", read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
-
-    def get_comments_count(self, obj) -> int:
-        return len(Comment.objects.filter(
-            content_type=ContentType.objects.get_for_model(Video),
-            object_id=obj.id))
 
     def get_liked(self, obj):
         user = self.context['request'].user
-        return user in obj.likes.all()
+        return Video.objects.liked(user, obj.id)
 
     def get_bookmarked(self, obj):
         user = self.context['request'].user
-        return user in obj.saves.all()
+        return Video.objects.saved(user, obj.id)
 
     class Meta:
         model = Video
@@ -58,4 +44,5 @@ class VideoDetailSerializer(BaseVideoSerializer):
     class Meta(BaseVideoSerializer.Meta):
         model = Video
         fields = BaseVideoSerializer.Meta.fields + \
-            ['author', 'body_ru', 'body_kk', 'video', 'video_quality', 'original_quality', 'subs_kk']
+            ['author', 'body_ru', 'body_kk', 'video',
+                'video_quality', 'original_quality', 'subs_kk']

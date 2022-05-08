@@ -61,7 +61,7 @@ class VideoBookmarked(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     
     def get_queryset(self):
-        return Video.objects.filter(saves__in=[self.request.user])
+        return Video.objects.list_bookmarked(self.request.user)
 
 
 class VideoLiked(generics.ListAPIView):
@@ -69,4 +69,4 @@ class VideoLiked(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
 
     def get_queryset(self):
-        return Video.objects.filter(likes__in=[self.request.user])
+        return Video.objects.list_liked(self.request.user)

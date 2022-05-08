@@ -27,9 +27,9 @@ class Customer(AbstractModel):
         return response.json()
 
 class Donation(AbstractModel):
-    order_id = models.CharField(null=False, blank=False, max_length=255)
-    shop_id = models.CharField(null=False, blank=False, max_length=255)
-    status = models.CharField(null=False, blank=False, max_length=255)
+    order_id = models.CharField(null=False, blank=False, max_length=255, default='1')
+    shop_id = models.CharField(null=False, blank=False, max_length=255, default='1')
+    status = models.CharField(null=False, blank=False, max_length=255, default="PENDING")
     amount = models.PositiveIntegerField(default=1000)
     currency = models.CharField(default='KZT', max_length=32)
     capture_method = models.CharField(default="AUTO", max_length=12)

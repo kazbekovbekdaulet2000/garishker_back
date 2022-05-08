@@ -1,6 +1,6 @@
 from django.contrib import admin
 from obrazovanie.models.category import Category
-from obrazovanie.models.comment import Comment
+# from obrazovanie.models.comment import Comment
 from obrazovanie.models.report import Report
 from obrazovanie.models.video import Video
 from obrazovanie.tasks import video_resize_yandex_storage
@@ -23,43 +23,22 @@ def convert_video(modeladmin, request, queryset):
 
 
 class ReportAdmin(admin.ModelAdmin):
-    def likes_count(self, obj):
-        return obj.likes.count()
-
-    list_display = ['title_ru', 'moderated', 'created_at']
+    list_display = ['title_ru', 'moderated', 'created_at', 'likes_count', 'comments_count', 'bookmarks_count']
     ordering = ['-created_at', '-updated_at']
     actions = [make_published]
-    exclude = ('likes', 'saves')
+    exclude = ('reviews_count',)
     readonly_fields = ('views', 'read_time',)
 
 
 class VideoAdmin(admin.ModelAdmin):
-    def likes_count(self, obj):
-        return obj.likes.count()
-
-    list_display = ['title_ru', 'created_at', 'convert_status']
+    list_display = ['title_ru', 'created_at', 'convert_status', 'likes_count', 'comments_count', 'bookmarks_count']
     ordering = ['-created_at']
     actions = [convert_video]
-    exclude = ('likes', 'saves')
+    exclude = ('reviews_count',)
     readonly_fields = ('views', 'video_quality',
                        'original_quality', 'convert_status', 'video')
-
-    # def save_model(self, request, obj, form, change):
-    #     if not obj.author:
-    #         obj.author = request.user
-    #     obj.last_modified_by = request.user
-    #     obj.save()
-
-
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ['body', 'owner', 'created_at', 'content_type', 'object_id']
-    ordering = ['-created_at', '-owner']
-    readonly_fields = ('content_type', 'object_id', 'owner', 'likes', 'reply')
-    search_fields = ['body']
-    list_filter = ['content_type', ]
-
 
 admin.site.register(Category)
 admin.site.register(Report, ReportAdmin)
 admin.site.register(Video, VideoAdmin)
-admin.site.register(Comment, CommentAdmin)
+# admin.site.register(Comment, CommentAdmin)

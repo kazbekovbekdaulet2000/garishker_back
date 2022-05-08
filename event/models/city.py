@@ -9,7 +9,8 @@ from event.models.country import Country
 class City(AbstractModel):
     name_ru = models.CharField(_("Название города (рус)"), max_length=255)
     name_kk = models.CharField(_("Название города (каз)"), max_length=255)
-    country = models.ForeignKey(Country, verbose_name=_("Страна"), on_delete=models.CASCADE, related_name='cities', default=1)
+    country = models.ForeignKey(Country, verbose_name=_(
+        "Страна"), on_delete=models.CASCADE, related_name='cities', null=True, blank=True, default=None)
     long = models.DecimalField(max_digits=9, decimal_places=6, default=0.0)
     lat = models.DecimalField(max_digits=9, decimal_places=6, default=0.0)
 

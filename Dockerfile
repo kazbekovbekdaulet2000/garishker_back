@@ -21,4 +21,4 @@ COPY ./.env.dev ./.env.dev
 RUN pip install -r requirements.txt
 RUN chmod +x /scripts/*
 
-CMD ["entrypoint.sh"]
+CMD ["scripts/entrypoint.sh"]
