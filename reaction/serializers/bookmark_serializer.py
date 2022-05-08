@@ -4,9 +4,14 @@ from reaction.models.bookmark import Bookmark
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
+    bookmarked = serializers.SerializerMethodField(read_only=True)
+
+    def get_bookmarked(self, obj):
+        return not (obj == {})
+
     class Meta:
         model = Bookmark
-        fields = ('id', 'object_id')
+        fields = ('id', 'object_id', 'bookmarked')
 
     def create(self, validated_data):
         lookup_field = self.context['view'].lookup_field
