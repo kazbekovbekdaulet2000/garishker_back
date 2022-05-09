@@ -13,8 +13,8 @@ class Bookmark(AbstractModel, ContentTypeModel):
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'Bookmark'
-        verbose_name_plural = 'Bookmarks'
+        verbose_name = 'Сохранение'
+        verbose_name_plural = 'Сохранения'
 
 
 @receiver(models.signals.post_save, sender=Bookmark)

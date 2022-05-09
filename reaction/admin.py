@@ -4,17 +4,17 @@ from reaction.models.bookmark import Bookmark
 from reaction.models.comment import Comment
 from reaction.models.like import Like
 from reaction.models.review import Review
+from shop.admin import GenericReactionAdmin
 
 
-class GenericAdmin(admin.ModelAdmin):
+class GenericAdmin(GenericReactionAdmin):
     def has_add_permission(self, request, obj=None):
         return False
 
     def has_change_permission(self, request, obj=None):
         return False
+
     list_display = ('id', 'owner', 'content_object')
-    readonly_fields = ('likes_count', 'comments_count',
-                       'reviews_count', 'bookmarks_count')
 
 
 class GenericBaseAdmin(admin.ModelAdmin):
@@ -26,7 +26,7 @@ class GenericBaseAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None) -> bool:
         return False
-    
+
     list_display = ('id', 'owner', 'content_object')
 
 
