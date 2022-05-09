@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'storages',
 
     # crontab
-    'django_celery_beat',
+    # 'django_celery_beat',
 
     # django prometheus
     'django_prometheus',

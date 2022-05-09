@@ -6,9 +6,10 @@ from django.utils.translation import gettext_lazy as _
 
 User = settings.AUTH_USER_MODEL
 
+
 class AbstractModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(verbose_name=_('Создан'), auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name=_('Изменен'), auto_now=True)
 
     class Meta:
         abstract = True
@@ -33,8 +34,8 @@ class ContentTypeManager(models.Manager):
             content_type=ContentType.objects.get_for_model(model),
             owner=user
         )
-    
-    def exists(self, model: models.Model, user: User, object_id: int)-> bool:
+
+    def exists(self, model: models.Model, user: User, object_id: int) -> bool:
         return self.filter(
             content_type=ContentType.objects.get_for_model(model),
             owner=user,
@@ -55,10 +56,14 @@ class ContentTypeModel(models.Model):
 
 
 class ReactionsAbstract(models.Model):
-    likes_count = models.PositiveIntegerField(verbose_name=_('Лайки'), default=0)
-    comments_count = models.PositiveIntegerField(verbose_name=_('Комментарии'), default=0)
-    reviews_count = models.PositiveIntegerField(verbose_name=_('Рейтинг'), default=0)
-    bookmarks_count = models.PositiveIntegerField(verbose_name=_('Сохранения'), default=0)
+    likes_count = models.PositiveIntegerField(
+        verbose_name=_('Лайки'), default=0)
+    comments_count = models.PositiveIntegerField(
+        verbose_name=_('Комментарии'), default=0)
+    reviews_count = models.PositiveIntegerField(
+        verbose_name=_('Рейтинг'), default=0)
+    bookmarks_count = models.PositiveIntegerField(
+        verbose_name=_('Сохранения'), default=0)
 
     class Meta:
         abstract = True

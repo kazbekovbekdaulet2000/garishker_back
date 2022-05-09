@@ -74,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         return self.email
 
     def get_full_name(self):
-        return ' '.join(self.name, self.surname)
+        return f'{self.name} {self.surname}'
 
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)

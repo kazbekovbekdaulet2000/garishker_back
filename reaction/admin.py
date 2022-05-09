@@ -7,18 +7,30 @@ from reaction.models.review import Review
 
 
 class GenericAdmin(admin.ModelAdmin):
-    list_fields = ('id', 'owner')
-    readonly_fields = ('likes_count', 'comments_count', 'reviews_count', 'bookmarks_count')
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+    list_display = ('id', 'owner', 'content_object')
+    readonly_fields = ('likes_count', 'comments_count',
+                       'reviews_count', 'bookmarks_count')
 
 
-# class CommentAdmin(admin.ModelAdmin):
-#     list_display = ['body', 'owner', 'created_at', 'content_type', 'object_id']
-#     ordering = ['-created_at', '-owner']
-#     readonly_fields = ('content_type', 'object_id', 'owner', 'likes', 'reply')
-#     search_fields = ['body']
-#     list_filter = ['content_type', ]
+class GenericBaseAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None) -> bool:
+        return False
+    
+    list_display = ('id', 'owner', 'content_object')
+
 
 admin.site.register(Comment, GenericAdmin)
-admin.site.register(Like)
+admin.site.register(Like, GenericBaseAdmin)
 admin.site.register(Review, GenericAdmin)
-admin.site.register(Bookmark)
+admin.site.register(Bookmark, GenericBaseAdmin)

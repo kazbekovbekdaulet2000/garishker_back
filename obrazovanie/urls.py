@@ -53,8 +53,8 @@ urlpatterns = [
     path('videos/bookmarked/', VideoBookmarked.as_view()),
     path('videos/liked/', VideoLiked.as_view()),
 
-    path('videos/<int:id>/like/', LikeAction.as_view(model=Report, lookup_field='id')),
-    path('videos/<int:id>/save/', BookmarkAction.as_view(model=Report, lookup_field='id')),
+    path('videos/<int:id>/like/', LikeAction.as_view(model=Video, lookup_field='id')),
+    path('videos/<int:id>/save/', BookmarkAction.as_view(model=Video, lookup_field='id')),
 
     path('videos/<int:id>/comments/', CommentList.as_view(model=Video)),
     path('videos/<int:id>/comments/<int:comment_id>/', CommentDetail.as_view(model=Video)),

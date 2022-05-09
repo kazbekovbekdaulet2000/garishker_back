@@ -15,6 +15,9 @@ class Review(AbstractModel, ContentTypeModel, ReactionsAbstract):
     owner = models.ForeignKey(User, related_name='review', on_delete=models.CASCADE, null=True)
     rating = models.PositiveIntegerField(null=False, default=5, validators=(MaxValueValidator(5), MinValueValidator(1)))
 
+    def __str__(self):
+        return f"{self.owner.get_full_name()} - {self.content_object.__str__()}"
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Отзыв'

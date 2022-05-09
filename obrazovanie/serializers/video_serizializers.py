@@ -10,10 +10,14 @@ class BaseVideoSerializer(serializers.ModelSerializer):
     bookmarked = serializers.SerializerMethodField(read_only=True)
 
     def get_liked(self, obj):
+        if(self.context['request'].user.is_anonymous):
+            return False
         user = self.context['request'].user
         return Video.objects.liked(user, obj.id)
 
     def get_bookmarked(self, obj):
+        if(self.context['request'].user.is_anonymous):
+            return False
         user = self.context['request'].user
         return Video.objects.saved(user, obj.id)
 

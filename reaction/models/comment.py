@@ -13,7 +13,7 @@ class Comment(AbstractModel, ContentTypeModel, ReactionsAbstract):
     reply = models.ForeignKey('self', related_name='comments_reply', on_delete=models.DO_NOTHING, null=True, blank=True)
 
     def __str__(self):
-        return self.body
+        return f"{self.owner.get_full_name()} - {self.content_object.__str__()}"
 
     class Meta:
         ordering = ['-created_at']
