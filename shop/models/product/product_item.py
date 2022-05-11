@@ -1,8 +1,8 @@
 from django.db import models
 from config.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
-from shop.models.product import Product
-from shop.models.product_size import ProductSize
+from shop.models.product.product import Product
+from shop.models.product.product_size import ProductSize
 
 
 class ProductItem(AbstractModel):

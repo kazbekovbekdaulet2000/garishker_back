@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shop.models.product import Product
+from shop.models.product.product import Product
 from shop.serializers.product_compound_serializer import ProductCompoundSerializer
 from shop.serializers.product_image_serializer import ProductImageSerializer
 

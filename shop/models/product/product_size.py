@@ -35,7 +35,7 @@ class ProductSize(AbstractModel):
     type = models.PositiveIntegerField(_('Тип размера'), choices=SIZE_TYPES, null=False, blank=True, default=0)
     
     def __str__(self):
-        return f"{self.size} ({SIZE_TYPES[self.type][1]}, {GEN_TYPES[self.gender][1]})"
+        return f"{self.size_global} ({SIZE_TYPES[self.type][1]}, {GEN_TYPES[self.gender][1]})"
 
     class Meta:
         ordering = ['-created_at']

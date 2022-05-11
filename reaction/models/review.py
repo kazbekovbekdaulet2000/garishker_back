@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from config.custom_model import AbstractModel, ContentTypeModel, ReactionsAbstract
-from shop.models.product import Product
+from shop.models.product.product import Product
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 

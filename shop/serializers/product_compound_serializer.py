@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shop.models.product_compound import ProductCompound
+from shop.models.product.product_compound import ProductCompound
 
 
 class ProductCompoundSerializer(serializers.ModelSerializer):

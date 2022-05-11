@@ -1,9 +1,9 @@
 from django.db import models
 from config.custom_model import AbstractModel, ReactionsAbstract
 from django.utils.translation import gettext_lazy as _
-from shop.models.product_category import ProductCategory
+from shop.models.product.product_category import ProductCategory
 from django.core.validators import MaxValueValidator, MinValueValidator
-from shop.models.product_compound import ProductCompound
+from shop.models.product.product_compound import ProductCompound
 
 
 class Product(AbstractModel, ReactionsAbstract):

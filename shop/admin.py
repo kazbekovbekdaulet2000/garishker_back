@@ -1,11 +1,11 @@
 from django.contrib import admin
-from shop.models.product_category import ProductCategory
-from shop.models.product_compound import ProductCompound
+from shop.models.product.product_category import ProductCategory
+from shop.models.product.product_compound import ProductCompound
 
-from shop.models.product_image import ProductImage
-from shop.models.product_item import ProductItem
-from shop.models.product_size import ProductSize
-from .models.product import Product
+from shop.models.product.product_image import ProductImage
+from shop.models.product.product_item import ProductItem
+from shop.models.product.product_size import ProductSize
+from .models.product.product import Product
 
 
 class GenericReactionAdmin(admin.ModelAdmin):
