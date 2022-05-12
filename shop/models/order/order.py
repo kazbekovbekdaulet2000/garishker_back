@@ -1,17 +1,30 @@
 from django.db import models
-from config.custom_model import AbstractModel, ReactionsAbstract
+from config.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
-from shop.models.product.product_category import ProductCategory
-from django.core.validators import MaxValueValidator, MinValueValidator
-from shop.models.product.product_compound import ProductCompound
 
+
+DELIVERY_TYPES = (
+    (0, _('Доставка по городу Алматы')),
+    (1, _('Самовывоз (г. Алматы)')),
+    (2, _('Доставка по Казахстану'))
+)
 
 class Order(AbstractModel):
     ord_id = models.CharField(verbose_name=_('Уникальный ID'), max_length=12)
-    product
+    name = models.CharField(verbose_name=_('Имя заказчика'), max_length=255, null=False)
+    email = models.CharField(verbose_name=_('Email'), max_length=255, null=False, default="null")
+    phone = models.CharField(verbose_name=_("Телефон"), max_length=16, null=False)
+    address = models.CharField(verbose_name=_("Адрес"), max_length=255, null=True, blank=True)
+    city = models.CharField(verbose_name=_("Город"), max_length=255, null=True, blank=True)
+    post_id = models.CharField(verbose_name=_("Почтовый индекс"), max_length=64, null=True)
 
+    delivery_type = models.PositiveIntegerField(verbose_name=_("Тип доставки"), choices=DELIVERY_TYPES, default=0)
+    delivered = models.BooleanField(verbose_name=_("Доставлен"), default=False)
+    total_sum = models.DecimalField(verbose_name=_("Цена (тиын)"), max_digits=9, decimal_places=2, default=0)
+    total_discount_sum = models.DecimalField(verbose_name=_("Цена (тиын)"), max_digits=9, decimal_places=2, default=0)
+    
     def __str__(self):
-        return self.ord_id
+        return f"{self.name}, {self.phone} ({self.created_at})"
 
     class Meta:
         ordering=['-created_at']

@@ -6,7 +6,7 @@ from shop.models.product.product_size import ProductSize
 
 
 class ProductItem(AbstractModel):
-    unique_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    # unique_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
     product = models.ForeignKey(Product, related_name='items', on_delete=models.DO_NOTHING, verbose_name=_('Продукт'))
     size = models.ForeignKey(ProductSize, on_delete=models.CASCADE, blank=True, verbose_name=_('Размер'))
     count = models.PositiveIntegerField(default=10, null=False, verbose_name=_('Количество доступное'))

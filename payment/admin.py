@@ -1,6 +1,7 @@
 from django.contrib import admin
+from payment.models.donation import Donation
+from payment.models.customer import Customer
 
-from payment.models import Donation
 
-# Register your models here.
 admin.site.register(Donation)
+admin.site.register(Customer)

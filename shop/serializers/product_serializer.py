@@ -2,6 +2,7 @@ from rest_framework import serializers
 from shop.models.product.product import Product
 from shop.serializers.product_compound_serializer import ProductCompoundSerializer
 from shop.serializers.product_image_serializer import ProductImageSerializer
+from shop.serializers.product_item_serializer import ProductItemSerializer
 
 
 class ProductSerializer(serializers.ModelSerializer):

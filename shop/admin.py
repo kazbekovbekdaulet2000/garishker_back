@@ -1,4 +1,6 @@
 from django.contrib import admin
+from shop.models.order.order import Order
+from shop.models.order.order_item import OrderItem
 from shop.models.product.product_category import ProductCategory
 from shop.models.product.product_compound import ProductCompound
 
@@ -9,9 +11,12 @@ from .models.product.product import Product
 
 
 class GenericReactionAdmin(admin.ModelAdmin):
-    readonly_fields = ('likes_count', 'comments_count', 'reviews_count', 'bookmarks_count')
+    readonly_fields = ('likes_count', 'comments_count',
+                       'reviews_count', 'bookmarks_count')
+
     class Meta:
         abstract = True
+
 
 class ProductItemsAdmin(admin.TabularInline):
     model = ProductItem
@@ -29,7 +34,32 @@ class ProductAdmin(GenericReactionAdmin):
     inlines = [ProductImageAdmin, ProductItemsAdmin]
 
 
+class OrderItemAdmin(admin.TabularInline):
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    model = OrderItem
+    extra = 0
+
+
+class OrderAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    readonly_fields = ('ord_id', 'name', 'email', 'phone', 'address', 'city',
+                       'post_id', 'delivery_type', 'total_sum', 'total_discount_sum')
+    inlines = (OrderItemAdmin, )
+
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductSize)
 admin.site.register(ProductCategory)
 admin.site.register(ProductCompound)
+admin.site.register(Order, OrderAdmin)
