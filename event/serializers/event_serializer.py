@@ -4,22 +4,31 @@ from event.serializers.city_serializer import CitySerializer
 
 
 class EventSerializer(serializers.ModelSerializer):
-    bookmarks_count = serializers.IntegerField(
-        source="saves.count", read_only=True)
+    liked = serializers.SerializerMethodField(read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
+
+    def get_liked(self, obj):
+        if(self.context['request'].user.is_anonymous):
+            return False
+        user = self.context['request'].user
+        return Event.objects.liked(user, obj.id)
+
+    def get_bookmarked(self, obj):
+        if(self.context['request'].user.is_anonymous):
+            return False
+        user = self.context['request'].user
+        return Event.objects.saved(user, obj.id)
+
     participants_count = serializers.IntegerField(
         source="participants.count", read_only=True)
     city = CitySerializer(many=False)
 
-    def get_bookmarked(self, obj):
-        user = self.context['request'].user
-        return user in obj.saves.all()
-
     class Meta:
         model = Event
         fields = ['id', 'name_ru', 'name_kk', 'description_ru', 'description_kk',
-                  'city', 'address_ru', 'address_kk', 'address_link', 'event_date', 'bookmarks_count',
-                  'bookmarked', 'views', 'max_user_count', 'participants_count', 'poster', 'canceled']
+                  'city', 'address_ru', 'address_kk', 'address_link', 'event_date', 'views',
+                  'max_user_count', 'participants_count', 'poster', 'canceled', 'liked', 'bookmarked', 
+                  'likes_count', 'comments_count', 'bookmarks_count']
 
 
 class EventDetailSerializer(EventSerializer):

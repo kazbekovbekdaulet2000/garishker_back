@@ -43,14 +43,6 @@ class EventsDetail(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
 
-class EventSave(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        item = get_object_or_404(Event, **{'id': self.kwargs['id']})
-        return item.save_event(request.user)
-
-
 class EventParticipate(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = EventRegistration.objects.all()
