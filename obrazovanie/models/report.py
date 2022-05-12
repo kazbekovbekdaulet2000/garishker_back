@@ -8,6 +8,7 @@ from obrazovanie.models.category import Category
 from obrazovanie.models.common_manager import ReactionManager
 from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.postgres.fields import ArrayField
 
 
 class Report(AbstractModel, ReactionsAbstract):
@@ -23,6 +24,8 @@ class Report(AbstractModel, ReactionsAbstract):
     moderated = models.BooleanField(default=False, blank=True)
     views = models.PositiveIntegerField(default=0)
     read_time = models.CharField(max_length=255, null=True, blank=True)
+
+    languages = ArrayField(base_field=models.CharField(max_length=3), default=['ru','kk'])
 
     objects = ReactionManager()
 

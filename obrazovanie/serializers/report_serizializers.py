@@ -25,7 +25,7 @@ class BaseReportSerializer(serializers.ModelSerializer):
         model = Report
         fields = ['id', 'category', 'likes_count', 'liked', 'bookmarks_count',
                   'bookmarked', 'title_ru', 'title_kk', 'created_at', 'image', 'read_time',
-                  'comments_count', 'views', 'preview_text_ru', 'preview_text_kk']
+                  'comments_count', 'views', 'preview_text_ru', 'preview_text_kk', 'languages']
 
 
 class ReportDetailSerializer(BaseReportSerializer):

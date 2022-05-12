@@ -9,6 +9,8 @@ from reaction.models.like import Like
 from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from config.yandex_storage import ClientDocsStorage
+from django.contrib.postgres.fields import ArrayField
+
 
 VIDEO_CONVERSION_STATUS_CHOICES = (
     ('pending', _('Требуется конвертация')),
@@ -45,7 +47,8 @@ class Video(AbstractModel, ReactionsAbstract):
     convert_status = models.CharField(_('Статус конвертации'), max_length=255, choices=VIDEO_CONVERSION_STATUS_CHOICES, default='pending')
     duriation = models.DurationField(_("Длительность"), blank=True, null=False, default="00:00")
     video_quality = models.ManyToManyField(VideoQuality, related_name='video_qualities')
-
+    languages = ArrayField(base_field=models.CharField(max_length=3), default=['ru','kk'])
+    
     objects = ReactionManager()
     
     def __str__(self):

@@ -25,7 +25,7 @@ class BaseVideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = ['id', 'category', 'likes_count', 'liked', 'bookmarks_count',
                   'bookmarked', 'title_ru', 'title_kk', 'created_at', 'image', 'image_2', 'views',
-                  'comments_count', 'youtube', 'duriation']
+                  'comments_count', 'youtube', 'duriation', 'languages']
 
 
 class VideoQualitiesSerializer(serializers.ModelSerializer):
