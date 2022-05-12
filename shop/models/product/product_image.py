@@ -61,6 +61,7 @@ class ProductImage(AbstractModel):
             self.image_thumb720 = self.create_thumbnail(720)
         if(not self.image_thumb1080):
             self.image_thumb1080 = self.create_thumbnail(1080)
+            self.image = self.create_thumbnail(1080)
         force_update = False
         if self.id:
             force_update = True

@@ -6,4 +6,4 @@ from shop.models.product.product_image import ProductImage
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ('image', 'image_thumb480', 'image_thumb720', 'image_thumb1080')
+        fields = ('image_thumb480', 'image_thumb720', 'image_thumb1080')
