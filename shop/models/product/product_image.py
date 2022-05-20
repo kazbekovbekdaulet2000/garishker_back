@@ -36,14 +36,7 @@ class ProductImage(AbstractModel):
         if(img.height/newsize <= 1 or img.width/newsize <= 1):
             return None
 
-        if(img.width > img.height):
-            width = int(newsize)
-            height = int(img.height/(img.width/newsize))
-        else:
-            height = int(newsize)
-            width = int(img.width/(img.height/newsize))
-
-        THUMBNAIL_SIZE = (width, height)
+        THUMBNAIL_SIZE = (newsize, newsize)
         img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
         img.save(data_img, format='jpeg', quality=100)
 

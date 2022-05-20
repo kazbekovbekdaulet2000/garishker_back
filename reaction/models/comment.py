@@ -23,10 +23,11 @@ class Comment(AbstractModel, ContentTypeModel, ReactionsAbstract):
 
 @receiver(models.signals.post_save, sender=Comment)
 def create_obj(sender, instance, **kwargs):
-    obj = instance.content_object
-    if(not obj.comments_count == None):
-        obj.comments_count += 1
-        obj.save()
+    if(kwargs['created']):
+        obj = instance.content_object
+        if(not obj.comments_count == None):
+            obj.comments_count += 1
+            obj.save()
 
 
 @receiver(models.signals.post_delete, sender=Comment)

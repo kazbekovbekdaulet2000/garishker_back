@@ -13,8 +13,7 @@ class BookmarkAction(APIView):
 
     def post(self, request, *args, **kwargs):
         get_object_or_404(self.model, **{'id': self.kwargs[self.lookup_field]})
-        serializer = BookmarkSerializer(data=request.data, context={
-            'view': self, 'request': request})
+        serializer = BookmarkSerializer(data=request.data, context={'view': self, 'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

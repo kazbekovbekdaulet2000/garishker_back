@@ -19,12 +19,13 @@ class Like(AbstractModel, ContentTypeModel):
 
 @receiver(models.signals.post_save, sender=Like)
 def create_obj(sender, instance, **kwargs):
-    obj = instance.content_object
-    try:
-        obj.likes_count += 1
-        obj.save()
-    except AttributeError:
-        pass
+    if(kwargs['created']):
+        obj = instance.content_object
+        try:
+            obj.likes_count += 1
+            obj.save()
+        except AttributeError:
+            pass
 
 
 @receiver(models.signals.post_delete, sender=Like)

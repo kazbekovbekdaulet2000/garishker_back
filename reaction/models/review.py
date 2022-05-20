@@ -26,16 +26,17 @@ class Review(AbstractModel, ContentTypeModel, ReactionsAbstract):
 
 @receiver(models.signals.post_save, sender=Review)
 def create_obj(sender, instance, **kwargs):
-    obj = instance.content_object
-    if(type(obj) == Product and kwargs['created']):
-        user = obj.owner
-        user.rating = (user.rating + instance.rating)/2
-        user.save()
-    try:
-        if(not obj.reviews_count == None):
-            obj.reviews_count += 1
-            obj.save()
-    except: pass
+    if(kwargs['created']):
+        obj = instance.content_object
+        if(type(obj) == Product and kwargs['created']):
+            user = obj.owner
+            user.rating = (user.rating + instance.rating)/2
+            user.save()
+        try:
+            if(not obj.reviews_count == None):
+                obj.reviews_count += 1
+                obj.save()
+        except: pass
 
 
 @receiver(models.signals.post_delete, sender=Review)
