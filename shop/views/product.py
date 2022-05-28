@@ -13,7 +13,7 @@ class ProductList(generics.ListAPIView):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = ProductSerializer
     queryset = Product.objects.filter(active=True)
-    search_fields = ('product__name_kk', 'product__name_ru')
+    search_fields = ('name_kk', 'name_ru')
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ProductFilter
 
