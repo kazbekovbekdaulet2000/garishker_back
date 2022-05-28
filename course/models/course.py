@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.db import models
-from config.custom_model import AbstractModel, ReactionsAbstract
-from config.yandex_storage import ClientDocsStorage
+from common.custom_model import AbstractModel, ReactionsAbstract
+from common.yandex_storage import ClientDocsStorage
 from course.models.lector import Lector
 from obrazovanie.models.category import Category
 from organizations.models import Organization
