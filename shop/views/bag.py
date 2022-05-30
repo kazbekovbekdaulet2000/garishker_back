@@ -15,8 +15,10 @@ class UserBagList(generics.RetrieveAPIView):
 
 class UserBagProductsList(generics.ListCreateAPIView):
     permission_classes = (permissions.AllowAny, )
-    queryset = UserBagItem.objects.all()
     pagination_class = None
+
+    def get_queryset(self):
+        return UserBagItem.objects.filter(order_id=self.kwargs['uuid'])
 
     def get_serializer_class(self):
         if(self.request.method == 'POST'):
