@@ -38,7 +38,7 @@ class Video(AbstractModel, ReactionsAbstract):
     image_2 = models.FileField(_('Обложка вторая'), upload_to='video-image', blank=True)
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.DO_NOTHING, related_name='video_category')
     video = models.FileField(_('Видео'), upload_to='video-video', storage=ClientDocsStorage, null=True)
-    video_name = models.CharField(_('Название видео с расширением)'), max_length=6250, default="")
+    video_name = models.CharField(_('Название видео с расширением'), max_length=6250, default="", blank=True)
     youtube = models.CharField(max_length=500, blank=True, null=True)
     original_quality = models.PositiveBigIntegerField(_('Качество'), null=True)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, related_name='video_author')
@@ -47,7 +47,7 @@ class Video(AbstractModel, ReactionsAbstract):
     convert_status = models.CharField(_('Статус конвертации'), max_length=255, choices=VIDEO_CONVERSION_STATUS_CHOICES, default='pending')
     duriation = models.DurationField(_("Длительность"), blank=True, null=False, default="00:00")
     video_quality = models.ManyToManyField(VideoQuality, related_name='video_qualities')
-    tags = ArrayField(base_field=models.CharField(max_length=255), default=list())
+    tags = ArrayField(base_field=models.CharField(max_length=255), default=list(), null=True, blank=True)
     languages = ArrayField(base_field=models.CharField(max_length=3), default=['ru','kk'])
     
     objects = ReactionManager()

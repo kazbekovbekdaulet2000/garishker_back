@@ -46,7 +46,6 @@ class RelatedVideoList(generics.ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs['id']
-        video = get_object_or_404(Video, id=pk)
         return Video.objects.filter(~Q(id=pk))
 
 

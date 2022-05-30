@@ -29,7 +29,6 @@ class RelatedReportList(generics.ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs['id']
-        report = get_object_or_404(Report, id=pk)
         return Report.objects.filter(~Q(id=pk), moderated=True)
 
 
