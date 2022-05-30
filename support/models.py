@@ -23,7 +23,7 @@ class Question(AbstractModel):
     answer_kk = models.TextField(_('Ответ (каз)'), max_length=65535, null=True, blank=True)
 
     def __str__(self):
-        return 'asd'
+        return self.question_ru
 
     class Meta:
         verbose_name = 'Вопрос'
