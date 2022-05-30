@@ -24,7 +24,7 @@ class Report(AbstractModel, ReactionsAbstract):
     moderated = models.BooleanField(default=False, blank=True)
     views = models.PositiveIntegerField(default=0)
     read_time = models.CharField(max_length=255, null=True, blank=True)
-
+    tags = ArrayField(base_field=models.CharField(max_length=255), default=list())
     languages = ArrayField(base_field=models.CharField(max_length=3), default=['ru','kk'])
 
     objects = ReactionManager()

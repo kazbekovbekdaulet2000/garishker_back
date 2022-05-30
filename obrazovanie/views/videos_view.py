@@ -3,12 +3,15 @@ from rest_framework import permissions
 from obrazovanie.models.video import Video
 from rest_framework.response import Response
 from obrazovanie.serializers.video_serizializers import (
-    BaseVideoSerializer, VideoDetailSerializer)
-from obrazovanie.utils import VideoSearchFilter
+    BaseVideoSerializer,
+    VideoDetailSerializer
+)
+from obrazovanie.utils import VideoLanguageFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import pagination
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from rest_framework.filters import SearchFilter
 
 
 class CustomPagination(pagination.PageNumberPagination):
@@ -27,8 +30,12 @@ class VideoList(generics.ListAPIView):
     queryset = Video.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     serializer_class = BaseVideoSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = VideoSearchFilter
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = (
+        'title_ru', 'title_kk', 'category__name_ru',
+        'category__name_kk', 'tags'
+    )
+    filterset_class = VideoLanguageFilter
     pagination_class = CustomPagination
 
 
@@ -59,7 +66,7 @@ class VideoDetail(generics.RetrieveAPIView):
 class VideoBookmarked(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     permission_classes = [permissions.IsAuthenticated, ]
-    
+
     def get_queryset(self):
         return Video.objects.list_bookmarked(self.request.user)
 

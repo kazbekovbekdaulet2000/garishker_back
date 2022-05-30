@@ -1,22 +1,26 @@
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
-
 from obrazovanie.models.report import Report
 from obrazovanie.serializers.report_serizializers import BaseReportSerializer, ReportDetailSerializer
-
-from obrazovanie.utils import ReportSearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from rest_framework.filters import SearchFilter
+from obrazovanie.utils import ReportLanguageFilter
 
 
 class ReportList(generics.ListAPIView):
     queryset = Report.objects.filter(moderated=True).order_by('-created_at')
     serializer_class = BaseReportSerializer
     permission_classes = [permissions.AllowAny, ]
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = ReportSearchFilter
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = (
+        'title_ru', 'title_kk', 'category__name_ru',
+        'category__name_kk', 'tags', 'preview_text_ru',
+        'preview_text_kk'
+    )
+    filterset_class = ReportLanguageFilter
 
 
 class RelatedReportList(generics.ListAPIView):
