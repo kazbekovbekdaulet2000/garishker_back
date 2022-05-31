@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
-from config.custom_model import AbstractModel
+from common.custom_model import AbstractModel
 from obrazovanie.models.common_manager import ReactionManager
 
 

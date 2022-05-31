@@ -18,8 +18,9 @@ from django.urls import include, re_path, path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_swagger.views import get_swagger_view
-
+from django.contrib.sitemaps.views import sitemap
 from event.views.city_country_views import CityList, CountryList
+from sitemap.sitemaps import ReportViewSitemap, VideoViewSitemap
 schema_view = get_swagger_view(title='Garyshker API')
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -37,6 +38,10 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+sitemaps = {
+    'reports': ReportViewSitemap,
+    'videos': VideoViewSitemap
+}
 
 urlpatterns = [
     re_path('admin/', admin.site.urls),
@@ -55,6 +60,8 @@ urlpatterns = [
     path('countries', CountryList.as_view()),
     path('cities', CityList.as_view()),
     
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
+
     # django_prometheus
     path('prometheus/', include('django_prometheus.urls')),
 

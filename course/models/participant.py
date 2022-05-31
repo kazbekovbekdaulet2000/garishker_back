@@ -2,7 +2,7 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.db import models
-from config.custom_model import AbstractModel
+from common.custom_model import AbstractModel
 from course.models.course import Course
 from course.models.lesson import Lesson
 from user.models import User

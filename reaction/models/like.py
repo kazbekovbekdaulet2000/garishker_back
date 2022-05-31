@@ -2,7 +2,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from django.db import models
-from config.custom_model import AbstractModel, ContentTypeModel
+from common.custom_model import AbstractModel, ContentTypeModel
 from django.conf import settings
 
 User = settings.AUTH_USER_MODEL

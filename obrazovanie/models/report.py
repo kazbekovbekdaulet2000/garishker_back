@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from config.custom_model import AbstractModel, ReactionsAbstract
+from common.custom_model import AbstractModel, ReactionsAbstract
 from obrazovanie.models.category import Category
 from obrazovanie.models.common_manager import ReactionManager
 from user.models import User

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.db import models
-from config.custom_model import AbstractModel
+from common.custom_model import AbstractModel
 
 
 class Lector(AbstractModel):

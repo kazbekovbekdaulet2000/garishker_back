@@ -1,14 +1,14 @@
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from config.custom_model import AbstractModel, ReactionsAbstract
+from common.custom_model import AbstractModel, ReactionsAbstract
 from obrazovanie.models.category import Category
 from obrazovanie.models.common_manager import ReactionManager
 from reaction.models.bookmark import Bookmark
 from reaction.models.like import Like
 from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
-from config.yandex_storage import ClientDocsStorage
+from common.yandex_storage import ClientDocsStorage
 from django.contrib.postgres.fields import ArrayField
 
 

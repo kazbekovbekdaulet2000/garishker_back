@@ -10,7 +10,6 @@ from obrazovanie.utils import VideoLanguageFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import pagination
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from rest_framework.filters import SearchFilter
 
 

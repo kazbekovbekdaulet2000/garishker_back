@@ -1,5 +1,5 @@
 from django.db import models
-from config.custom_model import AbstractModel, ReactionsAbstract
+from common.custom_model import AbstractModel, ReactionsAbstract
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from event.models.city import City

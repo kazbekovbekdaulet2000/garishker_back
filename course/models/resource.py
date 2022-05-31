@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from config.custom_model import AbstractModel
-from config.yandex_storage import ClientDocsStorage
+from common.custom_model import AbstractModel
+from common.yandex_storage import ClientDocsStorage
 from course.models.course import Course
 from course.models.lesson import Lesson
 from course.models.module import LessonModule

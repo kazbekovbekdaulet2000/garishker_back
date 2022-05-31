@@ -1,5 +1,5 @@
 from django.db import models
-from config.custom_model import AbstractModel
+from common.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
 from shop.models.order.user_bag import UserBag
 from shop.models.product.product import Product

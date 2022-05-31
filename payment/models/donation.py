@@ -1,5 +1,5 @@
 from django.db import models
-from config.custom_model import AbstractModel
+from common.custom_model import AbstractModel
 from django.core.validators import MaxValueValidator, MinValueValidator
 import requests
 import json

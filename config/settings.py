@@ -49,7 +49,10 @@ INSTALLED_APPS = [
     'event',
     'shop',
     'payment',
+    'sitemap',
 
+    # sitemap
+    'django.contrib.sitemaps',
 
     # cors
     'corsheaders',
