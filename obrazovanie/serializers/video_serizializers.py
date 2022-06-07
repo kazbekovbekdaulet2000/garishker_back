@@ -4,6 +4,9 @@ from user.serializers import UserInfoSerializer
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 
+from video.models.video_url import VideoURL
+from video.serializers import VideoURLSerializer
+
 
 class BaseVideoSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField(read_only=True)
@@ -45,8 +48,16 @@ class VideoDetailSerializer(BaseVideoSerializer):
             return None
         return f"{settings.AWS_S3_ENDPOINT_URL}/garysh-app/video-video/{obj.video_name}"
 
+    new_video = serializers.SerializerMethodField(read_only=True)
+
+    def get_new_video(self, obj):
+        data = VideoURL.objects.get_object_by_model(model=Video, id=obj.id)
+        if data: 
+            return VideoURLSerializer(data[0], many=False).data
+        return None
+
     class Meta(BaseVideoSerializer.Meta):
         model = Video
         fields = BaseVideoSerializer.Meta.fields + \
             ['author', 'body_ru', 'body_kk', 'video',
-                'video_quality', 'original_quality', 'subs_kk']
+                'video_quality', 'original_quality', 'subs_kk', 'new_video']

@@ -54,6 +54,7 @@ urlpatterns = [
     re_path('support/', include('support.urls')),
     re_path('payment/', include('payment.urls')),
     re_path('shop/', include('shop.urls')),
+
     # ckeditor
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 

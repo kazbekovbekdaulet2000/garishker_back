@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'event',
     'shop',
     'payment',
+    'video',
     'sitemap',
 
     # sitemap
@@ -347,6 +348,7 @@ CKEDITOR_IMAGE_BACKEND = "pillow"
 
 # Yandex Storage
 YANDEX_CLIENT_DOCS_BUCKET_NAME = 'client-docs'
+BUCKET_NAME = env("BUCKET_NAME")
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'

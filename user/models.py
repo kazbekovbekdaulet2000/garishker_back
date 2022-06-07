@@ -2,16 +2,9 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
+from common.contants import USER_TYPE
 from common.custom_model import AbstractModel
 from obrazovanie.models.common_manager import ReactionManager
-
-
-USER_TYPE = (
-    (0, _('Школьник')),
-    (1, _('Студент')),
-    (2, _('Работаю')),
-    (3, _('Другое')),
-)
 
 
 class CustomUserManager(BaseUserManager, ReactionManager):
@@ -46,8 +39,7 @@ class CustomUserManager(BaseUserManager, ReactionManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
-    email = models.EmailField(
-        verbose_name='email address', max_length=255, unique=True, db_index=True)
+    email = models.EmailField(verbose_name='email address', max_length=255, unique=True, db_index=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     surname = models.CharField(max_length=255, null=True, blank=True)
     birth_date = models.DateField(max_length=8, null=True, blank=True)
@@ -57,10 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     description = models.TextField(null=True, blank=True)
     user_type = models.PositiveIntegerField(choices=USER_TYPE, default=0)
     edu_place = models.CharField(null=True, max_length=255)
-
     last_login = models.DateTimeField(auto_now_add=True, null=True)
     verified = models.BooleanField(default=False)
-    
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
