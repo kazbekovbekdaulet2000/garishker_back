@@ -1,4 +1,5 @@
-
+import os
+import sys
 from bs4 import BeautifulSoup
 import datetime
 from django.db import models
@@ -10,7 +11,9 @@ from obrazovanie.models.common_manager import ReactionManager
 from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.postgres.fields import ArrayField
-
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
 
 class Report(AbstractModel, ReactionsAbstract):
     title_ru = models.CharField(_('Название (рус)'), max_length=500, blank=True)
@@ -36,6 +39,20 @@ class Report(AbstractModel, ReactionsAbstract):
     def increase_views(self):
         self.views += 1
         self.save()
+
+    def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
+        if not self.image:
+            return
+        data_img = BytesIO()
+
+        img = Image.open(self.image)
+        img = img.convert('RGB')
+        THUMBNAIL_SIZE = (newsize, newsize)
+        img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
+        img.save(data_img, format='jpeg', quality=100)
+
+        return InMemoryUploadedFile(data_img, 'ImageField', '%s.%s' % (os.path.splitext(self.image.name)[0], 'jpeg'), 'jpeg', sys.getsizeof(data_img), None)
+
 
     def get_reading_time(self):
         soup = BeautifulSoup(self.body_ru, 'html.parser')

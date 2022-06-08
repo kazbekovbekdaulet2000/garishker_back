@@ -1,16 +1,19 @@
-
+import os
+import sys
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from common.contants import LANGS, VIDEO_CONVERSION_STATUS_CHOICES
 from common.custom_model import AbstractModel, ReactionsAbstract
 from obrazovanie.models.category import Category
 from obrazovanie.models.common_manager import ReactionManager
-from reaction.models.bookmark import Bookmark
-from reaction.models.like import Like
 from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from common.yandex_storage import ClientDocsStorage
 from django.contrib.postgres.fields import ArrayField
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+
 
 class VideoQuality(AbstractModel):
     path = models.CharField(_('Путь'), max_length=5000)
@@ -56,10 +59,26 @@ class Video(AbstractModel, ReactionsAbstract):
         self.original_quality = quality
         self.save()
     
+    def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
+        if not self.image:
+            return
+        data_img = BytesIO()
+
+        img = Image.open(self.image)
+        img = img.convert('RGB')
+        THUMBNAIL_SIZE = (newsize, newsize)
+        img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
+        img.save(data_img, format='jpeg', quality=100)
+
+        return InMemoryUploadedFile(data_img, 'ImageField', '%s.%s' % (os.path.splitext(self.image.name)[0], 'jpeg'), 'jpeg', sys.getsizeof(data_img), None)
+
+
     def save(self, **kwargs) -> None:
         if(self.youtube):
             self.convert_status = 'converted'
             self.video_name = ''
+        # if(self.image):
+        #     self.image = self.create_thumbnail(720)
         return super().save(**kwargs)
 
     class Meta:

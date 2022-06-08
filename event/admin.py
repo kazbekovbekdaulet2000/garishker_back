@@ -3,6 +3,7 @@ from event.models.country import Country
 from event.models.event import Event
 from event.models.city import City
 from event.models.event_registration import EventRegistration
+from shop.admin import GenericReactionAdmin
 
 
 class EventRegistrationAdmin(admin.ModelAdmin):
@@ -17,7 +18,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ['name_ru', 'created_at', 'likes_count']
     ordering = ['-created_at']
     exclude = ('saves',)
-    readonly_fields = ('views',)
+    readonly_fields = GenericReactionAdmin.readonly_fields + ('views',)
 
 
 admin.site.register(Event, EventAdmin)

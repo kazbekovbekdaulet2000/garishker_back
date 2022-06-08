@@ -11,6 +11,7 @@ USER_TYPE = (
 
 VIDEO_CONVERSION_STATUS_CHOICES = (
     ('pending', _('Требуется конвертация')),
+    ('downloading', _('Идет загрузка')),
     ('started', _('Конвертируется')),
     ('converted', _('Конвертирован')),
     ('error', _('Ошибка')),
@@ -21,9 +22,8 @@ DELIVERY_CHOICES = (
     (1, _('Самовывоз (г. Алматы)')),
     (2, _('Доставка по Казахстану'))
 )
+
 # NEED MODIFICATION IN DA FUTURE
-
-
 VIDEO_URL_TYPE = (
     (0, 'html'),
     (1, 'youtube'),
@@ -31,6 +31,7 @@ VIDEO_URL_TYPE = (
     (3, 's3'),
     (4, 'other')
 )
+
 # (x,y) = {y}p
 VIDEO_QUALITIES = (
     (640, 360),

@@ -21,7 +21,6 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         products_attrs = attrs['products']
         for product in products_attrs:
-            print(product)
             if(not ProductItem.objects.filter(size=product['size'], product=product['product']).exists()):
                 raise ValidationError('Таких данных нету на складе')
         return super().validate(attrs)

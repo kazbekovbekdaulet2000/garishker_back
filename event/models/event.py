@@ -4,7 +4,11 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from event.models.city import City
 from obrazovanie.models.common_manager import ReactionManager
-
+import os
+import sys
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
 
 class Event(AbstractModel, ReactionsAbstract):
     name_ru = models.CharField(_("Название мероприятия (рус)"), max_length=255)
@@ -29,6 +33,27 @@ class Event(AbstractModel, ReactionsAbstract):
     def increase_views(self):
         self.views += 1
         self.save()
+
+    def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
+        if not self.poster:
+            return
+        data_img = BytesIO()
+
+        img = Image.open(self.poster)
+        img = img.convert('RGB')
+        THUMBNAIL_SIZE = (newsize, newsize)
+        img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
+        img.save(data_img, format='jpeg', quality=100)
+
+        return InMemoryUploadedFile(data_img, 'ImageField', '%s.%s' % (os.path.splitext(self.poster.name)[0], 'jpeg'), 'jpeg', sys.getsizeof(data_img), None)
+
+    def save(self, *args, **kwargs):
+        self.poster = self.create_thumbnail(720)
+        force_update = False
+        if self.id:
+            force_update = True
+        super(Event, self).save(force_update=force_update, *args, **kwargs)
+
 
     class Meta:
         ordering = ['-created_at']

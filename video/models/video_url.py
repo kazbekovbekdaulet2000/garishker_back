@@ -4,7 +4,6 @@ from django.db import models
 from common.contants import VIDEO_CONVERSION_STATUS_CHOICES, VIDEO_URL_TYPE
 from common.custom_model import AbstractModel, ContentTypeModel
 from common.yandex_storage import ClientDocsStorage
-from django.contrib.postgres.fields import ArrayField
 from django.contrib.contenttypes.models import ContentType
 from video.models.content_choice import CONTENT_TYPE_CHOICES
 
