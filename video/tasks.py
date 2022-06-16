@@ -36,11 +36,8 @@ def video_transcode(id, url):
                     obj.convert_status = 'error'
                     obj.save()
                     return "Error"
-            obj.convert_status = 'converted'
-            obj.save()
+        obj.convert_status = 'converted'
+        obj.save()
     else:
         logging.debug(f"Error: {err}")
-
     video.remove_file(video.file.dir)
-
-    

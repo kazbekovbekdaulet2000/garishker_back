@@ -52,7 +52,7 @@ class NewConverter:
     def process(self, bucket_dir, quality) -> str:
         res = subprocess.Popen(['ffmpeg', '-i', self.file.dir, '-vf', f'scale=-2:{quality}', '-c:v', 'libx264', '-crf', '18', '-preset', 'veryfast', '-c:a', 'copy', self.file.quality_path(quality)])
         res.wait()
-        result_url = self.upload_and_presign(self.file.quality_path(quality), f"{'/'.join(bucket_dir.split('/')[:-1])}/test_{self.file.quality_name(quality)}")
+        result_url = self.upload_and_presign(self.file.quality_path(quality), f"{'/'.join(bucket_dir.split('/')[:-1])}/{self.file.quality_name(quality)}")
         self.remove_file(self.file.quality_path(quality))
         return str(result_url)
 
