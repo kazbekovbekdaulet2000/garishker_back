@@ -26,11 +26,6 @@ class ProjectPeriod(AbstractModel):
         return self.name_ru
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-year', '-created_at']
         verbose_name = 'Проект (годы)'
         verbose_name_plural = 'Проекты (по годам)'
-
-# def update_course(sender, instance, created, **kwargs):
-#     period = instance.course
-
-# post_save.connect(update_course, sender=ProjectPeriod)

@@ -1,16 +1,17 @@
 from django.contrib import admin
 from projects.models.project import Project
 from projects.models.project_periodic import ProjectPeriod
+from projects.models.project_resourse import ProjectResource
 
 
-class ProjectPeriodAdmin(admin.TabularInline):
-    model = ProjectPeriod
+class ProjectResourceAdmin(admin.TabularInline):
+    model = ProjectResource
     extra = 0
 
 
-class ProjectAdmin(admin.ModelAdmin):
-    inlines = [ProjectPeriodAdmin, ]
+class ProjectPeriodAdmin(admin.ModelAdmin):
+    inlines = [ProjectResourceAdmin, ]
 
 
-admin.site.register(Project, ProjectAdmin)
-admin.site.register(ProjectPeriod)
+admin.site.register(Project)
+admin.site.register(ProjectPeriod, ProjectPeriodAdmin)
