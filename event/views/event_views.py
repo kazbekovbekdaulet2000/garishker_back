@@ -1,5 +1,3 @@
-import imp
-from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import permissions
 from django_filters.rest_framework import FilterSet, CharFilter
@@ -9,7 +7,6 @@ from event.serializers.event_registration_serializer import EventRegistrationsSe
 from event.serializers.event_serializer import EventDetailSerializer, EventSerializer
 from django.utils.translation import gettext_lazy as _
 from datetime import datetime, timedelta
-from rest_framework.views import APIView
 
 
 def filter_by_time(queryset, name, value):

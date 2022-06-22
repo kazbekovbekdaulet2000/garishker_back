@@ -11,7 +11,7 @@ from video.models.content_choice import CONTENT_TYPE_CHOICES
 class VideoURL(AbstractModel, ContentTypeModel):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, limit_choices_to={'id__in': CONTENT_TYPE_CHOICES})
     original_quality = models.PositiveBigIntegerField(_('Качество'), null=True)
-   
+
     # used to combine Video with url and video with file (not the best case)
     url = models.URLField(null=True, blank=True)
     video_file = models.FileField(_('Видеофайл'), upload_to='video-file', storage=ClientDocsStorage, null=True, blank=True)
@@ -22,6 +22,10 @@ class VideoURL(AbstractModel, ContentTypeModel):
 
     def __str__(self):
         return self.url or self.video_file.url.split('?')[0]
+
+    def save(self, **kwargs) -> None:
+        self.convert_status = self.convert_status if self.url_type == 's3' else 'link'
+        return super().save(**kwargs)
 
     class Meta:
         ordering = ['-created_at']

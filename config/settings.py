@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'shop',
     'payment',
     'video',
+    'projects',
+    
+    # sitemap
     'sitemap',
 
     # sitemap
@@ -290,7 +293,7 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
-        "KEY_PREFIX": "example"
+        "KEY_PREFIX": "garysh"
     }
 }
 

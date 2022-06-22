@@ -2,7 +2,6 @@ from rest_framework import serializers
 from reaction.models.comment import Comment
 from reaction.serializers.generic_serializer import ReactionGenericSerializer
 from django.contrib.contenttypes.models import ContentType
-from user.serializers import UserInfoSerializer
 
 
 class RecursiveSerializer(serializers.Serializer):
@@ -14,8 +13,6 @@ class RecursiveSerializer(serializers.Serializer):
 
 class CommentSerializer(ReactionGenericSerializer):
     replies = RecursiveSerializer(source="comments_reply", many=True, read_only=True)
-
-    owner = UserInfoSerializer(required=False)
 
     class Meta:
         model = Comment

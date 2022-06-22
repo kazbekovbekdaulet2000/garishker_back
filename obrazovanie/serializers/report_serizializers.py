@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from obrazovanie.models.report import Report
-from obrazovanie.serializers.categorty_serizializers import CategorySerializer
 from user.serializers import UserInfoSerializer
-from django.contrib.contenttypes.models import ContentType
 
 
 class BaseReportSerializer(serializers.ModelSerializer):

@@ -5,7 +5,6 @@ from course.models.lector import Lector
 from course.models.course import Course
 from course.models.module import LessonModule
 from django.db.models.signals import post_save
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Lesson(AbstractModel):
     name_kk = models.CharField(_('Название (каз)'), max_length=255, null=False)

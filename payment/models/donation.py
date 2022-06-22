@@ -45,31 +45,3 @@ class Donation(AbstractModel):
         verbose_name = 'Донат'
         verbose_name_plural = 'Донаты'
 
-
-# {
-#   "order": {
-#     "id": "ord_aypk2FSAdR",
-#     "shop_id": "shp_SNL708X0PI",
-#     "status": "UNPAID",
-#     "created_at": "2022-05-01T23:47:57.394206",
-#     "amount": 10349832,
-#     "currency": "KZT",
-#     "mcc": null,
-#     "capture_method": "AUTO",
-#     "external_id": null,
-#     "description": null,
-#     "extra_info": null,
-#     "attempts": 10,
-#     "due_date": null,
-#     "customer_id": null,
-#     "card_id": null,
-#     "back_url": "https://garyshker-dev.web.app/",
-#     "success_url": null,
-#     "failure_url": null,
-#     "template": null,
-#     "access_token": "ord_aypk2FSAdR_secret_498308e0fc57ca05dbf47fb15081785f25b007f30a3324bee238d17b78956c22",
-#     "checkout_url": "https://stage-checkout.ioka.kz/orders/ord_aypk2FSAdR",
-#     "payments": []
-#   },
-#   "order_access_token": "ord_aypk2FSAdR_secret_498308e0fc57ca05dbf47fb15081785f25b007f30a3324bee238d17b78956c22"
-# }

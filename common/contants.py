@@ -14,6 +14,7 @@ VIDEO_CONVERSION_STATUS_CHOICES = (
     ('downloading', _('Идет загрузка')),
     ('started', _('Конвертируется')),
     ('converted', _('Конвертирован')),
+    ('link', _('Ссылка')),
     ('error', _('Ошибка')),
 )
 
