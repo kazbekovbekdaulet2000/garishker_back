@@ -7,7 +7,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from rest_framework.filters import SearchFilter
 from obrazovanie.utils import ReportLanguageFilter
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 class ReportList(generics.ListAPIView):
     queryset = Report.objects.filter(moderated=True).order_by('-created_at')
@@ -20,6 +21,10 @@ class ReportList(generics.ListAPIView):
         'preview_text_kk'
     )
     filterset_class = ReportLanguageFilter
+
+    @method_decorator(cache_page(60))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class RelatedReportList(generics.ListAPIView):
@@ -37,6 +42,7 @@ class ReportDetail(generics.RetrieveAPIView):
     serializer_class = ReportDetailSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    @method_decorator(cache_page(60))
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.increase_views()

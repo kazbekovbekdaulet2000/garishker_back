@@ -11,7 +11,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import pagination
 from django.db.models import Q
 from rest_framework.filters import SearchFilter
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 class CustomPagination(pagination.PageNumberPagination):
     page_size = 8
@@ -37,6 +38,10 @@ class VideoList(generics.ListAPIView):
     filterset_class = VideoLanguageFilter
     pagination_class = CustomPagination
 
+    @method_decorator(cache_page(60))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 class RelatedVideoList(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
@@ -53,7 +58,8 @@ class VideoDetail(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Video.objects.all()
     serializer_class = VideoDetailSerializer
-
+    
+    @method_decorator(cache_page(60))
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.increase_views()

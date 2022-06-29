@@ -5,12 +5,7 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.response import Response
-from reaction.models.bookmark import Bookmark
-from reaction.models.comment import Comment
-from reaction.models.like import Like
-from reaction.serializers.comment_serializer import CommentSerializer
-from user.serializers import (
-    UserInfoSerializer, UserSerializer, UserUpdateSerializer)
+from user.serializers import (UserInfoSerializer, UserSerializer, UserUpdateSerializer)
 from django.contrib.auth import get_user_model
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from rest_framework.permissions import *

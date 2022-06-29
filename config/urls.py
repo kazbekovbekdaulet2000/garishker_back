@@ -46,7 +46,6 @@ sitemaps = {
 urlpatterns = [
     re_path('admin/', admin.site.urls),
     re_path('auth/', include('user.urls')),
-    # re_path('dobro/', include('dobro.urls')),
     re_path('events/', include('event.urls')),
     re_path('courses/', include('course.urls')),
     re_path('tests/', include('quiz.urls')),

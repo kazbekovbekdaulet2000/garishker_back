@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
 
-    # ckeditor для создание статьей с наполнением
+    # ckeditor
     "ckeditor",
     "ckeditor_uploader",
 
