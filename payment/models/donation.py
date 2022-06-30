@@ -1,41 +1,31 @@
 from django.db import models
-from common.custom_model import AbstractModel
-from django.core.validators import MaxValueValidator, MinValueValidator
-import requests
-import json
-from django.conf import settings
+from common.custom_model import AbstractModel, ContentTypeModel
+from django.contrib.contenttypes.models import ContentType
+from event.models.event import Event
+from obrazovanie.models.video import Video
+from obrazovanie.models.report import Report
+from projects.models.project_periodic import ProjectPeriod
+from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.fields import ArrayField
+from ckeditor_uploader.fields import RichTextUploadingField
+
+DONATION_CHOICES = (
+    ContentType.objects.get_for_model(Video).id,
+    ContentType.objects.get_for_model(Report).id,
+    ContentType.objects.get_for_model(Event).id,
+    ContentType.objects.get_for_model(ProjectPeriod).id
+)
 
 
-class Donation(AbstractModel):
-    order_id = models.CharField(null=False, blank=False, max_length=255, default='1')
-    shop_id = models.CharField(null=False, blank=False, max_length=255, default='1')
-    status = models.CharField(null=False, blank=False,max_length=255, default="PENDING")
-    amount = models.PositiveIntegerField(default=1000)
-    currency = models.CharField(default='KZT', max_length=32)
-    capture_method = models.CharField(default="AUTO", max_length=12)
-    description = models.CharField(default='', null=True, blank=True, max_length=255)
-    attempts = models.PositiveBigIntegerField(default=10, validators=[MinValueValidator(1), MaxValueValidator(50)])
-    card_id = models.CharField(default='', null=True, blank=True, max_length=255)
-
-    def __init__(self):
-        return self.order_id
-
-    @classmethod
-    def createOrder(cls, amount: int, back_url="https://garyshker-dev.web.app/", capture_method="AUTO"):
-        url = f"{settings.PAYMENT_URL}v2/orders"
-        payload = json.dumps({
-            "amount": amount,
-            "capture_method": capture_method,
-            "back_url": back_url
-        })
-        headers = {
-            'API-KEY': settings.PAYMENT_API_KEY,
-            'Content-Type': 'application/json'
-        }
-        response = requests.request("POST", url, headers=headers, data=payload)
-        return response.json()
+class Donation(AbstractModel, ContentTypeModel):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'id__in': DONATION_CHOICES})
+    object_id = models.PositiveIntegerField(_("Id элемента"), null=True)
+    default_options = ArrayField(base_field=models.IntegerField(), default=[1000, 2000, 5000, 10000, 20000])
+    title_kk = models.CharField(max_length=255, null=True, blank=True)
+    title_ru = models.CharField(max_length=255, null=True, blank=True)
+    description_kk = RichTextUploadingField(null=True, blank=True)
+    description_ru = RichTextUploadingField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Донат'
         verbose_name_plural = 'Донаты'
-
