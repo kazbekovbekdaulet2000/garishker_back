@@ -14,6 +14,9 @@ class Donation(AbstractModel):
     key = models.CharField(max_length=255, default='kit_2022')
     required = models.PositiveIntegerField()
     
+    def __str__(self):
+        return self.key
+
     class Meta:
         verbose_name = 'Донат проекты'
         verbose_name_plural = 'Донат проекты'
