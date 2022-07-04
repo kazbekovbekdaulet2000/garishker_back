@@ -1,5 +1,6 @@
 import resource
 from rest_framework import serializers
+from payment.serializers.donation_project import DonationProjectSerializer
 from projects.models.project_periodic import ProjectPeriod
 from projects.serializers.project_resourse_serializer import ProjectResourceSerializer
 from video.models.video_url import VideoURL
@@ -9,6 +10,7 @@ from video.serializers import VideoURLSerializer
 class ProjectPeriodSerializer(serializers.ModelSerializer):
     video = serializers.SerializerMethodField()
     resources = ProjectResourceSerializer(many=True)
+    donat = DonationProjectSerializer()
 
     def get_video(self, obj):
         data = VideoURL.objects.get_object_by_model(model=ProjectPeriod, id=obj.id)
@@ -20,4 +22,4 @@ class ProjectPeriodSerializer(serializers.ModelSerializer):
         model = ProjectPeriod
         fields = ['id', 'name_kk', 'name_ru', 'description_kk',
                   'description_ru', 'status', 'project', 'year',
-                  'required_amount', 'collected_amount', 'video', 'resources']
+                  'video', 'resources', 'donat']

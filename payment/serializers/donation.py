@@ -7,7 +7,6 @@ import requests
 
 
 class DonationCreateSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = UserDonation
         fields = ['amount', 'donation', 'full_name', 'email', 'ioka_answer']
@@ -15,9 +14,9 @@ class DonationCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         url = f"{settings.PAYMENT_URL}v2/orders"
-        print(validated_data['donation'].key)
+        validated_data['amount'] = int(validated_data['amount'] * 100)
         payload = json.dumps({
-            "amount": int(validated_data['amount'] * 100),
+            "amount": validated_data['amount'],
             "extra_info": {
                 "project": validated_data['donation'].key
             }
