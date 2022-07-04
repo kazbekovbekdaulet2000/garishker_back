@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('amount', models.IntegerField(default=100)),
                 ('full_name', models.CharField(max_length=255, null=True)),
                 ('email', models.EmailField(max_length=255, null=True)),
-                ('donation', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='donat', to='payment.donation')),
+                ('donation', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='donat', to='payment.donation')),
             ],
             options={
                 'verbose_name': 'Донат',

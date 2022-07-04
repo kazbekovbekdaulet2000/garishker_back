@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from payment.ioka.schema import CreateOrder
-from payment.models.donation_project import Donation
+from payment.models.donation import UserDonation
 from rest_framework import generics
+
+from payment.serializer import DonationCreateSerializer
 
 class CreateDonation(APIView):
     def post(self, request, *args, **kwargs):
@@ -15,3 +17,10 @@ class CreateOrder(generics.CreateAPIView):
     # queryset = Project.objects.all()
     # serializer_class = ProjectSerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
+
+
+class CreateDonationOrder(generics.CreateAPIView):
+    queryset = UserDonation.objects.all()
+    serializer_class = DonationCreateSerializer
+    # def post(self, request, *args, **kwargs):
+    #     return Response()

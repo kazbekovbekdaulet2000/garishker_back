@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from payment.models import Donation
-
+from payment.models.donation import UserDonation
 
 class DonationCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Donation
+        model = UserDonation
         fields = "__all__"
