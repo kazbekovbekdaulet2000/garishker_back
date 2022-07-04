@@ -10,6 +10,7 @@ class ProjectResourceAdmin(admin.TabularInline):
 
 
 class ProjectPeriodAdmin(admin.ModelAdmin):
+    list_display = ('name_ru', 'status', 'donat', 'year')
     inlines = [ProjectResourceAdmin, ]
 
 
