@@ -10,10 +10,10 @@ class DonationProjectSerializer(serializers.ModelSerializer):
         return round(obj.required / 100, 2)
 
     def get_collected(self, obj) -> int:
-        all_donations = obj.donat.filter(status=1).values_list("amount", flat=True)
+        all_donations = obj.donat.filter(status=1).values_list("amount_clear", flat=True)
         sum = 0
         for donation in all_donations:
-            sum += (donation * (1-0.038))
+            sum += donation
         return round(sum / 100, 2)
 
     class Meta:

@@ -20,4 +20,5 @@ def process_webhook_payload(payload):
     response = WebhookResponse(**payload)
     donation = UserDonation.objects.filter(order_id=response.order.id).last()
     donation.status = 1
+    donation.amount_clear = response.payment.approved_amount-response.payment.processing_fee
     donation.save()
