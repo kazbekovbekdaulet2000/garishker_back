@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from payment.ioka.schema import CreateOrder
-from payment.models.donation import Donation
+from payment.models.donation_project import Donation
 from rest_framework import generics
 
 class CreateDonation(APIView):
