@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from payment.ioka.schema import CreateOrder
 from payment.models.donation import UserDonation
 from rest_framework import generics
-
-from payment.serializer import DonationCreateSerializer
+from rest_framework import status
+from payment.serializers.donation import DonationCreateSerializer
 
 class CreateDonation(APIView):
     def post(self, request, *args, **kwargs):
@@ -12,15 +12,6 @@ class CreateDonation(APIView):
         # return Response(Donation.createOrder(request.data['amount'], request.build_absolute_uri(), "AUTO"))
 
 
-class CreateOrder(generics.CreateAPIView):
-    pass
-    # queryset = Project.objects.all()
-    # serializer_class = ProjectSerializer
-    # permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
-
-
 class CreateDonationOrder(generics.CreateAPIView):
     queryset = UserDonation.objects.all()
     serializer_class = DonationCreateSerializer
-    # def post(self, request, *args, **kwargs):
-    #     return Response()

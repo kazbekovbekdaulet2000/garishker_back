@@ -11,7 +11,9 @@ class Donation(AbstractModel):
     title_ru = models.CharField(max_length=255, null=True, blank=True)
     description_kk = RichTextUploadingField(null=True, blank=True)
     description_ru = RichTextUploadingField(null=True, blank=True)
-
+    key = models.CharField(max_length=255, default='kit_2022')
+    required = models.PositiveIntegerField()
+    
     class Meta:
         verbose_name = 'Донат проекты'
         verbose_name_plural = 'Донат проекты'

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from projects.models.project import Project
 from projects.serializers.project_periodic_serializer import ProjectPeriodSerializer
-
+from payment.serializers.donation_project import DonationProjectSerializer
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,7 +12,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     children = ProjectPeriodSerializer(many=True)
-    
+    donat = DonationProjectSerializer()
+
     class Meta:
         model = ProjectSerializer.Meta.model
-        fields = ProjectSerializer.Meta.fields + ['children']
+        fields = ProjectSerializer.Meta.fields + ['children', 'donat']
