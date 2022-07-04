@@ -14,4 +14,4 @@ class ProjectDetailSerializer(ProjectSerializer):
 
     class Meta:
         model = ProjectSerializer.Meta.model
-        fields = ProjectSerializer.Meta.fields + ['children', 'donat']
+        fields = ProjectSerializer.Meta.fields + ['children']
