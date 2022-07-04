@@ -13,7 +13,7 @@ class DonationProjectSerializer(serializers.ModelSerializer):
         all_donations = obj.donat.filter(status=1).values_list("amount", flat=True)
         sum = 0
         for donation in all_donations:
-            sum += donation
+            sum += (donation * (1-0.038))
         return round(sum / 100, 2)
 
     class Meta:
