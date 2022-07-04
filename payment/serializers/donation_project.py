@@ -18,5 +18,5 @@ class DonationProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donation
-        fields = ('collected', 'default_options', 'title_kk',
+        fields = ('id', 'collected', 'default_options', 'title_kk',
                   'title_ru', 'description_kk', 'description_ru', 'required')
