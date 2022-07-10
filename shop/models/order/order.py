@@ -4,6 +4,15 @@ from common.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
 
 
+PAYMENT_STATUS = (
+    ('PENDING', 'PENDING'),
+    ('REQUIRES_ACTION', 'REQUIRES_ACTION'),
+    ('APPROVED', 'APPROVED'),
+    ('CAPTURED', 'CAPTURED'),
+    ('CANCELLED', 'CANCELLED'),
+    ('DECLINED', 'DECLINED')
+)
+
 class Order(AbstractModel):
     ord_id = models.CharField(verbose_name=_('Уникальный ID'), max_length=12)
     name = models.CharField(verbose_name=_('Имя заказчика'), max_length=255, null=False)
@@ -17,6 +26,9 @@ class Order(AbstractModel):
     total_sum = models.DecimalField(verbose_name=_("Цена (тиын)"), max_digits=9, decimal_places=2, default=0)
     total_discount_sum = models.DecimalField(verbose_name=_("Цена (тиын)"), max_digits=9, decimal_places=2, default=0)
     
+    # status = models.CharField(choices=PAYMENT_STATUS, default="PENDING", max_length=16)
+    # ioka_order_id = models.CharField(max_length=255, null=True, blank=True)
+
     def __str__(self):
         return f"{self.name}, {self.phone} ({self.created_at})"
 

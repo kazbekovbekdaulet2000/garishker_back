@@ -47,6 +47,7 @@ class RelatedVideoList(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     permission_classes = [permissions.AllowAny, ]
     pagination_class = RelatedVideoPagination
+    filterset_class = VideoLanguageFilter
 
     def get_queryset(self):
         pk = self.kwargs['id']
@@ -70,6 +71,7 @@ class VideoDetail(generics.RetrieveAPIView):
 class VideoBookmarked(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     permission_classes = [permissions.IsAuthenticated, ]
+    filterset_class = VideoLanguageFilter
 
     def get_queryset(self):
         return Video.objects.list_bookmarked(self.request.user)
@@ -78,6 +80,7 @@ class VideoBookmarked(generics.ListAPIView):
 class VideoLiked(generics.ListAPIView):
     serializer_class = BaseVideoSerializer
     permission_classes = [permissions.IsAuthenticated, ]
+    filterset_class = VideoLanguageFilter
 
     def get_queryset(self):
         return Video.objects.list_liked(self.request.user)

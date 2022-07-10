@@ -30,7 +30,8 @@ class ReportList(generics.ListAPIView):
 class RelatedReportList(generics.ListAPIView):
     serializer_class = BaseReportSerializer
     permission_classes = [permissions.AllowAny, ]
-
+    filterset_class = ReportLanguageFilter
+    
     def get_queryset(self):
         pk = self.kwargs['id']
         return Report.objects.filter(~Q(id=pk), moderated=True)
@@ -53,6 +54,7 @@ class ReportDetail(generics.RetrieveAPIView):
 class ReportBookmarked(generics.ListAPIView):
     serializer_class = BaseReportSerializer
     permission_classes = [permissions.IsAuthenticated, ]
+    filterset_class = ReportLanguageFilter
 
     def get_queryset(self):
         return Report.objects.list_bookmarked(self.request.user)
@@ -61,6 +63,7 @@ class ReportBookmarked(generics.ListAPIView):
 class ReportLiked(generics.ListAPIView):
     serializer_class = BaseReportSerializer
     permission_classes = [permissions.IsAuthenticated, ]
-
+    filterset_class = ReportLanguageFilter
+    
     def get_queryset(self):
         return Report.objects.list_liked(self.request.user)

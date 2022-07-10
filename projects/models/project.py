@@ -13,7 +13,6 @@ class Project(AbstractModel):
     description_ru = RichTextUploadingField(verbose_name=_('Описание (рус)'))
     project_type = models.CharField(choices=PROJECT_TYPE, default='reqular', max_length=16, null=False)
     status = models.CharField(choices=PROJECT_STATUS, default='in_process', max_length=16, null=False)
-    unique_id = models.CharField(verbose_name=_('Униакальное id'), max_length=255, unique=True)
 
     def __str__(self):
         return self.name_ru
