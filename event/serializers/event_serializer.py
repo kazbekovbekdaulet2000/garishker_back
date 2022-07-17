@@ -8,13 +8,7 @@ from video.serializers import VideoURLSerializer
 class EventSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField(read_only=True)
     bookmarked = serializers.SerializerMethodField(read_only=True)
-    video = serializers.SerializerMethodField(read_only=True)
-
-    def get_video(self, obj):
-        data = VideoURL.objects.get_object_by_model(model=Event, id=obj.id)
-        if data: 
-            return VideoURLSerializer(data[0], many=False).data
-        return None
+    video = VideoURLSerializer(many=False)
 
     def get_liked(self, obj):
         if(self.context['request'].user.is_anonymous):

@@ -9,6 +9,8 @@ import sys
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
+from video.models.video_url import VideoURL
+
 
 class Event(AbstractModel, ReactionsAbstract):
     name_ru = models.CharField(_("Название мероприятия (рус)"), max_length=255)
@@ -24,6 +26,8 @@ class Event(AbstractModel, ReactionsAbstract):
     canceled = models.BooleanField(default=False)
     views = models.PositiveIntegerField(default=0)
     max_user_count = models.PositiveIntegerField(null=True, blank=True)
+    video = models.ForeignKey(VideoURL, on_delete=models.DO_NOTHING, null=True, blank=True)
+
 
     objects = ReactionManager()
 

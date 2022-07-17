@@ -6,6 +6,8 @@ from course.models.course import Course
 from course.models.module import LessonModule
 from django.db.models.signals import post_save
 
+from video.models.video_url import VideoURL
+
 class Lesson(AbstractModel):
     name_kk = models.CharField(_('Название (каз)'), max_length=255, null=False)
     name_ru = models.CharField(_('Название (рус)'), max_length=255, null=False)
@@ -14,7 +16,7 @@ class Lesson(AbstractModel):
     duriation = models.DurationField(_("Длительность"), blank=True, null=False)
     lector = models.ForeignKey(Lector, on_delete=models.DO_NOTHING, related_name='lesson_lector', null=False)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_lesson', null=True)
-    video = models.CharField(_('Название видео с расширением)'), max_length=6250, default="", blank=True)
+    video = models.ForeignKey(VideoURL, on_delete=models.DO_NOTHING, null=True, blank=True)
     modules = models.ManyToManyField(LessonModule, verbose_name='Модули', blank=True)
     views = models.PositiveIntegerField(default=0)
     order = models.PositiveIntegerField(default=0)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from obrazovanie.models.report import Report
 from user.serializers import UserInfoSerializer
+from video.serializers import VideoURLSerializer
 
 
 class BaseReportSerializer(serializers.ModelSerializer):
@@ -28,8 +29,9 @@ class BaseReportSerializer(serializers.ModelSerializer):
 
 class ReportDetailSerializer(BaseReportSerializer):
     author = UserInfoSerializer(required=False)
+    video = VideoURLSerializer(many=False)
 
     class Meta(BaseReportSerializer.Meta):
         model = Report
         fields = BaseReportSerializer.Meta.fields + \
-            ['author', 'body_ru', 'body_kk']
+            ['author', 'body_ru', 'body_kk', 'video']

@@ -8,15 +8,9 @@ from video.serializers import VideoURLSerializer
 
 
 class ProjectPeriodSerializer(serializers.ModelSerializer):
-    video = serializers.SerializerMethodField()
+    video = VideoURLSerializer(many=False)
     resources = ProjectResourceSerializer(many=True)
     donat = DonationProjectSerializer()
-
-    def get_video(self, obj):
-        data = VideoURL.objects.get_object_by_model(model=ProjectPeriod, id=obj.id)
-        if data:
-            return VideoURLSerializer(data[0], many=False).data
-        return None
 
     class Meta:
         model = ProjectPeriod

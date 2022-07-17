@@ -15,6 +15,8 @@ from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 
+from video.models.video_url import VideoURL
+
 class Report(AbstractModel, ReactionsAbstract):
     title_ru = models.CharField(_('Название (рус)'), max_length=500, blank=True)
     title_kk = models.CharField(_('Название (каз)'), max_length=500, blank=True)
@@ -30,6 +32,7 @@ class Report(AbstractModel, ReactionsAbstract):
     read_time = models.CharField(max_length=255, null=True, blank=True)
     tags = ArrayField(base_field=models.CharField(max_length=255), default=list)
     languages = ArrayField(base_field=models.CharField(max_length=3), default=list(dict(LANGS).keys()))
+    video = models.ForeignKey(VideoURL, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     objects = ReactionManager()
 

@@ -4,12 +4,9 @@ from django.db import models
 from common.contants import VIDEO_CONVERSION_STATUS_CHOICES, VIDEO_URL_TYPE
 from common.custom_model import AbstractModel, ContentTypeModel
 from common.yandex_storage import ClientDocsStorage
-from django.contrib.contenttypes.models import ContentType
-from video.models.content_choice import CONTENT_TYPE_CHOICES
 
 
 class VideoURL(AbstractModel, ContentTypeModel):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, limit_choices_to={'id__in': CONTENT_TYPE_CHOICES})
     original_quality = models.PositiveBigIntegerField(_('Качество'), null=True)
 
     # used to combine Video with url and video with file (not the best case)
@@ -21,7 +18,7 @@ class VideoURL(AbstractModel, ContentTypeModel):
     duriation = models.DurationField(_("Длительность"), blank=True, null=True, default=None)
 
     def __str__(self):
-        return self.url or self.video_file.url.split('?')[0]
+        return f"[{self.object_id}] {self.url or self.video_file.url.split('?')[0]}"
 
     def save(self, **kwargs) -> None:
         self.convert_status = self.convert_status if self.url_type == 's3' else 'link'

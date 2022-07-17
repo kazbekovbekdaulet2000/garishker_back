@@ -14,6 +14,8 @@ from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 
+from video.models.video_url import VideoURL
+
 
 class Video(AbstractModel, ReactionsAbstract):
     title_ru = models.CharField(_('Название (рус)'), max_length=500, default="", blank=True)
@@ -30,6 +32,7 @@ class Video(AbstractModel, ReactionsAbstract):
     duriation = models.DurationField(_("Длительность"), blank=True, null=False, default="00:00")
     tags = ArrayField(base_field=models.CharField(max_length=255), default=list, null=True, blank=True)
     languages = ArrayField(base_field=models.CharField(max_length=3), default=list(dict(LANGS).keys()))
+    video = models.ForeignKey(VideoURL, on_delete=models.DO_NOTHING, null=True, blank=True)
     
     objects = ReactionManager()
     

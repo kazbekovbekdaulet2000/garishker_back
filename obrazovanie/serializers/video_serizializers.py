@@ -31,13 +31,7 @@ class BaseVideoSerializer(serializers.ModelSerializer):
 
 class VideoDetailSerializer(BaseVideoSerializer):
     author = UserInfoSerializer(required=False)
-    video = serializers.SerializerMethodField(read_only=True)
-
-    def get_video(self, obj):
-        data = VideoURL.objects.get_object_by_model(model=Video, id=obj.id)
-        if data:
-            return VideoURLSerializer(data[0], many=False).data
-        return None
+    video = VideoURLSerializer(many=False)
 
     class Meta(BaseVideoSerializer.Meta):
         model = Video

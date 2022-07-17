@@ -44,15 +44,12 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
-    organization = OrganizationSerializer(
-        source="course.organization", many=False)
-    category = serializers.PrimaryKeyRelatedField(
-        source="course.category", many=False, read_only=True)
+    organization = OrganizationSerializer(source="course.organization", many=False)
+    category = serializers.PrimaryKeyRelatedField(source="course.category", many=False, read_only=True)
     lector = LectorDetailSerializer(many=False)
-    video = serializers.SerializerMethodField(read_only=True)
+    video = VideoURLSerializer(many=False)
     course_participation = serializers.SerializerMethodField(default=False)
-    test_id = serializers.PrimaryKeyRelatedField(
-        source='course_test', many=False, read_only=True)
+    test_id = serializers.PrimaryKeyRelatedField(source='course_test', many=False, read_only=True)
 
     def get_course_participation(self, obj) -> bool:
         if(self.context['request'].user.is_anonymous):
@@ -62,12 +59,6 @@ class LessonDetailSerializer(serializers.ModelSerializer):
             content_type=ContentType.objects.get_for_model(Course),
             object_id=obj.course.id).count() > 0
 
-    def get_video(self, obj):
-        data = VideoURL.objects.get_object_by_model(model=Lesson, id=obj.id)
-        if data:
-            return VideoURLSerializer(data[0], many=False).data
-        return None
-        
     class Meta:
         model = Lesson
         fields = ['id', 'name_kk', 'name_ru', 'description_kk', 'description_ru',

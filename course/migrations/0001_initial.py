@@ -37,7 +37,6 @@ class Migration(migrations.Migration):
                 ('duriation', models.DurationField(blank=True, default='7 00:00:00', verbose_name='Длительность курса')),
                 ('to_view', models.BooleanField(default=False, verbose_name='Доступна для показа')),
                 ('views', models.PositiveIntegerField(default=0)),
-                ('teaser', models.FileField(blank=True, null=True, storage=common.yandex_storage.ClientDocsStorage, upload_to=course.models.course.course_teaser_dir, verbose_name='Тизер')),
                 ('image', models.FileField(blank=True, upload_to='course-image', verbose_name='Обложка')),
                 ('rating', models.DecimalField(decimal_places=2, default=0, max_digits=3, verbose_name='Оценка')),
                 ('lesson_count', models.PositiveIntegerField(default=0)),

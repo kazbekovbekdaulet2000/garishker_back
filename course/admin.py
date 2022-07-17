@@ -5,6 +5,7 @@ from course.models.module import LessonModule
 from course.models.lesson import Lesson
 from course.models.resource import Resource
 from course.models.participant import Participant
+from shop.admin import GenericReactionAdmin
 
-
-admin.site.register([Course, Lesson, Lector, LessonModule, Participant, Resource])
+admin.site.register([Lesson, Lector, LessonModule, Participant, Resource])
+admin.site.register(Course, GenericReactionAdmin)
