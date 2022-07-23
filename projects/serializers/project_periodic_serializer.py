@@ -1,9 +1,7 @@
-import resource
 from rest_framework import serializers
 from payment.serializers.donation_project import DonationProjectSerializer
 from projects.models.project_periodic import ProjectPeriod
 from projects.serializers.project_resourse_serializer import ProjectResourceSerializer
-from video.models.video_url import VideoURL
 from video.serializers import VideoURLSerializer
 
 

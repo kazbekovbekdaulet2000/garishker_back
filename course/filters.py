@@ -1,12 +1,9 @@
-from django_filters import CharFilter
-from django_filters import rest_framework
-from course.models.course import Course
+from course.models.course.course import Course
+from django_filters import rest_framework as filters
 
-
-class CourseSearchFilter(rest_framework.FilterSet):
-    name_ru = CharFilter(lookup_expr='icontains')
-    name_kk = CharFilter(lookup_expr='icontains')
+class CourseLanguageFilter(filters.FilterSet):
+    languages = filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
         model = Course
-        fields = ['name_ru', 'name_kk', 'category']
+        fields = ['languages', 'category']

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from organizations.models import Organization
-from course.models.course import Course
+from course.models.course.course import Course
 
 
 class OrganizationCourses(admin.TabularInline):

@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from course.models.course import Course
-from course.models.lector import Lector
+from course.models.course.course import Course
+from course.models.course.lector import Lector
 
 
 class LectorSerializer(serializers.ModelSerializer):

@@ -4,7 +4,6 @@ from video.models.video_quality_item import VideoQualityURL
 
 from video.models.video_url import VideoURL
 from video.tasks import video_transcode
-# video_transcode.delay(self.id, self.url)
 
 
 @admin.action(description='Конвертировать видео')

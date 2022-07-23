@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from course.models.resource import Resource
+from course.models.course.resource import Resource
 
 class ResourceSerializer(serializers.ModelSerializer):
     class Meta:

@@ -29,8 +29,7 @@ class VideoAdmin(admin.ModelAdmin):
                     'likes_count', 'comments_count', 'bookmarks_count', 'views']
     ordering = ['-created_at']
     exclude = ('reviews_count',)
-    readonly_fields = GenericReactionAdmin.readonly_fields + \
-        ('views', 'original_quality')
+    readonly_fields = GenericReactionAdmin.readonly_fields + ('views', )
 
 
 admin.site.register(Category)

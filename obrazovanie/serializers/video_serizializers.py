@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from obrazovanie.models.video import Video
 from user.serializers import UserInfoSerializer
-from django.conf import settings
-from video.models.video_url import VideoURL
 from video.serializers import VideoURLSerializer
 
 
@@ -36,4 +34,4 @@ class VideoDetailSerializer(BaseVideoSerializer):
     class Meta(BaseVideoSerializer.Meta):
         model = Video
         fields = BaseVideoSerializer.Meta.fields + \
-            ['author', 'body_ru', 'body_kk', 'video', 'original_quality', 'subs_kk']
+            ['author', 'body_ru', 'body_kk', 'video', 'subs_kk']
