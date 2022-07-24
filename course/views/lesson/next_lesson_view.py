@@ -22,8 +22,8 @@ class NextLesson(generics.GenericAPIView):
         if(lesson_progress.quiz == None):
             lesson_progress.completed = True
             lesson_progress.save()
-        else: 
-            Response({"message": "complete quiz"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "complete quiz"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "ok"}, status=status.HTTP_200_OK)
 
     def get_user_course(self) -> CourseUser:

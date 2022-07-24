@@ -14,6 +14,7 @@ class QuizProgressSerializer(serializers.ModelSerializer):
     user_lesson = None
     quiz = None
     start_time = datetime.datetime.now()
+    # answers =
 
     class Meta:
         model = QuizProgress
@@ -34,14 +35,16 @@ class QuizProgressSerializer(serializers.ModelSerializer):
         })
         self.user_lesson = get_object_or_404(LessonProgress, **{
             'lesson': lesson,
-            'user': self.user_course
+            'user': self.user_course,
+            'quiz': lesson.quiz
         })
         
         self.quiz = lesson.quiz
         self.attempt = QuizProgress.objects.filter(user=self.user_course, lesson_progress=self.user_lesson,
                                                    quiz=self.quiz, end_time__isnull=False).count() + 1
-
         if(self.attempt > self.quiz.default_attempts_count):
+            self.user_lesson.completed = True
+            self.user_lesson.save()
             raise ValidationError('no more attempts')
 
         return super().validate(attrs)

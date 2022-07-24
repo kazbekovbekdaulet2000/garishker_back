@@ -23,6 +23,6 @@ class Quiz(AbstractModel):
         verbose_name_plural = '[6] Тесты'
 
 def change_course_points(sender, instance, created, **kwargs):
-    print(instance)
+    pass
 
 post_save.connect(change_course_points, sender=Quiz)

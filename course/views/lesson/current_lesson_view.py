@@ -23,7 +23,7 @@ class CurrentLessonDetail(generics.RetrieveAPIView):
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
         filter_kwargs = {
-            self.lookup_field: self.kwargs[self.lookup_field],
+            'course_id': self.kwargs[self.lookup_field],
             'user': self.request.user
         }
         obj = get_object_or_404(queryset, **filter_kwargs)

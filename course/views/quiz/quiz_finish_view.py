@@ -30,10 +30,12 @@ class LessonQuizFinish(generics.CreateAPIView):
         })
         self.user_lesson = get_object_or_404(LessonProgress, **{
             'lesson': lesson,
-            'user': self.user_course
+            'user': self.user_course,
+            'quiz': lesson.quiz
         })
         self.quiz = lesson.quiz
         quiz = QuizProgress.objects.filter(user=self.user_course, lesson_progress=self.user_lesson, quiz=self.quiz, end_time__isnull=True).order_by('created_at').last()
+        
         if(quiz == None):
             raise Http404
         quiz.finish()

@@ -20,6 +20,13 @@ class QuizProgress(AbstractModel):
 
     def finish(self):
         self.end_time = datetime.now()
+        answers = self.answers.all()
+        answers = answers.values_list('point', flat=True)
+        persentage = sum(list(answers))/self.quiz.max_points * 100
+        accepted_persentage = persentage > self.quiz.default_pass_percentage
+        attempt = self.quiz.default_attempts_count >= self.attempt
+        if(accepted_persentage and attempt):
+            self.completed = True
         self.save()
     
     class Meta:
@@ -28,7 +35,9 @@ class QuizProgress(AbstractModel):
         verbose_name_plural = '[c] Прогресс в квизах'
 
 def change_lesson(sender, instance, created, **kwargs):
-    pass
+    lesson_progress=instance.lesson_progress
+    lesson_progress.completed = instance.completed
+    lesson_progress.save()
 
 
 post_save.connect(change_lesson, sender=QuizProgress)

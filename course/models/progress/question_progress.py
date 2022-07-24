@@ -12,7 +12,7 @@ from course.models.quiz.question import Question
 class QuizQuestionProgress(AbstractModel):
     user = models.ForeignKey(CourseUser, on_delete=models.CASCADE, related_name="my_answers", null=False)
     quiz_progress = models.ForeignKey(QuizProgress, on_delete=models.CASCADE, related_name="answers", null=True)
-    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True)
+    question = models.ForeignKey(Question, on_delete=models.SET_NULL, related_name="user_answers", null=True)
     answer = models.ForeignKey(Answer, on_delete=models.SET_NULL, null=True)
     correct = models.BooleanField()
     point = models.PositiveIntegerField(validators=(MaxValueValidator(5),))
