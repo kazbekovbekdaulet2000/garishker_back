@@ -3,6 +3,8 @@ from course.models.course.course import Course
 from organizations.serializers.organization_serializer import OrganizationSerializer
 from django.contrib.auth.models import AnonymousUser
 
+from video.serializers import VideoURLSerializer
+
 class CourseSerializer(serializers.ModelSerializer):
     organization = OrganizationSerializer(many=False)
     participant = serializers.SerializerMethodField(read_only=True)
@@ -20,6 +22,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class CourseDetailSerializer(CourseSerializer):
+    teaser = VideoURLSerializer(many=False)
+    
     class Meta(CourseSerializer.Meta):
         model = Course
         exclude = ['to_view']
