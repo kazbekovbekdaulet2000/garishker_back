@@ -1,7 +1,7 @@
 from django.urls import path
 from course.models.course.course import Course
 from course.views.course.course_participate_view import ParticipateCourse
-from course.views.course.course_view import CourseDetail, CourseList
+from course.views.course.course_view import CourseDetail, CourseLectorList, CourseList
 from course.views.lesson.current_lesson_view import CurrentLessonDetail
 from course.views.lesson.lesson_resource_view import LessonResourceList
 from course.views.lesson.lessons_view import LessonDetail, LessonList
@@ -21,6 +21,7 @@ urlpatterns = [
     # ----------- Course Info ----------- #
     path('', CourseList.as_view()),
     path('<int:id>/', CourseDetail.as_view()),
+    path('<int:id>/lectors/', CourseLectorList.as_view()),
     path('<int:id>/participate/', ParticipateCourse.as_view()),
 
     # ----------- Lessons ----------- #

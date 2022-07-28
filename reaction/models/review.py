@@ -30,7 +30,6 @@ def create_obj(sender, instance, **kwargs):
         obj = instance.content_object
         if(type(obj) == Product and kwargs['created']):
             user = obj.owner
-            user.rating = (user.rating + instance.rating)/2
             user.save()
         try:
             if(not obj.reviews_count == None):

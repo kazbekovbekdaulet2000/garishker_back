@@ -3,9 +3,12 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from course.filters import CourseLanguageFilter
 from course.models.course.course import Course
+from course.models.course.lector import Lector
 from course.serializers.course_serializer import CourseDetailSerializer, CourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+
+from course.serializers.lector_serializer import LectorDetailSerializer
 
 
 class CourseList(generics.ListAPIView):
@@ -28,3 +31,12 @@ class CourseDetail(generics.RetrieveAPIView):
         instance.increase_views()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+
+class CourseLectorList(generics.ListAPIView):
+    serializer_class = LectorDetailSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = None
+    
+    def get_queryset(self):
+        return Lector.objects.filter(lessons__course_id=self.kwargs['id']).distinct()
