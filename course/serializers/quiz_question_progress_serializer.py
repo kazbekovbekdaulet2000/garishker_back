@@ -37,7 +37,7 @@ class QuizQuestionProgressSerializer(serializers.ModelSerializer):
         self.question = get_object_or_404(Question, id=question_id)
         self.quiz_progress = QuizProgress.objects.filter(
             user=self.user_course, lesson_progress__lesson=lesson, end_time__isnull=True).order_by('created_at').last()
-        
+
         if(self.quiz_progress == None):
             raise Http404
 

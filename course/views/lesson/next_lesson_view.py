@@ -17,8 +17,6 @@ class NextLesson(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         user_course = self.get_user_course()
         lesson_progress = self.get_lesson_progress(user_course)
-        print(lesson_progress)
-        # TODO
         if(user_course.completed):
             return Response({"message": "course completed"}, status=status.HTTP_200_OK)
         if(lesson_progress.quiz == None):

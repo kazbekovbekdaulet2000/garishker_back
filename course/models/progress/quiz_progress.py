@@ -28,14 +28,28 @@ class QuizProgress(AbstractModel):
         if(accepted_persentage and attempt):
             self.completed = True
         self.save()
-    
+
+    @property
+    def progress(self):
+        if(self.end_time):
+            answers = self.answers.filter(correct=True)
+            max_points = self.quiz.max_points
+            points = sum(list(answers.values_list('point', flat=True)))
+            if(points == 0):
+                return 0
+            else:
+                return int(points/max_points * 100)
+        else:
+            return 0
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = '[c] Прогресс в квизах'
         verbose_name_plural = '[c] Прогресс в квизах'
 
+
 def change_lesson(sender, instance, created, **kwargs):
-    lesson_progress=instance.lesson_progress
+    lesson_progress = instance.lesson_progress
     lesson_progress.completed = instance.completed
     lesson_progress.save()
 
