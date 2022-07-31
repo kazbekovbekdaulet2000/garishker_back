@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework import permissions
 from course.models.progress.question_progress import QuizQuestionProgress
-from course.models.quiz.answer import Answer
 from course.models.quiz.question import Question
 from course.serializers.quiz_question_progress_serializer import QuizQuestionProgressSerializer
 

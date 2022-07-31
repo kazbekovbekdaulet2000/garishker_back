@@ -41,7 +41,6 @@ class QuizProgressSerializer(serializers.ModelSerializer):
         })
 
         self.quiz = lesson.quiz
-
         if(not self.quiz):
             raise Http404
 

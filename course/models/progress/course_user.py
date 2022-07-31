@@ -1,4 +1,6 @@
+from email.policy import default
 from django.db import models
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from common.custom_model import AbstractModel
@@ -28,10 +30,11 @@ class CourseUser(AbstractModel):
 def create_lesson_progress(sender, instance, created, **kwargs):
     course_lessons = instance.course.lessons.all()
     for lesson in course_lessons:
-        instance.progress_lessons.get_or_create(
-            user=instance,
-            lesson=lesson,
-            quiz=lesson.quiz
+        current = instance.current_lesson == lesson
+        instance.progress_lessons.update_or_create(
+            user=instance, lesson=lesson, quiz=lesson.quiz,
+            defaults={'current': current}
         )
+
 
 post_save.connect(create_lesson_progress, sender=CourseUser)

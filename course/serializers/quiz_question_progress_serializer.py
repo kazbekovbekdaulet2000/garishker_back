@@ -20,8 +20,8 @@ class QuizQuestionProgressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuizQuestionProgress
-        fields = ('id', 'question', 'answer')
-        read_only_fields = ('question',)
+        fields = ('id', 'question', 'answer', 'quiz_progress')
+        read_only_fields = ('question', 'quiz_progress')
 
     def validate(self, attrs):
         course_id = self.context.get('view').kwargs['id']

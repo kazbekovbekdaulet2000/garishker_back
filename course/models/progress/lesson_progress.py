@@ -12,6 +12,7 @@ class LessonProgress(AbstractModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=False)
     quiz = models.ForeignKey(Quiz, on_delete=models.SET_NULL, null=True, blank=True)
     completed = models.BooleanField(default=False)
+    current = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created_at']
@@ -21,8 +22,10 @@ class LessonProgress(AbstractModel):
 def change_lesson(sender, instance, created, **kwargs):
     user_course = instance.user
     prev_lesson = instance.lesson
-    if(instance.completed):
+    if(instance.completed and instance.current):
         lesson = Lesson.objects.filter(order__gt=prev_lesson.order).order_by('order').first()
+        if(user_course.current_lesson == lesson):
+            return
         if(lesson == None):
             user_course.completed = True
         else:
