@@ -21,8 +21,8 @@ class CourseSerializer(serializers.ModelSerializer):
     def __init__(self, instance=None, data=empty, **kwargs):
         super().__init__(instance, data, **kwargs)
         self.user = self.context.get('request').user
-        self.course_ids = list(
-            self.user.courses.all().values_list('course', flat=True))
+        if(not self.user.is_anonymous):
+            self.course_ids = list(self.user.courses.all().values_list('course', flat=True))
 
     class Meta:
         model = Course
