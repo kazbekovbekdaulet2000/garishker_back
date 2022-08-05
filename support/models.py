@@ -16,6 +16,17 @@ class ContactUs(AbstractModel):
         verbose_name_plural = 'Поддержка'
 
 
+class EmailRequests(AbstractModel):
+    email = models.EmailField(_('Почта'), max_length=65535, blank=True)
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = 'Email заявки'
+        verbose_name_plural = 'Email заявки'
+
+
 class Question(AbstractModel):
     question_ru = models.TextField(_('Вопрос (рус)'), max_length=65535, null=True, blank=True)
     answer_ru = models.TextField(_('Ответ (рус)'), max_length=65535, null=True, blank=True)

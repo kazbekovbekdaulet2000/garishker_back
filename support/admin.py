@@ -4,3 +4,4 @@ from .models import *
 
 admin.site.register(ContactUs)
 admin.site.register(Question)
+admin.site.register(EmailRequests)

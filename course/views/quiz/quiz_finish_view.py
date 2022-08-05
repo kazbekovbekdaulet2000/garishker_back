@@ -24,6 +24,7 @@ class LessonQuizFinish(generics.CreateAPIView):
         lesson_id = self.kwargs['lesson_id']
         course = get_object_or_404(Course, id=course_id)
         lesson = get_object_or_404(Lesson, id=lesson_id)
+       
         self.user_course = get_object_or_404(CourseUser, **{
             'user': request.user,
             'course': course
@@ -33,6 +34,7 @@ class LessonQuizFinish(generics.CreateAPIView):
             'user': self.user_course,
             'quiz': lesson.quiz
         })
+        
         self.quiz = lesson.quiz
         quiz = QuizProgress.objects.filter(user=self.user_course, lesson_progress=self.user_lesson, quiz=self.quiz, end_time__isnull=True).order_by('created_at').last()
         

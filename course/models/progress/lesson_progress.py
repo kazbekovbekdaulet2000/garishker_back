@@ -26,6 +26,8 @@ def change_lesson(sender, instance, created, **kwargs):
         lesson = Lesson.objects.filter(order__gt=prev_lesson.order).order_by('order').first()
         if(user_course.current_lesson == lesson):
             return
+        if(user_course.completed):
+            return
         if(lesson == None):
             user_course.completed = True
         else:

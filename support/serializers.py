@@ -11,3 +11,9 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = '__all__'
+    
+class EmailRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailRequests
+        fields = ['email', ]
+    
