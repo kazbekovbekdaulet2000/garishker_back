@@ -1,9 +1,11 @@
-from pydantic import conset
+from django.forms import ValidationError
 from rest_framework import serializers
 from payment.models.donation import UserDonation
 from django.conf import settings
 import json
 import requests
+import datetime
+import pytz
 
 
 class DonationCreateSerializer(serializers.ModelSerializer):
@@ -11,6 +13,16 @@ class DonationCreateSerializer(serializers.ModelSerializer):
         model = UserDonation
         fields = ['amount', 'donation', 'full_name', 'email', 'ioka_answer']
         read_only_fields = ('ioka_answer',)
+
+    def validate(self, attrs):
+        time = pytz.UTC.localize(datetime.datetime.now())
+        if(attrs['donation'].end_time):
+            if(attrs['donation'].end_time >= time):
+                raise ValidationError('donation time finished')
+        if(attrs['donation'].start_time):
+            if(attrs['donation'].start_time <= time):
+                raise ValidationError('donation time not started')
+        return attrs
 
     def create(self, validated_data):
         url = f"{settings.PAYMENT_URL}v2/orders"
