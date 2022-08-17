@@ -43,7 +43,6 @@ class ReportDetail(generics.RetrieveAPIView):
     serializer_class = ReportDetailSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    @method_decorator(cache_page(60))
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.increase_views()
