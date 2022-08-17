@@ -3,14 +3,16 @@ import sys
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin)
+    AbstractBaseUser, 
+    BaseUserManager, 
+    PermissionsMixin
+)
 from common.contants import USER_TYPE
 from common.custom_model import AbstractModel
 from obrazovanie.models.common_manager import ReactionManager
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
-from django.db.models.signals import post_init
 
 
 class CustomUserManager(BaseUserManager, ReactionManager):
@@ -73,8 +75,6 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         return f'{self.name} {self.surname}'
     
     def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
-        if not self.image:
-            return
         data_img = BytesIO()
         img = Image.open(self.image)
         img = img.convert('RGB')
@@ -83,13 +83,10 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
         img.save(data_img, format='jpeg', quality=100)
 
         return InMemoryUploadedFile(data_img, 'ImageField', '%s.%s' % (os.path.splitext(self.image.name)[0], 'jpeg'), 'jpeg', sys.getsizeof(data_img), None)
-
+       
     def save(self, *args, **kwargs):
-        self.image = self.create_thumbnail(720)
+        self.image = self.create_thumbnail(480)
         force_update = False
         if self.id:
             force_update = True
         super(User, self).save(force_update=force_update, *args, **kwargs)
-
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
