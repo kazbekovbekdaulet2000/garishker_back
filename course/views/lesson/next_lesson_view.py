@@ -3,11 +3,8 @@ from rest_framework import permissions
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.response import Response
-from course.models.course.lesson import Lesson
-
 from course.models.progress.course_user import CourseUser
 from course.models.progress.lesson_progress import LessonProgress
-from course.models.progress.quiz_progress import QuizProgress
 
 
 class NextLesson(generics.GenericAPIView):

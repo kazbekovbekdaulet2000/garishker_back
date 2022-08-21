@@ -4,12 +4,13 @@ from rest_framework.response import Response
 from course.filters import CourseLanguageFilter
 from course.models.course.course import Course
 from course.models.course.lector import Lector
+from course.models.progress.course_user import CourseUser
 from course.models.progress.lesson_progress import LessonProgress
 from course.permissions import CourseParticipant
 from course.serializers.course_serializer import CourseDetailSerializer, CourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-
+from django.db.models import Prefetch
 from course.serializers.lector_serializer import LectorDetailSerializer
 from course.serializers.lesson_progress_serializer import LessonProgressSerializer
 

@@ -9,8 +9,8 @@ class CourseUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CourseUser
-        fields = ('user', 'course', 'current_lesson', 'completed')
-        read_only_fields = ('user', 'course', 'current_lesson', 'completed')
+        fields = ('user', 'course', 'current_lesson', 'completed', 'progress')
+        read_only_fields = ('user', 'course', 'current_lesson', 'completed', 'progress')
 
     def validate(self, attrs):
         lookup_field = self.context.get('view').lookup_field

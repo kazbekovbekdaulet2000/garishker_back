@@ -41,7 +41,7 @@ class QuizProgress(AbstractModel):
                 return int(points/max_points * 100)
         else:
             return 0
-
+    
     class Meta:
         ordering = ['-created_at']
         verbose_name = '[c] Прогресс в квизах'

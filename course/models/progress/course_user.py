@@ -18,6 +18,14 @@ class CourseUser(AbstractModel):
     current_lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True)
     completed = models.BooleanField(default=False)
 
+    @property
+    def progress(self) -> int: 
+        # if(self.completed):
+        #     lessons = self.progress_lessons.filter(completed=True)
+        #     attempts = lessons.values_list('quiz_attempts')
+        #     print(attempts)
+        return 0
+
     def __str__(self):
         return f"{self.user.email} - {self.course.name_ru}"
 
