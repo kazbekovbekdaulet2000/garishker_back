@@ -1,12 +1,9 @@
-import os
-import sys
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from shop.models.product.product import Product
-from PIL import Image
 from common.custom_model import AbstractModel
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from io import BytesIO
+
+from utils.image_progressive import create_thumbnail, has_changed
 
 def course_dir(instance, filename):
     return f"products/product_{instance.product.id}/{filename}"
@@ -26,35 +23,13 @@ class ProductImage(AbstractModel):
     def __str__(self):
         return f"{self.product.name_ru}"
 
-    def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
-        if not self.image:
-            return
-        data_img = BytesIO()
-
-        img = Image.open(self.image)
-        img = img.convert('RGB')
-        if(img.height/newsize <= 1 or img.width/newsize <= 1):
-            return None
-
-        THUMBNAIL_SIZE = (newsize, newsize)
-        img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
-        img.save(data_img, format='jpeg', quality=100)
-
-        return InMemoryUploadedFile(data_img,
-                                    'ImageField',
-                                    '%s_thumbnail_%spx.%s' % (os.path.splitext(
-                                        self.image.name)[0], int(newsize), 'jpeg'),
-                                    'jpeg',
-                                    sys.getsizeof(data_img), None)
-
     def save(self, *args, **kwargs):
-        if(not self.image_thumb480):
-            self.image_thumb480 = self.create_thumbnail(480)
-        if(not self.image_thumb720):
-            self.image_thumb720 = self.create_thumbnail(720)
-        if(not self.image_thumb1080):
-            self.image_thumb1080 = self.create_thumbnail(1080)
-            self.image = self.create_thumbnail(1080)
+        if (has_changed(self, 'image_thumb480')):
+            self.image = create_thumbnail(self.image_thumb480, 480)
+        if (has_changed(self, 'image_thumb720')):
+            self.image = create_thumbnail(self.image_thumb720, 720)
+        if (has_changed(self, 'image_thumb1080')):
+            self.image = create_thumbnail(self.image_thumb1080, 1080)
         force_update = False
         if self.id:
             force_update = True

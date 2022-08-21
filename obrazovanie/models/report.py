@@ -1,7 +1,3 @@
-import os
-import sys
-from bs4 import BeautifulSoup
-import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from common.contants import LANGS
@@ -11,11 +7,10 @@ from obrazovanie.models.common_manager import ReactionManager
 from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.postgres.fields import ArrayField
-from PIL import Image
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from io import BytesIO
-
+from utils.image_progressive import create_thumbnail, has_changed
+from utils.reading_time import get_reading_time
 from video.models.video_url import VideoURL
+
 
 class Report(AbstractModel, ReactionsAbstract):
     title_ru = models.CharField(_('Название (рус)'), max_length=500, blank=True)
@@ -43,31 +38,19 @@ class Report(AbstractModel, ReactionsAbstract):
         self.views += 1
         self.save()
 
-    def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
-        if not self.image:
-            return
-        data_img = BytesIO()
-
-        img = Image.open(self.image)
-        img = img.convert('RGB')
-        THUMBNAIL_SIZE = (newsize, newsize)
-        img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
-        img.save(data_img, format='jpeg', quality=100)
-
-        return InMemoryUploadedFile(data_img, 'ImageField', '%s.%s' % (os.path.splitext(self.image.name)[0], 'jpeg'), 'jpeg', sys.getsizeof(data_img), None)
-
-
-    def get_reading_time(self):
-        soup = BeautifulSoup(self.body_ru, 'html.parser')
-        text = soup.get_text()
-        word_count = len(text.split())
-        read_time = word_count / 100
-        read_time = str(datetime.timedelta(minutes=read_time))
-        return read_time
-
     def save(self) -> None:
-        self.read_time = self.get_reading_time()
+        if (has_changed(self, 'image')):
+            self.image = create_thumbnail(self.image, 720)
+        self.read_time = f"ru-{get_reading_time(self.body_ru)} / kk-{get_reading_time(self.body_kk)}"
         return super().save()
+
+    @property
+    def read_time_ru(self):
+        return get_reading_time(self.body_ru) or get_reading_time(self.body_kk)
+
+    @property
+    def read_time_kk(self):
+        return get_reading_time(self.body_kk) or get_reading_time(self.body_ru)
 
     class Meta:
         ordering = ['-created_at', '-views']

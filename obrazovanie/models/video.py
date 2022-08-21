@@ -1,5 +1,3 @@
-import os
-import sys
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from common.contants import LANGS
@@ -10,9 +8,7 @@ from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from common.yandex_storage import ClientDocsStorage
 from django.contrib.postgres.fields import ArrayField
-from PIL import Image
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from io import BytesIO
+from utils.image_progressive import create_thumbnail, has_changed
 from video.models.video_url import VideoURL
 
 
@@ -41,21 +37,11 @@ class Video(AbstractModel, ReactionsAbstract):
         self.views += 1
         self.save()
     
-    def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
-        if not self.image:
-            return
-        data_img = BytesIO()
-
-        img = Image.open(self.image)
-        img = img.convert('RGB')
-        THUMBNAIL_SIZE = (newsize, newsize)
-        img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
-        img.save(data_img, format='jpeg', quality=100)
-
-        return InMemoryUploadedFile(data_img, 'ImageField', '%s.%s' % (os.path.splitext(self.image.name)[0], 'jpeg'), 'jpeg', sys.getsizeof(data_img), None)
-
-
     def save(self, **kwargs) -> None:
+        if (has_changed(self, 'image')):
+            self.image = create_thumbnail(self.image, 720)
+        if (has_changed(self, 'image_2')):
+            self.image_2 = create_thumbnail(self.image_2, 720)
         return super().save(**kwargs)
 
     class Meta:

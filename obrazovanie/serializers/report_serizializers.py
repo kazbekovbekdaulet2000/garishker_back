@@ -16,7 +16,7 @@ class BaseReportSerializer(serializers.ModelSerializer):
         if(self.context['request'].user.is_anonymous):
             return False
         user = self.context['request'].user
-        
+
         return Like.objects.filter(
             object_id=obj.id,
             content_type=ContentType.objects.get_for_model(Report),
@@ -36,8 +36,8 @@ class BaseReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ['id', 'category', 'likes_count', 'liked', 'bookmarks_count',
-                  'bookmarked', 'title_ru', 'title_kk', 'created_at', 'image', 'read_time',
-                  'comments_count', 'views', 'preview_text_ru', 'preview_text_kk', 'languages', 'tags']
+                  'bookmarked', 'title_ru', 'title_kk', 'created_at', 'image', 'read_time', 'read_time_ru',
+                  'read_time_kk', 'comments_count', 'views', 'preview_text_ru', 'preview_text_kk', 'languages', 'tags']
 
 
 class ReportDetailSerializer(BaseReportSerializer):

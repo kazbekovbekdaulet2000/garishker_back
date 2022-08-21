@@ -1,4 +1,3 @@
-import sys
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import (
@@ -6,20 +5,10 @@ from django.contrib.auth.models import (
     BaseUserManager, 
     PermissionsMixin
 )
-import uuid
 from common.contants import USER_TYPE
 from common.custom_model import AbstractModel
 from obrazovanie.models.common_manager import ReactionManager
-from PIL import Image
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from io import BytesIO
-
-
-def has_changed(instance, field):
-    if not instance.pk:
-        return False
-    old_value = instance.__class__._default_manager.filter(pk=instance.pk).values(field).get()[field]
-    return not getattr(instance, field) == old_value
+from utils.image_progressive import create_thumbnail, has_changed
 
 
 class CustomUserManager(BaseUserManager, ReactionManager):
@@ -81,19 +70,9 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractModel):
     def get_full_name(self):
         return f'{self.name} {self.surname}'
 
-    def create_thumbnail(self, newsize) -> InMemoryUploadedFile:
-        data_img = BytesIO()
-        img = Image.open(self.image)
-        img = img.convert('RGB')
-        THUMBNAIL_SIZE = (newsize, newsize)
-        img.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
-        img.save(data_img, format='jpeg', quality=100)
-
-        return InMemoryUploadedFile(data_img, 'ImageField', '%s.%s' % (uuid.uuid4(), 'jpeg'), 'jpeg', sys.getsizeof(data_img), None)
-       
     def save(self, *args, **kwargs):
-        if (has_changed(self, 'image') or 'force' in kwargs):
-            self.image = self.create_thumbnail(480)
+        if (has_changed(self, 'image')):
+            self.image = create_thumbnail(self.image, 480)
         force_update = False
         if self.id:
             force_update = True
