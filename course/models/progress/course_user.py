@@ -1,6 +1,4 @@
-from email.policy import default
 from django.db import models
-from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from common.custom_model import AbstractModel
@@ -20,10 +18,6 @@ class CourseUser(AbstractModel):
 
     @property
     def progress(self) -> int: 
-        # if(self.completed):
-        #     lessons = self.progress_lessons.filter(completed=True)
-        #     attempts = lessons.values_list('quiz_attempts')
-        #     print(attempts)
         return 0
 
     def __str__(self):
@@ -40,7 +34,7 @@ def create_lesson_progress(sender, instance, created, **kwargs):
     for lesson in course_lessons:
         current = instance.current_lesson == lesson
         instance.progress_lessons.update_or_create(
-            user=instance, lesson=lesson, quiz=lesson.quiz,
+            user=instance, lesson=lesson,
             defaults={'current': current}
         )
 

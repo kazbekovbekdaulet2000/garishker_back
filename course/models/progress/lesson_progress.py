@@ -14,6 +14,10 @@ class LessonProgress(AbstractModel):
     completed = models.BooleanField(default=False)
     current = models.BooleanField(default=False)
 
+    def save(self, **kwargs):
+        self.quiz = self.lesson.quiz
+        return super().save(**kwargs)
+    
     class Meta:
         ordering = ['-created_at']
         verbose_name = '[b] Прогресс в уроках'
@@ -24,10 +28,10 @@ def change_lesson(sender, instance, created, **kwargs):
     prev_lesson = instance.lesson
     if(instance.completed and instance.current):
         lesson = Lesson.objects.filter(order__gt=prev_lesson.order).order_by('order').first()
-        if(user_course.current_lesson == lesson):
-            return
         if(user_course.completed):
             return
+        if(user_course.current_lesson == lesson):
+            user_course.completed = True
         if(lesson == None):
             user_course.completed = True
         else:

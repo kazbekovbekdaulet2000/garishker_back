@@ -36,7 +36,9 @@ class Lesson(AbstractModel, ReactionsAbstract):
 def update_course(sender, instance, created, **kwargs):
     course = instance.course
     if(created):
-        update_user_course_lessons(course)
+        users = course.users.all()
+        for user in users:
+            user.save()
     course.lesson_count = Lesson.objects.filter(course=course).count()
     course.save()
 
