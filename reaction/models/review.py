@@ -11,7 +11,7 @@ User = settings.AUTH_USER_MODEL
 
 
 class Review(AbstractModel, ContentTypeModel, ReactionsAbstract):
-    body = models.TextField(blank=False)
+    body = models.TextField(blank=True, null=True)
     owner = models.ForeignKey(User, related_name='review', on_delete=models.CASCADE, null=True)
     rating = models.PositiveIntegerField(null=False, default=5, validators=(MaxValueValidator(5), MinValueValidator(1)))
 
