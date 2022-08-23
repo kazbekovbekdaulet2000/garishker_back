@@ -10,7 +10,6 @@ from course.permissions import CourseParticipant
 from course.serializers.course_serializer import CourseDetailSerializer, CourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from django.db.models import Prefetch
 from course.serializers.lector_serializer import LectorDetailSerializer
 from course.serializers.lesson_progress_serializer import LessonProgressSerializer
 
@@ -22,6 +21,19 @@ class CourseList(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ('name_kk', 'name_ru', 'description_kk', 'description_ru')
     filterset_class = CourseLanguageFilter
+
+
+class CourseParticipantList(generics.ListAPIView):
+    queryset = Course.objects.filter(to_view=True)
+    serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ('name_kk', 'name_ru', 'description_kk', 'description_ru')
+    filterset_class = CourseLanguageFilter
+
+    def get_queryset(self):
+        ids = CourseUser.objects.filter(user=self.request.user).values_list('course', flat=True)
+        return Course.objects.filter(to_view=True, id__in=ids)
 
 
 class CourseDetail(generics.RetrieveAPIView):
