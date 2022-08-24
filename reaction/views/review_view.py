@@ -12,7 +12,8 @@ class ReviewList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         return Review.objects\
-            .get_object_by_model(model=self.model, id=self.kwargs.get(self.lookup_field))
+            .get_object_by_model(model=self.model, id=self.kwargs.get(self.lookup_field))\
+            .filter(body__isnull=False)
 
     def get_serializer_class(self):
         if self.request.method == "POST":
