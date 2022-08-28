@@ -18,7 +18,7 @@ class ProjectPeriod(AbstractModel):
     description_ru = RichTextUploadingField(verbose_name=_('Описание (рус)'))
     year = models.PositiveIntegerField(choices=YEAR_CHOICES, default=datetime.now().year, null=False)
     status = models.CharField(choices=PROJECT_STATUS, default='in_process', max_length=16, null=False)
-    donat = models.ForeignKey(Donation, on_delete=models.DO_NOTHING, null=True)
+    donat = models.ForeignKey(Donation, on_delete=models.DO_NOTHING, null=True, blank=True)
     video = models.ForeignKey(VideoURL, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     def __str__(self):
