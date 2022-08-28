@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from shop.models.product.product import Product
 from common.custom_model import AbstractModel
-
+from django.db.models.signals import post_save
 from utils.image_progressive import create_thumbnail, has_changed
 
 def course_dir(instance, filename):
@@ -25,9 +25,10 @@ class ProductImage(AbstractModel):
 
     def save(self, *args, **kwargs):
         if (has_changed(self, 'image')):
-            self.image_thumb480 = create_thumbnail(self.image_thumb480, 480)
-            self.image_thumb720 = create_thumbnail(self.image_thumb720, 720)
-            self.image_thumb1080 = create_thumbnail(self.image_thumb1080, 1080)
+            self.image_thumb1080 = create_thumbnail(self.image, 1080)
+            self.image_thumb720 = create_thumbnail(self.image, 720)
+            self.image_thumb480 = create_thumbnail(self.image, 480)
+            self.image = self.image_thumb1080
         force_update = False
         if self.id:
             force_update = True
@@ -37,3 +38,13 @@ class ProductImage(AbstractModel):
         ordering = ['-created_at']
         verbose_name = 'Фото'
         verbose_name_plural = 'Фотографии'
+
+def update_photo(sender, instance, created, **kwargs):
+    if(created):
+        instance.image_thumb1080 = create_thumbnail(instance.image, 1080)
+        instance.image_thumb720 = create_thumbnail(instance.image, 720)
+        instance.image_thumb480 = create_thumbnail(instance.image, 480)
+        instance.image = instance.image_thumb1080
+        instance.save()
+
+post_save.connect(update_photo, sender=ProductImage)
