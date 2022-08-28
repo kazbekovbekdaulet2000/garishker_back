@@ -25,11 +25,11 @@ class ProductImage(AbstractModel):
 
     def save(self, *args, **kwargs):
         if (has_changed(self, 'image_thumb480')):
-            self.image = create_thumbnail(self.image_thumb480, 480)
+            self.image_thumb480 = create_thumbnail(self.image_thumb480, 480)
         if (has_changed(self, 'image_thumb720')):
-            self.image = create_thumbnail(self.image_thumb720, 720)
+            self.image_thumb720 = create_thumbnail(self.image_thumb720, 720)
         if (has_changed(self, 'image_thumb1080')):
-            self.image = create_thumbnail(self.image_thumb1080, 1080)
+            self.image_thumb1080 = create_thumbnail(self.image_thumb1080, 1080)
         force_update = False
         if self.id:
             force_update = True
