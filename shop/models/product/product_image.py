@@ -24,11 +24,9 @@ class ProductImage(AbstractModel):
         return f"{self.product.name_ru}"
 
     def save(self, *args, **kwargs):
-        if (has_changed(self, 'image_thumb480')):
+        if (has_changed(self, 'image')):
             self.image_thumb480 = create_thumbnail(self.image_thumb480, 480)
-        if (has_changed(self, 'image_thumb720')):
             self.image_thumb720 = create_thumbnail(self.image_thumb720, 720)
-        if (has_changed(self, 'image_thumb1080')):
             self.image_thumb1080 = create_thumbnail(self.image_thumb1080, 1080)
         force_update = False
         if self.id:
