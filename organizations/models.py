@@ -9,8 +9,7 @@ class Organization(AbstractModel):
     name_ru = models.CharField(_('Название (рус)'), max_length=255)
     description_kk = models.TextField(_('Описание (каз)'), blank=True)
     description_ru = models.TextField(_('Описание (рус)'), blank=True)
-    icon = models.ImageField(_('Фото'), null=True,
-                             blank=True, upload_to='lector')
+    icon = models.ImageField(_('Фото'), null=True, blank=True, upload_to='lector')
 
     def __str__(self):
         return self.name_ru

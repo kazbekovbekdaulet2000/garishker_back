@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from event.models.event import Event
 from event.serializers.city_serializer import CitySerializer
-from video.models.video_url import VideoURL
 from video.serializers import VideoURLSerializer
 
 

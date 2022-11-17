@@ -17,7 +17,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id', 'name', 'email', 'phone', 'address', 'city', 'post_id', 'delivery_type', 'products')
-
+        
     def validate(self, attrs):
         products_attrs = attrs['products']
         for product in products_attrs:
