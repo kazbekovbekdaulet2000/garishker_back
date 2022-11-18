@@ -13,7 +13,7 @@ class EventRegistration(AbstractModel):
     name = models.CharField(
         _("Имя человека"), max_length=255, null=False, blank=True)
     phone = models.CharField(
-        _("Телефон"), max_length=16, null=True, blank=True, unique=False)
+        _("Телефон"), max_length=255, null=True, blank=True, unique=False)
     # regex=r'^\+?1?\d{9,15}$',
 
     def __str__(self):
