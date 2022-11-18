@@ -30,7 +30,7 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ['id', 'name_ru', 'name_kk', 'description_ru', 'description_kk',
                   'city', 'address_ru', 'address_kk', 'address_link', 'event_date', 'views',
                   'max_user_count', 'participants_count', 'poster', 'canceled', 'liked', 'bookmarked', 
-                  'likes_count', 'comments_count', 'bookmarks_count', 'video']
+                  'likes_count', 'comments_count', 'bookmarks_count', 'video', 'slug']
 
 
 class EventDetailSerializer(EventSerializer):

@@ -14,8 +14,10 @@ class EventRegistrationAdmin(admin.ModelAdmin):
 class EventAdmin(admin.ModelAdmin):
     def likes_count(self, obj):
         return obj.saves.count()
+        
+    list_display = ('name_ru', 'created_at', 'likes_count', 'slug')
+    prepopulated_fields = {"slug": ("name_ru",)}
 
-    list_display = ['name_ru', 'created_at', 'likes_count']
     ordering = ['-created_at']
     exclude = ('saves',)
     readonly_fields = GenericReactionAdmin.readonly_fields + ('views',)
