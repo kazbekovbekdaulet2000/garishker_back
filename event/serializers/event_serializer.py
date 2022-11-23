@@ -21,8 +21,6 @@ class EventSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         return Event.objects.saved(user, obj.id)
 
-    participants_count = serializers.IntegerField(
-        source="participants.count", read_only=True)
     city = CitySerializer(many=False)
 
     class Meta:

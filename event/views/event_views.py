@@ -40,6 +40,13 @@ class EventsDetail(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
 
+class EventsDetailSlug(generics.RetrieveAPIView):
+    lookup_field = 'slug'
+    queryset = Event.objects.all()
+    serializer_class = EventDetailSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+
+
 class EventParticipate(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = EventRegistration.objects.all()
