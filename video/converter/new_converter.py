@@ -11,8 +11,7 @@ from video.converter.fIle_reader import FileReader
 class NewConverter:
     session = boto3.session.Session(
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-        region_name=settings.AWS_S3_REGION_NAME
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
     )
 
     s3_client = session.client(
