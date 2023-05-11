@@ -11,7 +11,7 @@ from video.models.video_url import VideoURL
 @shared_task(time_limit=7200)
 def video_transcode(id, url):
     video = NewConverter(url)
-    bucket_dir = url.split(f"{settings.BUCKET_NAME}/")[-1]
+    bucket_dir = url.split(f"{settings.AWS_S3_BUCKET_NAME}/")[-1]
     if not video.file:
         video.file = video.download_from_storage(bucket_dir)
         if(video.file == None): 
@@ -26,7 +26,7 @@ def video_transcode(id, url):
         obj.save()
         for size in VIDEO_QUALITIES:
             w, h = size
-            if(orig_height > h):
+            if orig_height > h:
                 try:
                     obj.convert_status = 'started'
                     thumb = VideoQualityURL.objects.create(video_id=id, quality=h, url=video.process(bucket_dir, h))

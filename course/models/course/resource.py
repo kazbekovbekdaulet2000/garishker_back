@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from common.custom_model import AbstractModel
-from common.yandex_storage import ClientDocsStorage
+from common.s3_storage import S3Storage
 from course.models.course.course import Course
 from course.models.course.lesson import Lesson
 from course.models.course.module import LessonModule
@@ -22,7 +22,7 @@ class Resource(AbstractModel):
     course = models.ForeignKey(Course, related_name="resources", on_delete=models.CASCADE, null=True, blank=True)
     lesson = models.ForeignKey(Lesson, related_name="resources", on_delete=models.CASCADE, null=True, blank=True)
     lesson_module = models.ForeignKey(LessonModule, related_name="resources", on_delete=models.CASCADE, null=True, blank=True)
-    file = models.FileField(_('Файл'), upload_to=course_dir, blank=True, storage=ClientDocsStorage)
+    file = models.FileField(_('Файл'), upload_to=course_dir, blank=True, storage=S3Storage)
     link = models.CharField(_('Ссылка'), blank=True, max_length=5000, null=True)
     image = models.FileField(_('Обложка'), upload_to=course_resource, blank=True)
 

@@ -6,7 +6,7 @@ from obrazovanie.models.category import Category
 from obrazovanie.models.common_manager import ReactionManager
 from user.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
-from common.yandex_storage import ClientDocsStorage
+from common.s3_storage import S3Storage
 from django.contrib.postgres.fields import ArrayField
 from utils.image_progressive import create_thumbnail, has_changed
 from video.models.video_url import VideoURL
@@ -22,7 +22,7 @@ class Video(AbstractModel, ReactionsAbstract):
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.DO_NOTHING, related_name='video_category')
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, related_name='video_author')
     views = models.PositiveIntegerField(default=0)
-    subs_kk = models.FileField(_('Субтитры (каз)'), storage=ClientDocsStorage, upload_to='subtitles', blank=True)
+    subs_kk = models.FileField(_('Субтитры (каз)'), storage=S3Storage, upload_to='subtitles', blank=True)
     duriation = models.DurationField(_("Длительность"), blank=True, null=False, default="00:00")
     tags = ArrayField(base_field=models.CharField(max_length=255), default=list, null=True, blank=True)
     languages = ArrayField(base_field=models.CharField(max_length=3), default=list(dict(LANGS).keys()))

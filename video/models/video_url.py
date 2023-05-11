@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from common.contants import VIDEO_CONVERSION_STATUS_CHOICES, VIDEO_URL_TYPE
 from common.custom_model import AbstractModel
-from common.yandex_storage import ClientDocsStorage
+from common.s3_storage import S3Storage
 
 
 class VideoURL(AbstractModel):
@@ -11,7 +11,7 @@ class VideoURL(AbstractModel):
 
     # used to combine Video with url and video with file (not the best case)
     url = models.URLField(null=True, blank=True)
-    video_file = models.FileField(_('Видеофайл'), upload_to='video-file', storage=ClientDocsStorage, null=True, blank=True)
+    video_file = models.FileField(_('Видеофайл'), upload_to='video-file', storage=S3Storage, null=True, blank=True)
 
     url_type = models.PositiveIntegerField(choices=VIDEO_URL_TYPE, default='s3')
     convert_status = models.CharField(_('Статус конвертации'), max_length=255, choices=VIDEO_CONVERSION_STATUS_CHOICES, default='pending')

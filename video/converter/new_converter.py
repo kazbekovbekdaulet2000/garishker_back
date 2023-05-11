@@ -1,7 +1,5 @@
 import os
 import subprocess
-
-import subprocess
 import boto3
 import botocore
 from django.conf import settings
@@ -10,8 +8,8 @@ from video.converter.fIle_reader import FileReader
 
 class NewConverter:
     session = boto3.session.Session(
-        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+        aws_access_key_id=settings.AWS_S3_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY
     )
 
     s3_client = session.client(
@@ -27,7 +25,7 @@ class NewConverter:
 
     def upload_and_presign(self, file_path, object_name):
         client = self.s3_client
-        bucket = settings.BUCKET_NAME
+        bucket = settings.AWS_S3_BUCKET_NAME
         client.upload_file(file_path, bucket, object_name)
         return client.generate_presigned_url('get_object', Params={'Bucket': bucket, 'Key': object_name}, ExpiresIn=3600)
 
@@ -36,7 +34,7 @@ class NewConverter:
         file = FileReader(bucket_dir)
         save_path = f"{self.dir}/media/{file.file_name}"
         try: 
-            client.download_file(Bucket=settings.BUCKET_NAME, Key=bucket_dir, Filename=save_path)
+            client.download_file(Bucket=settings.AWS_S3_BUCKET_NAME, Key=bucket_dir, Filename=save_path)
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == "404":
                 return None

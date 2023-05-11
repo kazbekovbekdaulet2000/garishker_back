@@ -69,16 +69,7 @@ INSTALLED_APPS = [
 
     # ckeditor
     "ckeditor",
-    "ckeditor_uploader",
-
-    # yandex storage
-    'storages',
-
-    # crontab
-    # 'django_celery_beat',
-
-    # django prometheus
-    'django_prometheus',
+    "ckeditor_uploader"
 ]
 
 MIDDLEWARE = [
@@ -343,18 +334,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 USER_EMAIL_TEMPLATES = os.path.join(BASE_DIR, 'user/templates/')
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
 
 # S3 Storage
-YANDEX_CLIENT_DOCS_BUCKET_NAME = 'client-docs'
-
-AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
-AWS_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL')
-BUCKET_NAME = env("S3_BUCKET_NAME")
+AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL")
+AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID")
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY")
+AWS_S3_BUCKET_NAME = os.environ.get("AWS_S3_BUCKET_NAME")
+AWS_QUERYSTRING_AUTH = False
+DEFAULT_FILE_STORAGE = 'common.s3_storage.S3Storage'
 
 AUTH_USER_MODEL = 'user.User'
 
