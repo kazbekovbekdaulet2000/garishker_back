@@ -3,13 +3,14 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
+api="app.dev.garyshker.com"
 rsa_key_size=4096
 data_path="./data/certbot"
-email="kazbekov.bekdaulet2000@gmail.com" # Adding a valid address is strongly recommended
+email="kazbekov.bekdaulet2000@gmail.com" # Adding a valid address i strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then
-  read -p "Existing data found for app.garyshker.com. Continue and replace existing certificate? (y/N) " decision
+  read -p "Existing data found for $api. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
     exit
   fi
@@ -24,9 +25,9 @@ if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/
   echo
 fi
 
-echo "### Creating dummy certificate for app.garyshker.com ..."
-path="/etc/letsencrypt/live/app.garyshker.com"
-mkdir -p "$data_path/conf/live/app.garyshker.com"
+echo "### Creating dummy certificate for $api ..."
+path="/etc/letsencrypt/live/$api"
+mkdir -p "$data_path/conf/live/$api"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 30\
     -keyout '$path/privkey.pem' \
@@ -39,17 +40,17 @@ echo "### Starting nginx ..."
 docker-compose up --force-recreate -d nginx
 echo
 
-echo "### Deleting dummy certificate for app.garyshker.com ..."
+echo "### Deleting dummy certificate for $api ..."
 docker-compose run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/app.garyshker.com && \
-  rm -Rf /etc/letsencrypt/archive/app.garyshker.com && \
-  rm -Rf /etc/letsencrypt/renewal/app.garyshker.com.conf" certbot
+  rm -Rf /etc/letsencrypt/live/$api && \
+  rm -Rf /etc/letsencrypt/archive/$api && \
+  rm -Rf /etc/letsencrypt/renewal/$api.conf" certbot
 echo
 
 
-echo "### Requesting Let's Encrypt certificate for app.garyshker.com ..."
-#Join app.garyshker.com to -d args
-domain_args="-d app.garyshker.com"
+echo "### Requesting Let's Encrypt certificate for $api ..."
+#Join $api to -d args
+domain_args="-d $api"
 
 # Select appropriate email arg
 case "$email" in
