@@ -6,6 +6,7 @@ from reaction.views.bookmark_view import BookmarkAction
 from reaction.views.comment_view import CommentDetail, CommentList
 from reaction.views.like_view import LikeAction
 
+
 urlpatterns = [
     path('', EventsList.as_view()),
     path('<int:id>/', EventsDetail.as_view()),

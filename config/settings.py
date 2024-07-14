@@ -43,8 +43,6 @@ INSTALLED_APPS = [
     'reaction',
     'obrazovanie',
     'support',
-    'course',
-    'organizations',
     'event',
     'shop',
     'payment',
@@ -94,9 +92,8 @@ INTERNAL_IPS = [
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:4200',
-    'https://shapka.pro',
+) if DEBUG else (
     'https://garyshker.com',
-    'https://garyshker-dev.web.app'
 )
 
 ROOT_URLCONF = 'config.urls'
@@ -118,36 +115,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
-LOG_LEVEL = env('LOG_LEVEL')
-LOG_PATH = os.path.join(BASE_DIR, 'logs')
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        "json": {
-            '()': CustomisedJSONFormatter,
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'course_log_file': {
-            'level': LOG_LEVEL,
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_PATH, 'course.log.json'),
-            'maxBytes': 1024 * 1024 * 15,  # 15MB
-            'backupCount': 10,
-            'formatter': 'json',
-        },
-    },
-    'root': {
-        'handlers': ['console', 'course_log_file'],
-        'level': LOG_LEVEL,
-    },
-}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

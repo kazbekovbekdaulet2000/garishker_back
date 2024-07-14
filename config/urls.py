@@ -47,7 +47,6 @@ urlpatterns = [
     re_path('admin/', admin.site.urls),
     re_path('auth/', include('user.urls')),
     re_path('events/', include('event.urls')),
-    re_path('courses/', include('course.urls')),
     re_path('edu/', include('obrazovanie.urls')),
     re_path('support/', include('support.urls')),
     re_path('payment/', include('payment.urls')),

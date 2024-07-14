@@ -2,12 +2,11 @@ from django.db import models
 from common.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.fields import RichTextUploadingField
-from django.db import models
-from datetime import datetime
 from payment.models.donation_project import Donation
 from projects.models.const import YEAR_CHOICES, PROJECT_STATUS
 from projects.models.project import Project
 from video.models.video_url import VideoURL
+from datetime import datetime
 
 
 class ProjectPeriod(AbstractModel):

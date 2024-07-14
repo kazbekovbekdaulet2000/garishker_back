@@ -6,8 +6,10 @@ from obrazovanie.models.video import Video
 class ReportSiteURL:
     domain = 'garyshker.com/edu/reports/'
 
+
 class VideoSiteURL:
     domain = 'garyshker.com/edu/videos/'
+
 
 class ReportViewSitemap(Sitemap):
     changefreq = "daily"

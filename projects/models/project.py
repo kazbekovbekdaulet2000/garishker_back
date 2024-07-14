@@ -2,7 +2,6 @@ from django.db import models
 from common.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.fields import RichTextUploadingField
-from django.db import models
 from projects.models.const import PROJECT_TYPE, PROJECT_STATUS
 
 

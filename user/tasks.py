@@ -13,6 +13,7 @@ connection = get_connection(
     use_tls=settings.EMAIL_USE_TLS
 )
 
+
 logger = get_task_logger(__name__)
 
 
@@ -61,8 +62,7 @@ def mass_mailing(*args, **kwargs):
     return send_mail(subject='Массовые сообщение',
                      message='Мы вам прислали это письмо сказать спасибо и тд',
                      from_email=settings.EMAIL_HOST_USER,
-                     recipient_list=[
-                         "kazbekov.bekdaulet2000@gmail.com", "bonlyoone@gmail.com"],
+                     recipient_list=["kazbekov.bekdaulet2000@gmail.com", "bonlyoone@gmail.com"],
                      connection=connection)
 
 

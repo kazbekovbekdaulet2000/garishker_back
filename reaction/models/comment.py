@@ -1,7 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
-from django.db import models
 from common.custom_model import AbstractModel, ContentTypeModel, ReactionsAbstract
 from django.conf import settings
 

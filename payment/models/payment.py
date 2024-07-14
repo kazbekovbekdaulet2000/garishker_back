@@ -1,14 +1,8 @@
 from django.db import models
-from common.custom_model import AbstractModel, ContentTypeModel
-from django.contrib.contenttypes.models import ContentType
-from event.models.event import Event
-from obrazovanie.models.video import Video
-from obrazovanie.models.report import Report
-from projects.models.project_periodic import ProjectPeriod
+from common.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
-from django.contrib.postgres.fields import ArrayField
-from ckeditor_uploader.fields import RichTextUploadingField
 from shop.models.order.order import Order
+
 
 PAYMENT_STATUS = (
     ('PENDING', 'PENDING'),
@@ -18,6 +12,7 @@ PAYMENT_STATUS = (
     ('CANCELLED', 'CANCELLED'),
     ('DECLINED', 'DECLINED')
 )
+
 
 class Payment(AbstractModel):
     ioka_order_id = models.CharField(max_length=255)

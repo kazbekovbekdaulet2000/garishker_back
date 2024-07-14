@@ -2,7 +2,6 @@ from django.db import models
 from common.custom_model import AbstractModel
 from django.utils.translation import gettext_lazy as _
 from event.models.event import Event
-from django.db import models
 
 
 class EventRegistration(AbstractModel):

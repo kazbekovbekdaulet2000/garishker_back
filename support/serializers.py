@@ -7,10 +7,12 @@ class ContactUsSerializer(serializers.ModelSerializer):
         model = ContactUs
         fields = '__all__'
 
+
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = '__all__'
+
     
 class EmailRequestSerializer(serializers.ModelSerializer):
     class Meta:

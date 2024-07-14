@@ -1,7 +1,6 @@
 from django.db import models
 from common.custom_model import AbstractModel, ReactionsAbstract
 from django.utils.translation import gettext_lazy as _
-from django.db import models
 from event.models.city import City
 from obrazovanie.models.common_manager import ReactionManager
 from utils.image_progressive import create_thumbnail, has_changed

@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.db import models
 from common.contants import VIDEO_CONVERSION_STATUS_CHOICES, VIDEO_URL_TYPE
 from common.custom_model import AbstractModel
 from common.s3_storage import S3Storage

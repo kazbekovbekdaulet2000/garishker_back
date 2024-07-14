@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
+
 User = settings.AUTH_USER_MODEL
 
 
@@ -55,14 +56,10 @@ class ContentTypeModel(models.Model):
 
 
 class ReactionsAbstract(models.Model):
-    likes_count = models.PositiveIntegerField(
-        verbose_name=_('Лайки'), default=0)
-    comments_count = models.PositiveIntegerField(
-        verbose_name=_('Комментарии'), default=0)
-    reviews_count = models.PositiveIntegerField(
-        verbose_name=_('Рейтинг'), default=0)
-    bookmarks_count = models.PositiveIntegerField(
-        verbose_name=_('Сохранения'), default=0)
+    likes_count = models.PositiveIntegerField(verbose_name=_('Лайки'), default=0)
+    comments_count = models.PositiveIntegerField(verbose_name=_('Комментарии'), default=0)
+    reviews_count = models.PositiveIntegerField(verbose_name=_('Рейтинг'), default=0)
+    bookmarks_count = models.PositiveIntegerField(verbose_name=_('Сохранения'), default=0)
 
     class Meta:
         abstract = True

@@ -3,7 +3,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-api="app.dev.garyshker.com"
+api="app.garyshker.com"
 rsa_key_size=4096
 data_path="./data/certbot"
 email="kazbekov.bekdaulet2000@gmail.com" # Adding a valid address i strongly recommended
